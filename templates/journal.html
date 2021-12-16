@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %} {% endblock %}
+
+{% block head %} {% endblock %}
+
+{% block body %}
+
+<h1><strong>Journal Prompt</strong></h1>
+<p>Set your intentions. It's time to soar!</p>
+
+<div>
+  <form action="/journal-submission" method="POST" id="journal-input">
+    <!-- <div>
+      <label>List 3 things you are grateful for today:</label>
+      <div>
+        <textarea name="gratitude-entry"></textarea>
+      </div>
+    </div> -->
+    <div>
+        <label>Write reflections on today's session:</label>
+        <div>
+          <textarea name="journal-entry"></textarea>
+        </div>
+    </div>
+        <div>
+        What was your overall mood today?
+        </div>
+        (1 is glum while 5 is elation)
+        <!-- change this to what category their submission pertains to -->
+        <select name="mood">
+            <option value="one">1</option>
+            <option value="two">2</option>
+            <option value="three">3</option>
+            <option value="four">4</option>
+            <option value="five">5</option>
+        </select> 
+        <div>
+          <input type="time" name="time-stamp">
+        </div>
+      <div>
+        <button type="submit">Submit Entry</button>
+      </div>
+  </form>
+</div>
+
+        <!-- input time, name = time of entry, request.form.time of entry -->
+        <!-- check in console -->
+        <!-- when open form, will be filled with current time -->
+        <!-- keep input hidden and it will be submitted from when they started -->
+        <!-- input type = time and ignore on browser,
+        when submitted, request.args.time(form_name) -->
+
+{% endblock %}

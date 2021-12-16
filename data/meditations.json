@@ -1,0 +1,51 @@
+[
+    {
+      "track_name": "5-Minute Guided Meditation",
+      "artist_name": "Headspace",
+      "image_url": "https://i.pinimg.com/474x/04/97/f9/0497f9f826459ef9b325a63de7919e3f--sunset-lover-beautiful-sunset.jpg",
+      "spotify_url": "https://open.spotify.com/track/6mi5lYz9NuIlmRfO8bT4gm?si=1ebef37367b54650",
+      "preview_link": " ",
+      "user_id": 1
+    },
+    {
+      "track_name": "Clear Your Mind Meditation",
+      "artist_name": "Philip Permutt",
+      "image_url": "https://i.pinimg.com/736x/15/77/09/157709fe2f137e42de421bfd5aaaa640.jpg",
+      "spotify_url": "https://open.spotify.com/track/7aoQz1Sm25hGXBqZqF5o6B?si=9d0e4d4766e34cc5",
+      "preview_link": " ",
+      "user_id": 2
+    },
+    {
+      "track_name": "Inner Creativity",
+      "artist_name": "Simonette Vaja",
+      "image_url": "https://i.pinimg.com/736x/e5/02/53/e50253794b656a1da809c89736f0cf8b.jpg",
+      "spotify_url": "https://open.spotify.com/track/3fsXGfQIya0UZrZlDNdKwm?si=4152f127cb6a4142",
+      "preview_link": " ",
+      "user_id": 3
+    },
+    {
+      "track_name": "Acceptance",
+      "artist_name": "Deepak Chopra",
+      "image_url": "https://i.pinimg.com/736x/19/7b/dc/197bdc82244e31e103683436a4975215.jpg",
+      "spotify_url": "https://open.spotify.com/track/0FsaEAmaYrm6Pxwg92be7e?si=14a6cc8f50dd49f9",
+      "preview_link": " ",
+      "user_id": 4
+    },
+    {
+      "track_name": "Morning Asana",
+      "artist_name": "Londrelle",
+      "image_url": "/static/img/ocean.png",
+      "spotify_url": "https://open.spotify.com/track/1d9K6lxDNAT8AhcMQIUmBF?si=2b1c0bb381d14bfc",
+      "preview_link": " ",
+      "user_id": 5
+    },
+    {
+      "track_name": "Mindfulness Meditation",
+      "artist_name": "Elena Mironov",
+      "image_url": "https://i.pinimg.com/736x/33/ba/cb/33bacbaf8dbe59443a3a54d13b41a0c6.jpg",
+      "spotify_url": "https://open.spotify.com/track/1w5fiL8sYRjB9EfH68Jyq5?si=05843de5f1544e0f",
+      "preview_link": " ",
+      "user_id": 6
+    }
+]
+    

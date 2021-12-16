@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %} {% endblock %}
+
+{% block head %} {% endblock %}
+
+{% block body %}
+
+<div class="profile-header">
+    <h1>Welcome Back, {{user.fname.capitalize()}}!</h1>
+</div>
+  <div class="profile-container">
+    <div class="col" id="meditation" style="text-align:center" margin-top="50px">
+      <div class="profile-images">
+        <a style="text-decoration:none" href="/meditation-catalog">
+          <p style="color:#000000"> View all meditations</p>
+        </a>
+        <a style="text-decoration:none" href="/meditation-catalog">
+          <img src="/static/img/meditations.jpg" width="150">
+        </a>
+      </div>
+    <div class="profile-images">
+      <a style="text-decoration:none" href="/journal">
+        <p style="color:#000000">Your Journal</p>
+      </a>
+      <a href="/journal">
+        <img src="/static/img/journaling.jpg" width="150">
+      </a>
+    </div>
+    <div class="profile-images">
+      <a style="text-decoration:none" href="/friends">
+        <p style="color:#000000">Exchange with Friends</p>
+      </a>
+      <a href="/friends">
+        <img src="/static/img/friends.jpg" width="150">
+      </a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+<!-- <p>Hello, {{user.fname.capitalize()}}!</p> -->

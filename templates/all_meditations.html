@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+{% block title %}Meditation Catalog{% endblock %}
+
+{% block head %} {% endblock %}
+
+{% block body %}
+<h1>Meditation Catalog</h1>
+
+{% for meditation in meditations %}
+<div class="catalog-container">
+  <div class="col" id="meditation" style="text-align:center" margin-top="50px">
+    <p><strong>{{ meditation.track_name}}</strong>
+    </p>
+      <div id="meditation">
+        <a href="/meditation/{{ meditation.meditation_id }}">
+          <img src="{{ meditation.image_url }}" width="200px" height="200px">
+        </a>
+      </div>
+        <div id="meditation">
+          <span>
+            <a href="{{ meditation.preview_link}}">
+            </a>
+          </span>
+            <form action="/meditation/{{ meditation.meditation_id }}" id="meditation-detail">
+              <button>Get Details
+              </button>
+          </form>
+        </div>
+  </div>
+</div>
+{% endfor %}
+
+
+
+
+
+
+
+
+<!-- <link rel="stylesheet" 
+href=
+"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"> -->
+
+<!-- Load the custom CSS style file -->
+<!-- <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<div class="player"> -->
+
+<!-- Define the section for displaying details -->
+<!-- <div class="details">
+<div id="now-playing">PLAYING x OF y</div>
+<div id="track-art"></div>
+<div id="track-name">Track Name</div>
+<div id="track-artist">Track Artist</div>
+</div> -->
+
+<!-- Define the section for displaying track buttons -->
+<!-- <div class="buttons">
+<div id="prev-track">
+<i class="fa fa-step-backward fa-2x"></i>
+</div>
+<div id="play-pause-track">
+<i class="fa fa-play-circle fa-5x"></i>
+</div>
+<div id="next-track">
+<i class="fa fa-step-forward fa-2x"></i>
+</div>
+</div> -->
+
+<!-- Define the section for displaying the seek slider-->
+<!-- <div class="slider_container">
+<div id="current-time">00:00</div>
+<input type="range" min="1" max="100"
+value="0" id="seek-slider">
+<div id="total-duration">00:00</div>
+</div> -->
+
+<!-- Define the section for displaying the volume slider-->
+<!-- <div class="slider-container">
+<i id="fa fa-volume-down"></i>
+<input type="range" min="1" max="100"
+value="99" id="volume-slider">
+<i class="fa fa-volume-up"></i>
+</div>
+</div> -->
+
+<!-- Load the main script for the player -->
+<!-- <script src="main.js"></script> -->
+
+
+
+
+
+
+
+
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"> -->
+
+<!-- Display details -->
+<!-- <div class="audio-player">
+  <div class="details">
+    <div id="now-playing">Now Playing</div>
+    <div id="track-art"><img src="/static/img/pebbles.jpg"></div>
+    <div id="track-name">Track Name</div>
+    <div id="track-artist">Artist</div>  
+  </div>
+</div> -->
+
+<!-- Display track buuttons -->
+<!-- <div class="buttons"> -->
+  <!-- add event listeners for the following ids -->
+  <!-- <div id="prev-track"></div>
+  <div id="play-pause-track"></div>
+  <div id="next-track"></div>
+</div> -->
+
+<!-- Display seek slider -->
+<!-- <div class="slider-container">
+<div class="seek-slider">
+  <div id="current-time"></div>
+  <input type="range" min="1" max="100"
+  value="0" id="seek-slider">
+  <div id="length-of-track"></div>
+</div>
+</div> -->
+
+<!-- Display volume slider -->
+<!-- <div class="slider-container">
+<div class="volume">
+  <input type="range" min="1" max="100"
+  value="99" id="volume-slider">
+</div>
+</div>
+
+<script src="app.js"></script> -->
+
+
+
+
+<!-- 
+<button id="togglePlay">Toggle Play</button> -->
+
+
+
+
+<!-- <h2>Spotify Web Playback SDK Quick Start</h2>
+    <button id="togglePlay">Toggle Play</button>
+
+    <script src="https://sdk.scdn.co/spotify-player.js"></script>
+    <script>
+        window.onSpotifyWebPlaybackSDKReady = () => {
+            const token = 'BQB_faOJg9ZfYUYXXnjyC1Szk0LiLYKOHt1IQO5JLPMX6BBcc1JgvJ8iAul--zbRUByp8HUV2yYZ2VHvr2vLuhlGkhahi9mDvxa_HGx5gSeLVGRukpyvzVfefYzNUYJ2a-6nv0MjprHvBMHUPAhpNWo1Nj1hi3IqAdg';
+            const player = new Spotify.Player({
+                name: 'Web Playback SDK Quick Start Player',
+                getOAuthToken: cb => { cb(token); },
+                volume: 0.5
+            });
+
+            // Ready
+            player.addListener('ready', ({ device_id }) => {
+                console.log('Ready with Device ID', device_id);
+            });
+
+            // Not Ready
+            player.addListener('not_ready', ({ device_id }) => {
+                console.log('Device ID has gone offline', device_id);
+            });
+
+            player.addListener('initialization_error', ({ message }) => {
+                console.error(message);
+            });
+
+            player.addListener('authentication_error', ({ message }) => {
+                console.error(message);
+            });
+
+            player.addListener('account_error', ({ message }) => {
+                console.error(message);
+            });
+
+            document.getElementById('togglePlay').onclick = function() {
+              player.togglePlay();
+            };
+
+            player.connect();
+        }
+    </script> -->
+
+
+
+
+{% endblock %}

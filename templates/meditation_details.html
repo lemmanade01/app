@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Details{% endblock %}
+
+{% block head %} 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+<script src="https://sdk.scdn.co/spotify-player.js"></script>
+{% endblock %}
+
+{% block body %}
+<h1>{{display_meditation.track_name}}</h1>
+<p><em>{{display_meditation.artist_name}}</em></p>
+
+<img src="{{ display_meditation.image_url }}" width="300px" height="300px">
+<div id="play-buttons"></div>
+<div>
+  <form action="{{display_meditation.preview_link}}">
+    <button>Preview</button>
+  </form>
+</div>
+<div>
+  <form action="{{display_meditation.spotify_url}}">
+    <button>Play</button>
+  </form>
+</div>
+
+{% endblock %}

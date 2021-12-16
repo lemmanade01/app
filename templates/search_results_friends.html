@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %} {% endblock %}
+
+{% block head %} {% endblock %}
+
+{% block body %}
+
+<h1>Search Results</h1>
+
+{% for user in users %}
+  <div>
+    <h3>{{meditation.track_name}}</h3>
+      <a href="/meditation/{{meditation.meditation_id}}">
+        <img src="{{meditation.image_url}}" width="200px" height="200px">
+      </a>
+      <div>
+        <form action="/meditation/{{meditation.meditation_id}}">
+          <button>Explore More</button>
+        </form>
+      </div>
+  </div>
+  
+{% endfor %}
+
+{% endblock %}

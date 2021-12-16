@@ -1,0 +1,100 @@
+.navbar {
+  background-color: #b9e9d6;
+  text-align: center; 
+  width: 100%;
+  display: block;
+  /* padding: 10px 10px; */
+  font-family: "Gill Sans", sans-serif;
+  line-height: 1;
+  letter-spacing: 0.05em;
+  display: inline;
+}
+
+/* .serachbar {
+  display: inline-block;
+} */
+
+/* .navbar-brand {
+  font-size: 12px;
+  font-weight: 500;
+} */
+
+.container-fluid a {
+  color: black;
+  font-family: serif;
+  font-family: "Gill Sans", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.nav-links {
+  color: black;
+  font-family: "Gill Sans", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  text-decoration: none;
+}
+
+.nav-links:hover {
+  color: purple;
+}
+
+.navbar {
+  display: inline-block;
+  font-size: 20px;
+  padding: 20px;
+}
+
+.navbar {
+  text-decoration: none;
+  padding: .2em 1em;
+  color: #000;
+  background-color: #fafafa;
+  }
+
+/* .navbar:hover {
+  color: #000;
+  background-color: #fff;
+} */
+
+.search-bar button {
+  display: inline-block;
+}
+
+form#search {
+  display: inline-block;
+}
+
+.profile-header {
+  font-family: "Gill Sans", sans-serif;
+}
+
+.profile-images {
+  font-family: "Gill Sans", sans-serif;
+}
+
+profile-images a p {
+  text-decoration: none;
+}
+
+
+.catalog-container {
+  background-color: lavender;
+}
+
+.body {
+  background-color: lavender;
+}
+.col {
+margin-top: 50px;
+}
+
+.meditation-detail {
+margin-top: 20px;
+}
+
+.searchbar {
+position: relative;
+}
