@@ -1,8 +1,9 @@
 """Server for mindfulness app."""
 
-from flask import Flask, render_template, request, flash, session, redirect
+from flask import Flask, render_template, request, flash, session, redirect, jsonify
 # from flask_login import login_required, current_user
 from model import connect_to_db
+from dotenv import load_dotenv
 
 import random
 # random.choice([name_of_dict.keys()])
@@ -10,6 +11,7 @@ import random
 import crud
 import json
 import requests
+import re
 # import vlc
 # import time
 
@@ -22,9 +24,12 @@ import spotipy.util as util
 
 from jinja2 import StrictUndefined
 
+# load environment variables from .env.
+load_dotenv()  
+
 app = Flask(__name__)
 # Required to use Flask sessions
-app.secret_key = "219567"
+app.secret_key = os.environ['SECRET_KEY']
 # Normally, if you refer to an undefined variable in a Jinja template,
 # Jinja silently ignores this. This makes debugging difficult, so we'll
 # set an attribute of the Jinja environment that says to make this an
@@ -50,9 +55,9 @@ def create_account():
 def process_create_account():
     """Log new user into site."""
 
-    fname = request.form.get("fname")
-    lname = request.form.get("lname")
-    email = request.form.get("email")
+    fname = request.form.get("fname").capitalize()
+    lname = request.form.get("lname").capitalize()
+    email = request.form.get("email").lower()
     phone_num = request.form.get("phone-num")
     # username = request.form.get("username")
     password = request.form.get("password")
@@ -65,7 +70,13 @@ def process_create_account():
         flash("A user already exists with that email.")
         return redirect("/create-account")
     # elif -- how do i check if all required inputs aren't blank
+    # Require 10 digit phone number, allowing dashes, and including (area code)
+    # elif not re.match("/\d{3}\-\d{3}\-\d{4}/", phone_num):
+    #     flash("Please enter a 10 digit phone number, including your area code")
+    #     return redirect("/create-account")
     else:
+        # phone_num = phone_num.split("-")
+        # phone_num = f"{phone_num[0]}{phone_num[1]}{phone_num[2]}"
         crud.create_user(fname, lname, email, phone_num, password, quote)
         flash(f"Welcome, {fname.capitalize()}! Please login.")
         return render_template("login.html")
@@ -86,11 +97,11 @@ def process_login():
     dictionary, look up the user, and store them in the session.
     """
     
-    email = request.form.get("email")
+    email = request.form.get("email").lower()
     password = request.form.get("password")
 
     user = crud.get_user_by_email(email)
-    user_id = user.user_id
+    # user_id = user.user_id
     
     if not user or user.password != password:
         flash("Email and Password do not match. Please enter a valid combination.")
@@ -236,36 +247,79 @@ def search():
 def meditation_search_results():
     """Return meditation results from user's submitted keywords"""
 
+    # get user's search input
+    search_input = request.form.get("search-input")
+
     # get track names and artist names that match the user's input string
     search_results = crud.get_meditation_by_search_input(search_input)
 
-    return render_template("search_results.html", search_results=search_results)
+    return render_template("search_results_meditations.html", search_results=search_results)
 
-# @app.route("/search-friends")
-# def search_friends():
-#     """Show search bar to find friends"""
+@app.route("/search-friends")
+def search_friends():
+    """Show search bar to find friends"""
 
-      # user can search for users by first and/or last name
+    #   user can search for users by first and/or last name
     #   user can search through their friend list
-#     # get all friends
-#     friends = crud.get_all_friends()
+    # get all friends
+    friends = crud.get_all_friends()
 
-#     return render_template("search_by_friends.html", friends=friends)
+    return render_template("search_by_friends.html", friends=friends)
 
 
 @app.route("/friend-search-results", methods=["POST"])
 def user_and_friend_search_results():
     """Return user and friend results from user's submitted keywords"""
 
+    # get user's search input
+    search_input = request.form.get("search-input")
+
     # get users's first and/or last names that match the user's input string
     user_search_results = crud.get_users_by_search_input(search_input)
 
     friend_search_results = crud.get_friends_by_search_input(search_input)
 
-    # friend_search_results = crud.
-
     return render_template("search_results_friends.html", user_search_results=user_search_results, friend_search_results=friend_search_results)
 
+
+@app.route("/favorite.json", methods=["POST"])
+def get_favorite():
+    """Handle front-end request to return information about favorite meditation as JSON
+    
+    Create and store user's favorite in database.
+    """
+
+    # get the user id of user in session
+    user = session.get("user")
+    user_id = user.user_id
+
+    # get the medtation id from the front-end
+    meditation_id = request.args.get("meditation_id")
+
+    # create and store the user's new favorite into the database
+    fav = crud.create_favorite(meditation_id, user_id)
+
+    return jsonify({"meditation_id": meditation_id, "user_id": user_id})
+
+
+@app.route("/remove-favorite.json", methods=["POST"])
+def remove_favorite():
+    """Handle front-end request to return information about removed favorite meditation as JSON
+    
+    Remove user's favorite from database.
+    """
+
+    # get the user id of user in session
+    user = session.get("user")
+    user_id = user.user_id
+
+    # get the medtation id from the front-end
+    meditation_id = request.args.get("meditation_id")
+
+    # remove the user's favorite from the database
+    removed_fav = crud.remove_favorite(meditation_id, user_id)
+
+    return jsonify({"meditation_id": meditation_id, "user_id": user_id})
 
 
 if __name__ == "__main__":
@@ -275,40 +329,6 @@ if __name__ == "__main__":
 
 
 
-
-
-
-# util.prompt_for_user_token(username,
-#                            scope,
-#                            client_id="9f8b451b49ff48ac845dfcd07a984852",
-#                            client_secret="bc2271d942604f7e9929c6ab5ba92212",
-#                            redirect_uri="http://localhost:5000/callback/")
-
-# birdy_uri = "spotify:playlist:9f8b451b49ff48ac845dfcd07a984852"
-# spotify = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials())
-
-# results = spotify.artist_albums(birdy_uri, album_type='album')
-# albums = results['items']
-# while results['next']:
-#     results = spotify.next(results)
-#     albums.extend(results['items'])
-
-# for album in albums:
-#     print(album['name'])
-
-
-
-
-# sound_file = vlc.MediaPLayer("file_path")
-# sound_file.play()
-# time.sleep(10)
-# sound_file.stop()
-
-
-    # base html template has 3 clickable navigation routes
-    # homepage (logo) --> not clickable once logged in
-    # search --> renders '/search' route
-    # profile --> renders profile.html 
 
 
 # PSEUDOCODE

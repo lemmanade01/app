@@ -1,11 +1,11 @@
 <!doctype html>
 <html>
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Mindful Moments</title> 
-    <!-- CSS only -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="/static/css/site.css" rel="stylesheet">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script> -->
 
   </head>
 <body>
@@ -24,32 +24,66 @@
     <section>
         <form action="/handle-create-account" method="POST">
             <div><strong>Create an Account:</strong></div>
-                <label>First Name</label>
-                <input type="text" name="fname">
+            <div id="required-fields"><small><em>* fields are required</em></small></div><br>
             <div>
-                <label>Last Name</label>
-                <input type="text" name="lname">
-            </div>
+                <label>First Name<span class="required"> *</span></label>
+                <input type="text" name="fname" placeholder="Jane" required>
+            </div><br>
             <div>
-                <label>Email</label>
-                <input type="text" name="email">
-            </div>
+                <label>Last Name<span class="required"> *</span></label>
+                <input type="text" name="lname" placeholder="Doe" required>
+            </div><br>
             <div>
-                <label>Phone Number</label>
-                <input type="text" name="phone-num">
-            </div>
+                <label for="email">Email<span class="required"> *</span></label>
+                <input type="email" name="email" placeholder="janedoe@gmail.com" id="email" size="50" required>
+            </div><br>
             <div>
-                <label>Password</label>
-                <input type="password" name="password">
+                <label for="phone">Phone Number<span class="required"> *</span></label>
+                <input type="tel" name="phone-num" placeholder="2135558970" pattern="[0-9]{10}" required>
+            </div><br>
+
+            <!-- pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" -->
+
+            <!-- <div class="container">
+                <form id="login" onsubmit="process(event)">
+                  <p>Enter your phone number:</p>
+                  <input id="phone" type="tel" name="phone" />
+                  <input type="submit" class="btn" value="Verify" />
+                </form>
+            </div><br> -->
+
+            <!-- <div>
+            <label for="phone">Enter your phone number:</label>
+            
+                <input type="tel" id="phone" name="phone"
+                    pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                    required>
+
+                <small>Format: 123-456-7890</small>
+            </div> -->
+
+            <div>
+                <label>Password<span class="required"> *</span></label>
+                <input type="password" name="password" placeholder="●●●●●●●●" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
+            </div><br>
+            <div>
+                <small><em>Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or more characters</em></small>
             </div>
             <div>
                 <label>Enter your favorite mantra <em>(Optional)</em>:</label> 
-                <textarea name="quote"></textarea>
-            </div>
+                <textarea name="quote" placeholder="Get inspired!"></textarea>
+            </div><br>
             <button type="submit"><strong>Create Account</strong></button>
         </form>
       </section>
 </body>
+<script>
+    const phoneInputField = document.querySelector("#phone");
+    const phoneInput = window.intlTelInput(phoneInputField, {
+      utilsScript:
+        "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+    });
+  </script>
 </html>
 
 

@@ -7,19 +7,31 @@
 
 <h1>Search Results</h1>
 
-{% for user in users %}
+<h3>Friends</h3>
+{% for friend in friend_search_results %}
   <div>
-    <h3>{{meditation.track_name}}</h3>
-      <a href="/meditation/{{meditation.meditation_id}}">
-        <img src="{{meditation.image_url}}" width="200px" height="200px">
-      </a>
-      <div>
-        <form action="/meditation/{{meditation.meditation_id}}">
-          <button>Explore More</button>
-        </form>
-      </div>
-  </div>
-  
+    <ul>
+      <!-- need to finish the friend table for this to work -->
+      <li>{{friend.fname}} {{friend.lname}}</li>
+    </ul>
+  </div><br>
 {% endfor %}
+
+<h3>Users</h3>
+{% for user in user_search_results %}
+
+  <div>
+    <ul>
+      <li>{{user.fname}} {{user.lname}}</li>
+    </ul>
+  </div>
+
+{% endfor %}
+
+{% if user_search_results|length == 0 %}
+  <div>There are no users by this name</div>
+{% endif %}
+
+
 
 {% endblock %}

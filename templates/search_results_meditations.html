@@ -10,14 +10,15 @@
 {% for meditation in search_results %}
   <div>
     <h3>{{meditation.track_name}}</h3>
+    <p><em>{{meditation.artist_name}}</em></p>
       <a href="/meditation/{{meditation.meditation_id}}">
         <img src="{{meditation.image_url}}" width="200px" height="200px">
       </a>
-      <div>
+      <div><br>
         <form action="/meditation/{{meditation.meditation_id}}">
           <button>Explore More</button>
         </form>
-      </div>
+      </div><br>
   </div>
   
 {% endfor %}

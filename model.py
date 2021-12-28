@@ -46,12 +46,8 @@ class User(db.Model):
     password = db.Column(db.String(25), nullable=False)
     quote = db.Column(db.String(200))
 
-# username = db.Column(db.String(20), unique=True, nullable=False)
-
-# test_user = User(fname='emma', lname='l', email='el@gmail.com', phone_num='480', password='2468', quote='carpe diem')
-
-# test_user = User(fname='emma', lname='l', email='el@gmail.com', phone_num='480', username='emandem', password='2468', quote='carpe diem')
-# test_user_2 = User(fname='sofie', lname='l', email='sl@gmail.com', phone_num='602', username='sofiebofie', password='1234', quote='live, laugh, love')
+    # decide if i want the user to have a username
+    # username = db.Column(db.String(20), unique=True, nullable=False)
 
     journals = db.relationship("Journal", backref="user")
     # a user can have many journals, but a journal can't have many users
@@ -59,6 +55,9 @@ class User(db.Model):
     # a user can have many meditations, but a meditation can't have many users
     notifications = db.relationship("Notification", backref="user")
     # a user can have many notifications, but a notifcation can't have many users
+    favorites = db.relationship("Favorite", backref="user")
+    # a user can have many favorites, but a favorite can't have many users
+
     # friends = db.relationship("Friend", secondary="users_friends", backref="users")
     # Friend and User have a many-to-many relationship 
     # friend = db.relationship("User", 
@@ -67,10 +66,50 @@ class User(db.Model):
     #                         secondaryjoin=user_id == usersfriends.c.user_id,
     #                         backref="friends") 
       
-    
     def __repr__(self):
-        return f'<User fname={self.fname} lname={self.lname} email={self.email}>'
+        return f"<User fname={self.fname} lname={self.lname} email={self.email}>"
 
+
+
+class Meditation(db.Model):
+    """A meditation"""
+
+    __tablename__ = "meditations"
+
+    meditation_id = db.Column(db.Integer,
+                        autoincrement=True,
+                        primary_key=True)
+    track_name = db.Column(db.String(100), nullable=False)
+    artist_name = db.Column(db.String(100), nullable=False)
+    image_url = db.Column(db.String)
+    spotify_url = db.Column(db.String, nullable=False)
+    preview_link = db.Column(db.String)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
+
+    favorites = db.relationship("Favorite", backref="meditation")
+    # journal
+    # (db.relationship("Meditation", secondary="meditations_journals", backref="journal") on Journal model)
+
+
+class Favorite(db.Model):
+    """A user's saved meditation"""
+
+    __tablename__ = "favorites"
+
+    fav_id = db.Column(db.Integer,
+                       autoincrement=True,
+                       primary_key=True)
+    meditation_id = db.Column(db.Integer, db.ForeignKey("meditations.meditation_id"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
+
+    # user
+    # (db.realtionship("Favorite", backref="user") on User model)
+
+    # meditation
+    # (db.relationship("Favorite", backref="meditation") on Meditation model)
+
+    def __repr__(self):
+        f"<Favorite fav_id={self.fav_id} meditation_id={self.meditation_id} user_id={self.user_id}>"
 
 
 class Journal(db.Model):
@@ -92,26 +131,8 @@ class Journal(db.Model):
     # Journal and Meditation have a many-to-many relationship    
     
     def __repr__(self):
-        return f'<Journal journal_id={self.journal_id} user_id={self.user_id} time_stamp={self.time_stamp}'
+        return f"<Journal journal_id={self.journal_id} user_id={self.user_id} time_stamp={self.time_stamp}>"
     
-
-class Meditation(db.Model):
-    """A meditation"""
-
-    __tablename__ = "meditations"
-
-    meditation_id = db.Column(db.Integer,
-                        autoincrement=True,
-                        primary_key=True)
-    track_name = db.Column(db.String(100), nullable=False)
-    artist_name = db.Column(db.String(100), nullable=False)
-    image_url = db.Column(db.String)
-    spotify_url = db.Column(db.String, nullable=False)
-    preview_link = db.Column(db.String)
-    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
-
-    # journal
-    # (db.relationship("Meditation", secondary="meditations_journals", backref="journal") on Journal model)
 
 class MeditationJournal(db.Model):
     """An association table for Meditation and Journal"""
@@ -128,25 +149,26 @@ class MeditationJournal(db.Model):
     # (db.relationship("Meditation", backref="user") on User model)
 
     def __repr__(self):
-        return f"<Media meditation_id={self.media_id} title={self.title}"
+        return f"<Media meditation_id={self.media_id} title={self.title}>"
 
 
-# class Friend(db.Model):
-#     """A user's friend"""
+# the cloned repo had this class commented out
+class Friend(db.Model):
+    """A user's friend"""
 
-#     __tablename__ = "friends"
+    __tablename__ = "friends"
 
-#     friend_id = db.Column(db.Integer,
-#                           autoincrement=True,
-#                           primary_key=True)
-#     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
-    # friend = db.Column(db.Integer)
+    friend_id = db.Column(db.Integer,
+                          autoincrement=True,
+                          primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
+    friend = db.Column(db.Integer)
 
     # user
     # (db.relatiionship("Friend", secondary="users_friends", backref="user") on User model)
 
     def __repr__(self):
-        return f"<Friend friend_id={self.friend_id}"
+        return f"<Friend friend_id={self.friend_id}>"
 
 
 class Notification(db.Model):
@@ -160,7 +182,6 @@ class Notification(db.Model):
     date = db.Column(db.DateTime, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
     message_id = db.Column(db.Integer, db.ForeignKey("messages.message_id"), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
 
     # user
     # (db.relationship("Notification", backref="user") on User model)
@@ -168,7 +189,7 @@ class Notification(db.Model):
     # (db.relationship("Notification", backref="message") on Message model)
    
     def __repr__(self):
-        return f"<Notification notification_id={self.notification_id} date={self.date} time={self.time}"
+        return f"<Notification notification_id={self.notification_id} date={self.date} user_id={self.user_id}>"
 
 
 class Message(db.Model):
@@ -185,19 +206,37 @@ class Message(db.Model):
     # a message can have many notifications, but a notifcation can't have many messages
 
     def __repr__(self):
-        return f"<Message message_id={self.message_id} txt_message={self.text_message}"
+        return f"<Message message_id={self.message_id} txt_message={self.txt_message}>"
 
-    # NEW TABLE
-    # quote = db.Column(db.Text, nullable=False)
-    # author = db.Column(db.String(100))
 
-    # NEW TABLE
-    # wellness_tip = db.Column(db.Text, nullable=False)
-    # source = db.Column(db.String(100))
+class Quote(db.Model):
+    """A pre-populated set of quotes"""
 
-    # can i add quotes into messages table or create a new table
-    # since i don't need a quote associated with a txt_message
+    __tablename__ = "quotes"
 
+    quote_id = db.Column(db.Integer,
+                         autoincrement=True,
+                         primary_key=True)
+    inspo_quote = db.Column(db.Text, nullable=False)
+    author = db.Column(db.String(100))
+
+    def __repr__(self):
+        return f"<Quote inspo_qute={self.inspo_quote} author={self.author}>"
+
+
+class Tip(db.Model):
+    """A pre-populated set of wellness tips"""
+
+    __tablename__ = "tips"
+
+    tip_id = db.Column(db.Integer,
+                       autoincrement=True,
+                       primary_key=True)
+    wellness_tip = db.Column(db.Text, nullable=False)
+    source = db.Column(db.String(150))
+   
+    def __repr__(self):
+        return f"<Tip tip_id={self.tip_id} wellness_tip={self.wellness_tip}>"
 
 
 def connect_to_db(flask_app, db_uri="postgresql:///meditations", echo=True):
@@ -219,5 +258,3 @@ if __name__ == "__main__":
     # query it executes.
 
     connect_to_db(app)
-
-

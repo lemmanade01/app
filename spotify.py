@@ -1,4 +1,5 @@
 import spotipy
+import os
 from spotipy.oauth2 import SpotifyClientCredentials, SpotifyOAuth
 from dotenv import load_dotenv
 from pprint import pprint
@@ -13,9 +14,9 @@ sp = spotipy.Spotify(auth_manager=auth_manager)
 
 def get_playlist_tracks(username, playlist_id):
     """get and return playlist track data from a specific playlist on my Spotify"""
-    
-    # username = "1111159638"
-    # playlist_id = "0o7ac1KZ6sNVm34fWBsTR1"
+
+    username = os.environ["SPOTIFY_USERNAME"]
+    playlist_id = os.environ["SPOTIFY_PLAYLIST_ID"]
 
     results = sp.user_playlist_tracks(username,playlist_id)
     
@@ -38,20 +39,20 @@ def get_playlist_tracks(username, playlist_id):
     # return the dictionary
     return playlist_tracks
 
-def player():
-    scope = "user-read-playback-state,user-modify-playback-state"
-    sp = spotipy.Spotify(client_credentials_manager=SpotifyOAuth(scope=scope))
+# def player():
+#     scope = "user-read-playback-state,user-modify-playback-state"
+#     sp = spotipy.Spotify(client_credentials_manager=SpotifyOAuth(scope=scope))
 
-    # Shows playing devices
-    res = sp.devices()
-    pprint(res)
+#     # Shows playing devices
+#     res = sp.devices()
+#     pprint(res)
 
-    # Change track
-    sp.start_playback(uris=['spotify:track:6gdLoMygLsgktydTQ71b15'])
+#     # Change track
+#     sp.start_playback(uris=['spotify:track:6gdLoMygLsgktydTQ71b15'])
 
-    # Change volume
-    sp.volume(100)
-    sleep(2)
-    sp.volume(50)
-    sleep(2)
-    sp.volume(100)
+#     # Change volume
+#     sp.volume(100)
+#     sleep(2)
+#     sp.volume(50)
+#     sleep(2)
+#     sp.volume(100)

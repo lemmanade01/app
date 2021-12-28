@@ -12,6 +12,7 @@
 
     {% block head %}{% endblock %}
   </head>
+ 
   <body>
     <nav class="navbar navbar-light bg-light">
       <div class="container-fluid">
@@ -25,6 +26,7 @@
       </div>
     </nav> 
 
+    {% block body %}
     <!-- Show flashed messages -->
     {% for msg in get_flashed_messages() %}
       <p class="flash-msg">
@@ -33,5 +35,6 @@
     {% endfor %}
 
     <!-- <footer>Helping build councious awareness one day at a time</footer> -->
+  {% endblock %}
   </body>
 </html>
