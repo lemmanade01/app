@@ -7,34 +7,47 @@
 
 <div class="profile-header">
     <h1>Welcome Back, {{user.fname.capitalize()}}!</h1>
-</div>
-  <div class="profile-container">
-    <div class="col" id="meditation" style="text-align:center" margin-top="50px">
-      <div class="profile-images">
-        <a style="text-decoration:none" href="/meditation-catalog">
-          <p style="color:#000000"> View all meditations</p>
-        </a>
-        <a style="text-decoration:none" href="/meditation-catalog">
-          <img src="/static/img/meditations.jpg" width="150">
-        </a>
-      </div>
-    <div class="profile-images">
-      <a style="text-decoration:none" href="/journal">
-        <p style="color:#000000">Your Journal</p>
+</div><br>
+  
+<div class="profile-container">
+  <div>
+    <h2>"{{ random_quote.inspo_quote }}"</h2>
+    <p><em>- {{ random_quote.author }}</em></p>
+  </div><br>
+  
+  <div>
+    <h1>Today's Suggested Meditation</h1>
+      <h4>{{ random_meditation.track_name }}</h4>
+      <p><em>{{ random_meditation.artist_name }}</em></p>
+      <a href="/meditation/{{ random_meditation.meditation_id }}">
+      <img src="{{ random_meditation.image_url }}" width="300px" height="300px">
       </a>
+    <div>
+      <form action="/meditation/{{ random_meditation.meditation_id }}">
+        <button>Discover More</button>
+      </form>
+    </div>
+  </div><br>
+
+  <div>
+    <h1>Self-Care</h1>
+      <h4>Check-in with yourself. Pause and Reflect. Record today's thoughts and feelings.</h4>
       <a href="/journal">
-        <img src="/static/img/journaling.jpg" width="150">
+      <p><em>Set your intentions.</em></p>
       </a>
-    </div>
-    <div class="profile-images">
-      <a style="text-decoration:none" href="/friends">
-        <p style="color:#000000">Exchange with Friends</p>
+  </div><br>
+
+
+  <div>
+    <h1>Your Favorites</h1>
+      <h4>Recenter and Reconnect. Spend time with comforting familiars. Magic awaits.</h4>
+      <a href="/favorites">
+      <p><em>Jump back in!</em></p>
       </a>
-      <a href="/friends">
-        <img src="/static/img/friends.jpg" width="150">
-      </a>
-    </div>
-  </div>
+  </div><br>
+
+
+  
 </div>
 
 {% endblock %}

@@ -53,5 +53,3 @@ def scheduled_reminders():
                     )
 
     print(message.sid)
-
-

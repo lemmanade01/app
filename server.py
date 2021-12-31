@@ -12,6 +12,7 @@ import crud
 import json
 import requests
 import re
+import uuid
 # import vlc
 # import time
 
@@ -44,7 +45,7 @@ def show_homepage():
     return render_template("homepage.html")
 
 
-@app.route("/create-account") 
+@app.route("/create-account")
 def create_account():
     """Show create account form"""
 
@@ -74,12 +75,12 @@ def process_create_account():
     # elif not re.match("/\d{3}\-\d{3}\-\d{4}/", phone_num):
     #     flash("Please enter a 10 digit phone number, including your area code")
     #     return redirect("/create-account")
-    else:
-        # phone_num = phone_num.split("-")
-        # phone_num = f"{phone_num[0]}{phone_num[1]}{phone_num[2]}"
-        crud.create_user(fname, lname, email, phone_num, password, quote)
-        flash(f"Welcome, {fname.capitalize()}! Please login.")
-        return render_template("login.html")
+  
+    # phone_num = phone_num.split("-")
+    # phone_num = f"{phone_num[0]}{phone_num[1]}{phone_num[2]}"
+    crud.create_user(fname, lname, email, phone_num, password, quote)
+    flash(f"Welcome, {fname.capitalize()}! Please login.")
+    return render_template("login.html")
 
 
 @app.route("/login", methods=["GET"])
@@ -101,7 +102,7 @@ def process_login():
     password = request.form.get("password")
 
     user = crud.get_user_by_email(email)
-    # user_id = user.user_id
+    user_id = user.user_id
     
     if not user or user.password != password:
         flash("Email and Password do not match. Please enter a valid combination.")
@@ -109,9 +110,10 @@ def process_login():
     else:
         session["user_email"] = user.email
         user_in_session = session["user_email"]
-        # return redirect(f"/profile/{user_id}")
-        return render_template("profile.html", user=user)
-      
+        
+        return redirect(f"/profile/{user_id}")
+        # return render_template("profile.html", user=user)
+        # return render_template("spotify_authorization.html")
 
 
 @app.route("/logout")
@@ -124,25 +126,39 @@ def logout():
 
 
 @app.route("/profile")
-def show_profile():
+def redirect_to_show_profile():
     """Show profile page with user information"""
 
     # this route is also available when selected from the navigation bar
+    
+    user_email = session.get("user_email")
+    user = crud.get_user_by_email(user_email)
+    user_id = user.user_id
    
-    return render_template("profile.html")
+    return redirect(f"/profile/{user_id}")
 
 
-# @app.route("/profile/<user_id>")
-# def show_profile(user_id):
-#     """Show profile page with user information"""
-
-#     user = crud.get_user_by_email(user_in_session)
-#     user_id = user.user_id
-#     # user = User.query.filter_by(email=session["user_email"]).first()
-#     # user_id = user.user_id
-#     # this route is also available when selected from the navigation bar
+@app.route("/profile/<user_id>")
+def show_profile(user_id):
+    """Show profile page with user information"""
+    
+    user_email = session.get("user_email")
+    user = crud.get_user_by_email(user_email)
+    user_id = user.user_id
    
-#     return render_template("profile.html", user_id=user_id, user=user)
+    # this route is also available when selected from the navigation bar
+    
+    meditations = crud.get_all_meditations()
+    # should this be a crud funtions?
+    random_meditation = random.choice(meditations)
+    # store random meditation in session
+    # session["random_meditation"] = random_meditation
+    
+    quotes = crud.get_all_quotes()
+    random_quote = random.choice(quotes)
+    # session["random_quote"] = random_quote
+   
+    return render_template("profile.html", user_id=user_id, user=user, random_meditation=random_meditation, random_quote=random_quote)
 
 
 @app.route("/meditation-catalog")
@@ -156,10 +172,7 @@ def list_meditations():
     # get all meditations's data
     meditations = crud.get_all_meditations()
 
-    
-
     return render_template("all_meditations.html", meditations=meditations)
-
 
 
 @app.route("/meditation/<meditation_id>")
@@ -192,9 +205,10 @@ def handle_journal_submission():
     category = request.form.get("mood")
 
     journal_entry = crud.create_journal_entry(journal_input, time_stamp, category)
-   # get user by user email, then pass in the user id
-    
-    user = User.query.filter_by(email=session["user_email"]).first()
+   
+    # get user by user email, then pass in the user id
+    email = session["user_email"]
+    user = crud.get_user_by_email(email)
     user_id = user.user_id
 
     journal_count = crud.get_journal_count(user_id)
@@ -290,46 +304,98 @@ def get_favorite():
     """
 
     # get the user id of user in session
-    user = session.get("user")
+    user_email = session["user_email"]
+    user = crud.get_user_by_email(user_email)
     user_id = user.user_id
 
     # get the medtation id from the front-end
-    meditation_id = request.args.get("meditation_id")
+    meditation_id = request.json.get("meditation_id")
 
-    # create and store the user's new favorite into the database
-    fav = crud.create_favorite(meditation_id, user_id)
+    # check to see if this specific meditation exists within the favorites table
+    exists = crud.get_fav_meditation_by_id(meditation_id)
+    
+    if exists == False:
+        # create and store the user's new favorite into the database
+        crud.create_favorite(meditation_id, user_id)
+    
+        # set liked meditations in session equal to an empty list
+        session["liked_meditations"] = []
+        # the liked meditations list variable is now equal to the session's liked meditations empty list
+        liked_meditations_lst = session["liked_meditations"]
+        # append liked meditation_id to the empty list
+        liked_meditations_lst.append(meditation_id)
+        # the liked meditation(s) in session is now equal to the appended list
+        session["liked_meditations"] = liked_meditations_lst
+        # flash("You have successfully added this meditation to your favorites!")
 
-    return jsonify({"meditation_id": meditation_id, "user_id": user_id})
+        return jsonify({"success": True, "status": "Your favorite has been stored", "list": session["liked_meditations"], "exist value": exists})
+    
+    return jsonify({"message": "This favorite already exists in the database"})
 
 
 @app.route("/remove-favorite.json", methods=["POST"])
 def remove_favorite():
     """Handle front-end request to return information about removed favorite meditation as JSON
     
+    Handle front-end request. Return success message that favorite meditation has been removed
+    
     Remove user's favorite from database.
     """
 
     # get the user id of user in session
-    user = session.get("user")
+    # user = session.get("user")
+    user_email = session["user_email"]
+    user = crud.get_user_by_email(user_email)
     user_id = user.user_id
 
     # get the medtation id from the front-end
-    meditation_id = request.args.get("meditation_id")
+    meditation_id = request.json.get("meditation_id")
+    
+    # check to see if this specific meditation exists within the favorites table
+    exists = crud.get_fav_meditation_by_id(meditation_id)
+    
+    if exists == True:
+        # remove the user's favorite from the database
+        crud.remove_favorite(meditation_id, user_id)
 
-    # remove the user's favorite from the database
-    removed_fav = crud.remove_favorite(meditation_id, user_id)
+        # get the liked meditations in session
+        liked_meditations_lst = session.get("liked_meditations")
+    
+        # check to see if the unhearted meditation id exists in the session's liked meditations list
+        if meditation_id in liked_meditations_lst:
+            # if yes, remove that specific meditation from the list
+            liked_meditations_lst.remove(meditation_id)
 
-    return jsonify({"meditation_id": meditation_id, "user_id": user_id})
+        # return the updated session's liked meditations list
+        # return liked_meditations_lst
+        # flash("This meditation has been removed from your favorites.")
+
+        return jsonify({"success": True, "status": "This meditation has been removed from your favorites", "list": liked_meditations_lst})
+    
+    return jsonify({"message": "This favorite has already been removed from the database"})
+    
+    
+@app.route("/favorites")
+def show_favorite_meditations():
+    """Show a user's favorite meditations"""
+    favs = crud.get_fav_meditations()
+   
+    fav_meditations = crud.get_fav_meditation_details()
+    
+    return render_template("favorites.html", fav_meditations=fav_meditations, favs=favs)
 
 
 if __name__ == "__main__":
     # DebugToolbarExtension(app)
     connect_to_db(app)
-    app.run(host="0.0.0.0", debug=True)
-
-
-
-
+    app.run(host="localhost", debug=True)
+    
+    
+    
+    
+    
+    
+# app.run(threaded=True, port=int(os.environ.get("PORT", os.environ.get("SPOTIPY_REDIRECT_URI", 8080).split(":")[-1])))
 
 # PSEUDOCODE
 # @app.route("/")

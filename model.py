@@ -1,37 +1,22 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask import flash
-from sqlalchemy import Column, ForeignKey, Table
-from sqlalchemy.orm import relationship, backref
-from sqlalchemy.dialects.mssql import INTEGER, VARCHAR  # Assuming SQL Server
 from sqlalchemy.ext.declarative import declarative_base
 
 db = SQLAlchemy()
-Base = declarative_base()
+# Base = declarative_base()
 
-# class UserFriend(db.Model):
-#     """Association table between User and Friend"""
-
-#     __tablename__ = "users_friends"
-
-#     user_friend_id = db.Column(db.Integer, primary_key=True)
-#     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
-#     friend_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
-
-
-# usersfriends = Table(
-#     'UsersFriends',
-#     Base.metadata,
-#     Column('users_friend_id', INTEGER, primary_key=True),
-#     Column('user_id', INTEGER, ForeignKey('Users.user_id')),
-#     Column('friend_id', INTEGER, ForeignKey('User.user_id'))
-#     )
-# association_table = Table('association', Base.metadata,
-#     Column('left_id', ForeignKey('left.id'), primary_key=True),
-#     Column('right_id', ForeignKey('right.id'), primary_key=True)
-# )
+# creating relationship from user to users --> their friends
+# doing that with many-to-many relationship (line 35, friend end)
+# association table (line 13)
+# your user id a bunch of times and then other friends ids
+user_to_user = db.Table("user_to_user", db.metadata,
+    db.Column("user_id", db.Integer, db.ForeignKey("users.user_id"), primary_key=True),
+    db.Column("friend_id", db.Integer, db.ForeignKey("users.user_id"), primary_key=True)
+)
 
 class User(db.Model):
+
     """A user."""
 
     __tablename__ = "users"
@@ -49,6 +34,19 @@ class User(db.Model):
     # decide if i want the user to have a username
     # username = db.Column(db.String(20), unique=True, nullable=False)
 
+    friend = db.relationship("User",
+                        secondary="user_to_user",
+                        primaryjoin="User.user_id==user_to_user.c.user_id",
+                        secondaryjoin="User.user_id==user_to_user.c.friend_id",
+                        backref="friends"
+                        )
+    # creating two different ends of the same relationship -- friend --> friends
+    
+    # we have friends
+    # and we are a friend to many other users
+
+    # a user is a friend of and friends with
+    
     journals = db.relationship("Journal", backref="user")
     # a user can have many journals, but a journal can't have many users
     meditations = db.relationship("Meditation", backref="user")
@@ -68,7 +66,6 @@ class User(db.Model):
       
     def __repr__(self):
         return f"<User fname={self.fname} lname={self.lname} email={self.email}>"
-
 
 
 class Meditation(db.Model):
@@ -99,7 +96,7 @@ class Favorite(db.Model):
     fav_id = db.Column(db.Integer,
                        autoincrement=True,
                        primary_key=True)
-    meditation_id = db.Column(db.Integer, db.ForeignKey("meditations.meditation_id"), nullable=False)
+    meditation_id = db.Column(db.Integer, db.ForeignKey("meditations.meditation_id"), unique=True, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
 
     # user
@@ -153,26 +150,32 @@ class MeditationJournal(db.Model):
 
 
 # the cloned repo had this class commented out
-class Friend(db.Model):
-    """A user's friend"""
+# class Friend(db.Model):
+#     """A user's friend"""
 
-    __tablename__ = "friends"
+#     __tablename__ = "friends"
 
-    friend_id = db.Column(db.Integer,
-                          autoincrement=True,
-                          primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
-    friend = db.Column(db.Integer)
+#     friend_id = db.Column(db.Integer,
+#                           autoincrement=True,
+#                           primary_key=True)
+#     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
+#     friend = db.Column(db.Integer)
 
-    # user
-    # (db.relatiionship("Friend", secondary="users_friends", backref="user") on User model)
+#     # user
+#     # (db.relatiionship("Friend", secondary="users_friends", backref="user") on User model)
 
-    def __repr__(self):
-        return f"<Friend friend_id={self.friend_id}>"
+#     def __repr__(self):
+#         return f"<Friend friend_id={self.friend_id}>"
+
+
+# class Calendar(db.Model):
+#     """A user's scheduled meditation events"""
+
+#     __tabelname__ = "calendars"
 
 
 class Notification(db.Model):
-    """A scheduled reminder"""
+    """A scheduled calendar reminder"""
 
     __tablename__ = "notifications"
 

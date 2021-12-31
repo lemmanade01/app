@@ -39,3 +39,18 @@ with open("data/meditations.json") as f:
 
     db_meditation = crud.create_meditations(track_name, artist_name, image_url, spotify_url, preview_link, 1)
     meditations_in_db.append(db_meditation)
+    
+    
+# create quotes with .json file
+with open("data/quotes.json") as f:
+    quote_data = json.loads(f.read())
+
+    quotes_in_db = []
+    for quote in quote_data:
+        inspo_quote, author = (
+            quote["inspo_quote"],
+            quote["author"],
+        )   
+
+        db_quote = crud.create_quotes(inspo_quote, author)
+        quotes_in_db.append(db_quote)

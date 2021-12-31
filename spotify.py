@@ -11,6 +11,23 @@ load_dotenv()
 auth_manager = SpotifyClientCredentials()
 sp = spotipy.Spotify(auth_manager=auth_manager)
 
+# client_id = os.environ["SPOTIFY_CLIENT_ID"]
+# client_secret = os.environ["SPOTIFY_CLIENT_SECRET"]
+# redirect_uri = os.environ["SPOTIFY_REDIRECT_URI"]
+# username = os.environ["SPOTIFY_USERNAME"]
+# scope = "user-read-playback-state user-modify-playback-state user-read-private user-library-modify user-library-read streaming user-read-playback-position app-remote-control user-read-email playlist-modify-public user-read-currently-playing user-read-recently-played"
+
+# OAUTH_AUTHORIZE_URL= 'https://accounts.spotify.com/authorize'
+# OAUTH_TOKEN_URL= 'https://accounts.spotify.com/api/token'
+
+# auth_manager = spotipy.oauth2.SpotifyOAuth(scope=scope,client_id=client_id,client_secret=client_secret,redirect_uri=redirect_uri, show_dialog=True, cache_path=CACHE)
+
+# authorize_user = spotipy.util.prompt_for_user_token(username, scope,client_id=client_id,client_secret=client_secret,redirect_uri=redirect_uri)
+
+# sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=client_id,
+# client_secret=client_secret,
+# redirect_uri=redirect_uri,
+# scope="user-read-playback-state user-modify-playback-state user-read-private user-library-modify user-library-read streaming user-read-playback-position app-remote-control user-read-email playlist-modify-public user-read-currently-playing user-read-recently-played"))
 
 def get_playlist_tracks(username, playlist_id):
     """get and return playlist track data from a specific playlist on my Spotify"""

@@ -1,6 +1,6 @@
 """CRUD operations."""
 
-from model import db, User, Journal, Meditation, Notification, Message, Friend, Favorite, connect_to_db
+from model import db, User, Journal, Meditation, Notification, Message, Favorite, Quote, Tip, connect_to_db
 import spotify
 import os
 
@@ -26,6 +26,7 @@ def get_user_by_fname(fname):
 #     user = User.query.filter_by(username=username).first()
 
 #     return user
+
 
 def get_user_by_password(password):
     """Get and return user's password."""
@@ -142,6 +143,30 @@ def get_meditation_by_id(meditation_id):
     return single_meditation
 
 
+def get_fav_meditation_by_id(meditation_id):
+    """Check to see if a meditation id currently exists in favorites"""
+    
+    exists = Favorite.query.filter_by(meditation_id=meditation_id).first() is not None
+    
+    return exists
+
+
+def get_fav_meditation_details():
+    """Join Favorite table on Meditation table by meditation id"""
+    
+    fav_meditation_ids = Meditation.query.join(Favorite).filter(Favorite.meditation_id==Meditation.meditation_id).all()
+    
+    return fav_meditation_ids
+
+
+def get_fav_meditations():
+    """Get and return all favorite meditations."""
+    
+    fav_meditations = Favorite.query.all()
+    
+    return fav_meditations
+
+
 def get_meditation_by_search_input(search_input):
     """Return all meditations that match user's search input."""
     
@@ -169,6 +194,7 @@ def get_meditation_by_search_input(search_input):
 
 #     return all_friends
 
+
 def get_users_by_search_input(search_input):
     """Return all app users that match user's input."""
 
@@ -193,15 +219,72 @@ def get_all_messages():
     return messages
 
 
-def create_notification(date):
-    """Create and return a scheduled notification."""
+def get_all_quotes():
+    """Get and return all pre-populated quotes"""
+    
+    quotes = Quote.query.all()
+    
+    return quotes
 
-    notification = Notification(date=date)
+
+# def create_calendar_event():
+#     """Create and return a new calendar event"""
+
+#     event = Notification(date=date,
+#                          user_id=user_id,
+#                          message_id=message_id)
+
+#     db.session.add(event)
+#     db.session.commit()
+
+#     return event
+
+
+# def update_calendar_event():
+#     """Update and return existing calendar event"""
+
+#     return updated_event
+
+
+# def delete_calendar_event():
+#     """Delete existing calednar event"""
+
+#     return deleted_event
+
+
+def create_notification(date, user_id, message_id):
+    """Create and return a scheduled calendar notification."""
+
+    notification = Notification(date=date,
+                                user_id=user_id,
+                                message_id=message_id)
 
     db.session.add(notification)
     db.session.commit()
 
     return notification
+
+
+def update_notification(user_id):
+    """Get notification by date
+    
+    Update and return existing calendar notification
+    """
+    
+    notification = Notification.query.filter(Notification.date, Notification.user_id).first()    
+    
+    return updated_notification
+
+
+def delete_notification():
+    """Delete existing calendar notification"""
+
+
+    db.session.delete(deleted_notification)
+    db.session.commit()
+    
+    return deleted_notification
+
 
 # def send_notification():
 
@@ -209,7 +292,7 @@ def create_favorite(meditation_id, user_id):
     """Create and return a user's favorite meditation."""
 
     fav = Favorite(meditation_id=meditation_id,
-                        user_id=user_id)
+                   user_id=user_id)
     
     db.session.add(fav)
     db.session.commit()
@@ -220,12 +303,24 @@ def create_favorite(meditation_id, user_id):
 def remove_favorite(meditation_id, user_id):
     """Remove a user's favorite meditation."""
 
-    removed_fav = Favorite.query.filter(Favorite.meditation_id, Favorite.user_id).first()
+    removed_fav = Favorite.query.filter_by(meditation_id=meditation_id, user_id=user_id).first()
 
     db.session.delete(removed_fav)
     db.session.commit()
 
     return removed_fav
+
+
+def create_quotes(inspo_quote, author):
+    """Create and return inspo quote."""
+    
+    quote = Quote(inspo_quote=inspo_quote,
+                   author=author)
+    
+    db.session.add(quote)
+    db.session.commit()
+    
+    return quote
 
 
 
