@@ -10,6 +10,7 @@ db = SQLAlchemy()
 # doing that with many-to-many relationship (line 35, friend end)
 # association table (line 13)
 # your user id a bunch of times and then other friends ids
+
 user_to_user = db.Table("user_to_user", db.metadata,
     db.Column("user_id", db.Integer, db.ForeignKey("users.user_id"), primary_key=True),
     db.Column("friend_id", db.Integer, db.ForeignKey("users.user_id"), primary_key=True)
@@ -117,9 +118,13 @@ class Journal(db.Model):
     journal_id = db.Column(db.Integer, 
                            autoincrement=True,
                            primary_key=True)
+    mood = db.Column(db.String(25), nullable=False)
+    color = db.Column(db.String(7), nullable=False)
+    gratitude_1 =db.Column(db.String(200), nullable=False)
+    gratitude_2 =db.Column(db.String(200), nullable=False)
+    gratitude_3 =db.Column(db.String(200), nullable=False)
     journal_input = db.Column(db.Text, nullable=False)
-    time_stamp = db.Column(db.DateTime)
-    category = db.Column(db.String)
+    time_stamp = db.Column(db.DateTime, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
     
     # user
@@ -168,10 +173,23 @@ class MeditationJournal(db.Model):
 #         return f"<Friend friend_id={self.friend_id}>"
 
 
-# class Calendar(db.Model):
+# class Event(db.Model):
 #     """A user's scheduled meditation events"""
 
-#     __tabelname__ = "calendars"
+#     __tabelname__ = "events"
+    
+#     event_id = db.Column(db.Integer,
+#                          autoincrement=True,
+#                          primary_key=True)
+#     summary = db.Column(db.String(250))
+#     location = db.Column(db.String(250))
+#     description = db.Column(db.Text)
+#     start_datetime = db.Column(db.DateTime, nullable=True)
+#     start_timezone = db.Column(db.String(100), nullable=True)
+#     end_datetime = db.Column(db.DateTime, nullable=True)
+#     end_timezone = db.Column(db.String(100), nullable=True)
+#     recurrence
+    
 
 
 class Notification(db.Model):

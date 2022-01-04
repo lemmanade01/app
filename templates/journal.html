@@ -5,49 +5,93 @@
 
 {% block body %}
 
-<h1><strong>Journal Prompt</strong></h1>
-<p>Set your intentions. It's time to soar!</p>
+<h1><strong>Your Journal</strong></h1>
+<p><em>Set your intentions. It's time to soar! Please fill in all fields. </em></p><br>
 
 <div>
-  <form action="/journal-submission" method="POST" id="journal-input">
-    <!-- <div>
-      <label>List 3 things you are grateful for today:</label>
-      <div>
-        <textarea name="gratitude-entry"></textarea>
-      </div>
-    </div> -->
-    <div>
-        <label>Write reflections on today's session:</label>
+    <form id="journal-input">
+        
+        <div class="all-mood-buttons">
+          <h3>Mood Check-in</h3>
+          <p>How are you feeling?</p>
+          <div class="selected-mood"></div>
+          <div class="row">
+            <div class="col-4">
+              <button class="mood-button" id="anxious" name="anxious" value="anxious #c22ed0">Anxious</button>
+            </div>
+            <div class="col-4">
+              <button class="mood-button" id="calm" name="calm" value="calm #b7cbff">Calm</button>
+            </div>
+            <div class="col-4">
+              <button class="mood-button" id="depleted" name="depleted" value="depleted #f2ecb6">Depleted</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4">
+              <button class="mood-button" id="discouraged" name="discouraged" value="discouraged #a96f44">Discouraged</button>
+            </div>
+            <div class="col-4">
+              <button class="mood-button" id="energized" name="energized" value="energized #e3ff73">Energized</button>
+            </div>
+            <div class="col-4">
+              <button class="mood-button" id="fearful" name="fearful" value="fearful #af6480">Fearful</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4">
+              <button class="mood-button" id="frustrated" name="frustrated" value="frustated #e0364f">Frustrated</button>
+            </div>
+            <div class="col-4">
+              <button class="mood-button" id="happy" name="happy" value="happy #fea858">Happy</button>
+            </div>
+            <div class="col-4">
+              <button class="mood-button" id="inspired" name="inspired" value="inspired #ef33b1">Inspired</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4">
+              <button class="mood-button" id="overwhelmed" name="overwhelmed" value="overwhelmed #fa5f40">Overwhelmed</button>
+            </div>
+            <div class="col-4">
+              <button class="mood-button" id="sad" name="sad" value="sad #0c7bb3">Sad</button>
+            </div>
+            <div class="col-4">
+              <button class="mood-button" id="tired" name="tired" value="tired #7dc387">Tired</button>
+            </div>
+          </div>
+        </div><br>
+
         <div>
-          <textarea name="journal-entry"></textarea>
-        </div>
-    </div>
+          <h3>Gratitude</h3>
+          <div>
+            <label>List 3 things you are grateful for today:</label>
+          <div><br>
+          <div>
+            <span>1. <input type="text" id="gratitude-1" required></span>
+          </div><br>
+          <div>
+            <span>2. <input type="text" id="gratitude-2" required></span>
+          </div><br>
+          <div>
+            <span>3. <input type="text" id="gratitude-3" required></span>
+          </div><br>
+        </div><br>
+
         <div>
-        What was your overall mood today?
+          <h3>Let It Flow</h3>
+          <div>
+            <label>Write reflections on today's session:</label>
+          </div>
+          <textarea class="journal-field" id="journal-input" name="journal-entry" required></textarea>
         </div>
-        (1 is glum while 5 is elation)
-        <!-- change this to what category their submission pertains to -->
-        <select name="mood">
-            <option value="one">1</option>
-            <option value="two">2</option>
-            <option value="three">3</option>
-            <option value="four">4</option>
-            <option value="five">5</option>
-        </select> 
+        
         <div>
-          <input type="time" name="time-stamp">
+          <button type="submit" id="journal-submission" value="submit">Submit Entry</button>
         </div>
-      <div>
-        <button type="submit">Submit Entry</button>
-      </div>
-  </form>
+  
+    </form>
 </div>
 
-        <!-- input time, name = time of entry, request.form.time of entry -->
-        <!-- check in console -->
-        <!-- when open form, will be filled with current time -->
-        <!-- keep input hidden and it will be submitted from when they started -->
-        <!-- input type = time and ignore on browser,
-        when submitted, request.args.time(form_name) -->
+     
 
 {% endblock %}

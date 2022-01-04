@@ -61,12 +61,17 @@ def create_user(fname, lname, email, phone_num, password, quote):
     return user
 
 
-def create_journal_entry(journal_input, time_stamp, category):
+def create_journal_entry(mood, color, gratitude_1, gratitude_2, gratitude_3, journal_input, time_stamp):
     """Create and return a journal entry."""
 
-    journal = Journal(journal_input=journal_input,
+    journal = Journal(mood=mood,
+                      color=color,
+                      gratitude_1=gratitude_1,
+                      gratitude_2=gratitude_2,
+                      gratitude_3=gratitude_3,
+                      journal_input=journal_input,
                       time_stamp=time_stamp,
-                      category=category)
+                      user_id=user_id)
 
     db.session.add(journal)
     db.session.commit()
@@ -78,7 +83,7 @@ def get_journal_count(user_id):
     """Get journal count by user id."""
 
     # get journal count by user_id
-    return Journal.query.filter_by(user_id=user_id).count()
+    journal_entry = Journal.query.filter_by(user_id=user_id).count()
 
     
     # check if this query is correct
@@ -143,12 +148,20 @@ def get_meditation_by_id(meditation_id):
     return single_meditation
 
 
-def get_fav_meditation_by_id(meditation_id):
+def does_fav_meditation_exist(meditation_id):
     """Check to see if a meditation id currently exists in favorites"""
     
     exists = Favorite.query.filter_by(meditation_id=meditation_id).first() is not None
     
     return exists
+
+
+def get_fav_meditation_by_id(meditation_id):
+    """Check to see if a meditation id currently exists in favorites"""
+    
+    fav_meditation = Favorite.query.filter_by(meditation_id=meditation_id).first()
+    
+    return fav_meditation
 
 
 def get_fav_meditation_details():

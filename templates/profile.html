@@ -12,8 +12,12 @@
 <div class="profile-container">
   <div>
     <h2>"{{ random_quote.inspo_quote }}"</h2>
+    {% if random_quote.author == " " %}
+    <br>
+    {% else %}
     <p><em>- {{ random_quote.author }}</em></p>
   </div><br>
+  {% endif %}
   
   <div>
     <h1>Today's Suggested Meditation</h1>

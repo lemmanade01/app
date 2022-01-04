@@ -1,9 +1,10 @@
 """Server for mindfulness app."""
 
-from flask import Flask, render_template, request, flash, session, redirect, jsonify
+from flask import Flask, render_template, request, flash, session, redirect, jsonify, url_for
 # from flask_login import login_required, current_user
 from model import connect_to_db
 from dotenv import load_dotenv
+from datetime import datetime
 
 import random
 # random.choice([name_of_dict.keys()])
@@ -13,6 +14,9 @@ import json
 import requests
 import re
 import uuid
+import google.oauth2.credentials
+import google_auth_oauthlib.flow
+import googleapiclient.discovery
 # import vlc
 # import time
 
@@ -27,6 +31,17 @@ from jinja2 import StrictUndefined
 
 # load environment variables from .env.
 load_dotenv()  
+
+# This variable specifies the name of a file that contains the OAuth 2.0
+# information for this application, including its client_id and client_secret.
+CLIENT_SECRETS_FILE = "data/client_secret.json"
+
+# This OAuth 2.0 access scope allows for full read/write access to the
+# authenticated user's account and requires requests to use an SSL connection.
+# SCOPES = ['https://www.googleapis.com/auth/drive.metadata.events']
+SCOPES = ['https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.events']
+API_SERVICE_NAME = 'drive'
+API_VERSION = 'v2'
 
 app = Flask(__name__)
 # Required to use Flask sessions
@@ -102,19 +117,123 @@ def process_login():
     password = request.form.get("password")
 
     user = crud.get_user_by_email(email)
-    user_id = user.user_id
     
     if not user or user.password != password:
         flash("Email and Password do not match. Please enter a valid combination.")
         return redirect("/login")
     else:
+        user_id = user.user_id
+        
         session["user_email"] = user.email
         user_in_session = session["user_email"]
         
+        # if 'credentials' not in session:
+        #     return redirect('/authorize')
+
+        # # Load credentials from the session.
+        # credentials = google.oauth2.credentials.Credentials(
+        #     session['credentials'])
+
+        # drive = googleapiclient.discovery.build(
+        #     API_SERVICE_NAME, API_VERSION, credentials=credentials)
+
+        # files = drive.files().list().execute()
+
+        # # Save credentials back to session in case access token was refreshed.
+        # # ACTION ITEM: In a production app, you likely want to save these
+        # #              credentials in a persistent database instead.
+        # session['credentials'] = credentials_to_dict(credentials)
+        
+        # return jsonify(**files)
         return redirect(f"/profile/{user_id}")
         # return render_template("profile.html", user=user)
         # return render_template("spotify_authorization.html")
+        
+        
+# @app.route("/authorize")
+# def authorize_google_account():
+#     # Create flow instance to manage the OAuth 2.0 Authorization Grant Flow steps.
+#     flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
+#         CLIENT_SECRETS_FILE, scopes=SCOPES)
 
+#     # The URI created here must exactly match one of the authorized redirect URIs
+#     # for the OAuth 2.0 client, which you configured in the API Console. If this
+#     # value doesn't match an authorized URI, you will get a 'redirect_uri_mismatch'
+#     # error.
+#     flow.redirect_uri = url_for('oauth2callback', _external=True)
+
+#     authorization_url, state = flow.authorization_url(
+#         # Enable offline access so that you can refresh an access token without
+#         # re-prompting the user for permission. Recommended for web server apps.
+#         access_type='offline',
+#         # Enable incremental authorization. Recommended as a best practice.
+#         include_granted_scopes='true')
+
+#     # Store the state so the callback can verify the auth server response.
+#     session['state'] = state
+
+#     return redirect(authorization_url)
+        
+        
+# @app.route('/oauth2callback')
+# def oauth2callback():
+#     # Specify the state when creating the flow in the callback so that it can
+#     # verified in the authorization server response.
+#     state = session['state']
+
+#     flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
+#         CLIENT_SECRETS_FILE, scopes=SCOPES, state=state)
+#     flow.redirect_uri = url_for('oauth2callback', _external=True)
+
+#     # Use the authorization server's response to fetch the OAuth 2.0 tokens.
+#     authorization_response = request.url
+#     flow.fetch_token(authorization_response=authorization_response)
+
+#     # Store credentials in the session.
+#     # ACTION ITEM: In a production app, you likely want to save these
+#     #              credentials in a persistent database instead.
+#     credentials = flow.credentials
+#     session['credentials'] = credentials_to_dict(credentials)
+
+#     return redirect(url_for('test_api_request'))
+    
+    
+# @app.route('/revoke')
+# def revoke():
+#     if 'credentials' not in session:
+#         return ('You need to <a href="/authorize">authorize</a> before ' +
+#                 'testing the code to revoke credentials.')
+
+#     credentials = google.oauth2.credentials.Credentials(
+#         session['credentials'])
+
+#     revoke = requests.post('https://oauth2.googleapis.com/revoke',
+#         params={'token': credentials.token},
+#         headers = {'content-type': 'application/x-www-form-urlencoded'})
+
+#     status_code = getattr(revoke, 'status_code')
+#     if status_code == 200:
+#         return('Credentials successfully revoked.')
+#     else:
+#         return('An error occurred.')
+
+
+# @app.route('/clear')
+# def clear_credentials():
+#     if 'credentials' in session:
+#         del session['credentials']
+    
+#     return ('Credentials have been cleared.<br><br>')
+    
+    
+# def credentials_to_dict(credentials):
+#       return {'token': credentials.token,
+#           'refresh_token': credentials.refresh_token,
+#           'token_uri': credentials.token_uri,
+#           'client_id': credentials.client_id,
+#           'client_secret': credentials.client_secret,
+#           'scopes': credentials.scopes}
+      
 
 @app.route("/logout")
 def logout():
@@ -171,8 +290,11 @@ def list_meditations():
 
     # get all meditations's data
     meditations = crud.get_all_meditations()
+    
+    # get all of user's favorite meditations
+    fav_meditations = crud.get_fav_meditations()
 
-    return render_template("all_meditations.html", meditations=meditations)
+    return render_template("all_meditations.html", meditations=meditations, fav_meditations=fav_meditations)
 
 
 @app.route("/meditation/<meditation_id>")
@@ -183,8 +305,11 @@ def show_meditation(meditation_id):
     
     # get each meditation by id
     meditation = crud.get_meditation_by_id(meditation_id)
+    
+    # query favorites to see if selected meditation exists as a favorite    
+    exists = crud.does_fav_meditation_exist(meditation_id)
 
-    return render_template("meditation_details.html", display_meditation=meditation)  
+    return render_template("meditation_details.html", display_meditation=meditation, exists=exists)  
 
 
 @app.route("/journal")
@@ -194,17 +319,9 @@ def show_journal_prompt():
     return render_template("journal.html")
 
 
-@app.route("/journal-submission", methods=["POST"])
+@app.route("/journal-submission")
 def handle_journal_submission():
     """Show user they have successfully submitted their journal entry"""
-
-    journal_input = request.form.get("journal-entry")
-    # in my journal.html, is there a way to get multiple inputs submitted as one field entry
-    time_stamp = request.form.get("time-stamp")
-    print(time_stamp)
-    category = request.form.get("mood")
-
-    journal_entry = crud.create_journal_entry(journal_input, time_stamp, category)
    
     # get user by user email, then pass in the user id
     email = session["user_email"]
@@ -212,14 +329,14 @@ def handle_journal_submission():
     user_id = user.user_id
 
     journal_count = crud.get_journal_count(user_id)
-    
-    if journal_count >= 1:
-        flash("Cheers to you! You have logged another journal entry. Keep up the self-reflection!")
-    else:
+        
+    if journal_count == 1:
         flash("Congrats on your first journal entry! Every small motion makes a difference.")
-    # return render_template("submitted_journal.html")
-    # return redirect(f"/profile/{user_id}")
-    return redirect("/meditation-catalog")
+    else:
+        # flash("Cheers to you! You have logged another journal entry. Keep up the self-reflection!")
+        flash("Cheers to you! You have logged {journal_count} journal entries. Keep up the self-reflection!")
+
+    return redirect("/profile/{user_id}")
 
 
 @app.route("/friends")
@@ -312,7 +429,7 @@ def get_favorite():
     meditation_id = request.json.get("meditation_id")
 
     # check to see if this specific meditation exists within the favorites table
-    exists = crud.get_fav_meditation_by_id(meditation_id)
+    exists = crud.does_fav_meditation_exist(meditation_id)
     
     if exists == False:
         # create and store the user's new favorite into the database
@@ -352,7 +469,7 @@ def remove_favorite():
     meditation_id = request.json.get("meditation_id")
     
     # check to see if this specific meditation exists within the favorites table
-    exists = crud.get_fav_meditation_by_id(meditation_id)
+    exists = crud.does_fav_meditation_exist(meditation_id)
     
     if exists == True:
         # remove the user's favorite from the database
@@ -385,7 +502,74 @@ def show_favorite_meditations():
     return render_template("favorites.html", fav_meditations=fav_meditations, favs=favs)
 
 
+@app.route("/journal.json", methods=["POST"])
+def get_journal_input():
+    
+    # get the user id of user in session
+    user_email = session["user_email"]
+    user = crud.get_user_by_email(user_email)
+    user_id = user.user_id
+
+    # get the journal input values from the front-end
+    mood = request.json.get("mood")
+    color = request.json.get("color")
+    gratitude_1 = request.json.get("gratitude1")
+    gratitude_2 = request.json.get("gratitude2")
+    gratitude_3 = request.json.get("gratitude3")
+    time_stamp = request.json.get("time")
+    # dt_object = datetime.fromtimestamp(time)
+    journal = request.json.get("journal")
+    
+    
+    # create journal entry for user in session
+    crud.create_journal_entry(mood=mood,
+                              color=color,
+                              gratitude_1=gratitude_1,
+                              gratitude_2=gratitude_2,
+                              gratitude_3=gratitude_3,
+                              journal_input=journal,
+                              time_stamp=time_stamp,
+                              user_id=user_id)
+    
+    flash("Cheers! You have logged your journal entry. Keep up the self-reflection!")
+
+    return jsonify({mood: mood, color: color, gratitude_1: gratitude_1, gratitude_2: gratitude_2, gratitude_3: gratitude_3, journal: journal, time_stamp: dt_object})
+
+# @app.route("/journal.json", methods=["POST"])
+# def get_journal_input():
+    
+#     # get the user id of user in session
+#     user_email = session["user_email"]
+#     user = crud.get_user_by_email(user_email)
+#     user_id = user.user_id
+
+#     # get the journal input values from the front-end
+#     mood = request.json.get("mood")
+#     color = request.json.get("color")
+
+
+#     return jsonify({mood: mood, color: color})
+
+# @app.route("/journal-submission")
+# def handle_journal_submission():
+    
+#     # create journal entry for user in session
+#     journal_entry = crud.create_journal_entry(mood=mood,
+#                                               color=color,
+#                                               journal_input=journal,
+#                                               time_stamp=date)
+    
+#     date = request.form.get("time-stamp")
+#     journal = request.form.get("journal-entry")
+
+#     flash("Cheers! You have logged your journal entry. Keep up the self-reflection!")
+
+
 if __name__ == "__main__":
+    # When running locally, disable OAuthlib's HTTPs verification.
+    # ACTION ITEM for developers:
+    #     When running in production *do not* leave this option enabled.
+    # os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
     # DebugToolbarExtension(app)
     connect_to_db(app)
     app.run(host="localhost", debug=True)
