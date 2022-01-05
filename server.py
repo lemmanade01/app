@@ -5,6 +5,9 @@ from flask import Flask, render_template, request, flash, session, redirect, jso
 from model import connect_to_db
 from dotenv import load_dotenv
 from datetime import datetime
+from flask_oauthlib.client import OAuth, OAuthException
+
+# from authlib.integrations.flask_client import OAuth
 
 import random
 # random.choice([name_of_dict.keys()])
@@ -14,9 +17,10 @@ import json
 import requests
 import re
 import uuid
-import google.oauth2.credentials
-import google_auth_oauthlib.flow
-import googleapiclient.discovery
+
+# import google.oauth2.credentials
+# import google_auth_oauthlib.flow
+# import googleapiclient.discovery
 # import vlc
 # import time
 
@@ -24,14 +28,22 @@ import os
 # from twilio.rest import Client
 
 import spotipy
-from spotipy.oauth2 import SpotifyClientCredentials
+from spotipy import oauth2 
+# SpotifyClientCredentials, SpotifyOAuth
 import spotipy.util as util
 
 from jinja2 import StrictUndefined
 
 # load environment variables from .env.
-load_dotenv()  
+# load_dotenv()  
 
+
+PORT_NUMBER = 5000
+SPOTIPY_CLIENT_ID = os.environ["SPOTIPY_CLIENT_ID"]
+SPOTIPY_CLIENT_SECRET = os.environ["SPOTIPY_CLIENT_SECRET"]
+SPOTIPY_REDIRECT_URI = 'http://localhost:5000/callback'
+SCOPE = 'user-library-read'
+CACHE = '.spotipyoauthcache'
 # This variable specifies the name of a file that contains the OAuth 2.0
 # information for this application, including its client_id and client_secret.
 CLIENT_SECRETS_FILE = "data/client_secret.json"
@@ -52,6 +64,23 @@ app.secret_key = os.environ['SECRET_KEY']
 # error.
 app.jinja_env.undefined = StrictUndefined
 
+
+
+# oauth = OAuth(app)
+
+# spotify = oauth.remote_app(
+#     'spotify',
+#     consumer_key=os.environ["SPOTIPY_CLIENT_ID"],
+#     consumer_secret=os.environ["SPOTIPY_CLIENT_SECRET"],
+#     # Change the scope to match whatever it us you need
+#     # list of scopes can be found in the url below
+#     # https://developer.spotify.com/web-api/using-scopes/
+#     request_token_params={'scope': 'user-read-email'},
+#     base_url='https://accounts.spotify.com',
+#     request_token_url=None,
+#     access_token_url='/api/token',
+#     authorize_url='https://accounts.spotify.com/authorize'
+# )
 
 @app.route("/")
 def show_homepage():
@@ -127,6 +156,46 @@ def process_login():
         session["user_email"] = user.email
         user_in_session = session["user_email"]
         
+        # Check if they have spotify account
+
+
+
+        # print(token)
+        sp_oauth = oauth2.SpotifyOAuth( SPOTIPY_CLIENT_ID, 
+                                        SPOTIPY_CLIENT_SECRET,
+                                        SPOTIPY_REDIRECT_URI)
+
+        return redirect(f"/profile/{user_id}")
+    
+
+
+        # spotipy.oauth2.SpotifyClientCredentials()
+
+        # token_info = sp_oauth.get_cached_token()
+
+        # print(token_info)
+        # if token_info:
+        #     print("Found cached token!")
+        #     access_token = token_info['access_token']
+        # else:
+        #     url = request.url
+        #     code = sp_oauth.parse_response_code(url)
+        
+        #     if code:
+        #         print("Found Spotify auth code in Request URL! Trying to get valid access token...")
+        #         token_info = sp_oauth.get_access_token(code)
+        #         access_token = token_info['access_token']
+
+        #         if access_token:
+        #             print ("Access token available! Trying to get user information...")
+        #             sp = spotipy.Spotify(access_token)
+        #             results = sp.current_user()
+        
+        # print(results)
+        
+        # return redirect("/oauth_login")
+        
+        
         # if 'credentials' not in session:
         #     return redirect('/authorize')
 
@@ -144,12 +213,105 @@ def process_login():
         # #              credentials in a persistent database instead.
         # session['credentials'] = credentials_to_dict(credentials)
         
+        # return redirect(f"https://accounts.spotify.com/authorize?client_id={SPOTIPY_CLIENT_ID}&response_type=code&scope={SCOPE}&redirect_uri={SPOTIPY_REDIRECT_URI}")
+        
         # return jsonify(**files)
-        return redirect(f"/profile/{user_id}")
         # return render_template("profile.html", user=user)
         # return render_template("spotify_authorization.html")
+
+
+  
         
-        
+# @app.route("/oauth_login")
+# def oauth_login():
+    
+# #     util.prompt_for_user_token(username,
+# #                            scope,
+# #                            client_id=os.environ["SPOTIPY_CLIENT_ID"],
+# #                            client_secret=os.environ["SPOTIPY_CLIENT_SECRET"],
+# #                            redirect_uri=os.environ["SPOTIFY_REDIRECT_URI"])
+#     callback = url_for(
+#         'spotify_authorized',
+#         next=request.args.get('next') or request.referrer or None,
+#         _external=True
+#     )
+    
+# #   redirect_uri = "http://localhost:5000/callback"
+ 
+#     return spotify.authorize(callback=callback)
+    
+# #     return redirect("/callback")
+
+
+# @app.route("/callback")
+# def callback():
+    
+#     # get user by user email, then pass in the user id
+#     email = session["user_email"]
+#     user = crud.get_user_by_email(email)
+#     user_id = user.user_id
+    
+#     return redirect(f"/profile/{user_id}")
+    
+
+# @app.route('/login/authorized')
+# def spotify_authorized():
+#     resp = spotify.authorized_response()
+   
+#     if resp is None:
+#         return 'Access denied: reason={0} error={1}'.format(
+#             request.args['error_reason'],
+#             request.args['error_description']
+#         )
+#     if isinstance(resp, OAuthException):
+#         return 'Access denied: {0}'.format(resp.message)
+
+#     session['oauth_token'] = (resp['access_token'], '')
+#     me = spotify.get('https://api.spotify.com/v1/me')
+    
+#     return 'Logged in as id={0} name={1} redirect={2}'.format(
+#         me.data['id'],
+#         me.data['display_name'],
+#         request.args.get('next')
+#     )
+    
+
+    
+# #     return redirect("/callback")
+
+@app.route("/callback")
+def callback():
+    
+    code = request.args.get("code")
+    state = request.args.get("state")
+    print("************************************")
+    print(code)
+    print(state)
+
+    
+    # token = util.prompt_for_user_token(user.fname,
+    #         SCOPE,
+    #         client_id = SPOTIPY_CLIENT_ID,
+    #         client_secret = SPOTIPY_CLIENT_SECRET)
+
+
+    
+    user_email = session.get("user_email")
+    user = crud.get_user_by_email(user_email)
+    user_id = user.user_id
+    
+    return redirect(f"/profile/{user_id}")
+    
+    
+# # @spotify.tokengetter
+# # def get_spotify_oauth_token():
+    
+# #     return session.get('oauth_token')
+
+
+
+
+    
 # @app.route("/authorize")
 # def authorize_google_account():
 #     # Create flow instance to manage the OAuth 2.0 Authorization Grant Flow steps.

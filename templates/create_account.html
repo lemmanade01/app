@@ -24,22 +24,22 @@
     <section>
         <form action="/handle-create-account" method="POST">
             <div><strong>Create an Account:</strong></div>
-            <div id="required-fields"><small><em>* fields are required</em></small></div><br>
+            <div id="required-fields"><small><em>All fields are required</em></small></div><br>
             <div>
-                <label>First Name<span class="required"> *</span></label>
-                <input type="text" name="fname" placeholder="Jane" required>
+                <!-- <label>First Name<span class="required"> *</span></label> -->
+                <input type="text" name="fname" placeholder="First name" required>
             </div><br>
             <div>
-                <label>Last Name<span class="required"> *</span></label>
-                <input type="text" name="lname" placeholder="Doe" required>
+                <!-- <label>Last Name<span class="required"> *</span></label> -->
+                <input type="text" name="lname" placeholder="Last name" required>
             </div><br>
             <div>
-                <label for="email">Email<span class="required"> *</span></label>
-                <input type="email" name="email" placeholder="janedoe@gmail.com" id="email" size="50" required>
+                <!-- <label for="email">Email<span class="required"> *</span></label> -->
+                <input type="email" name="email" placeholder="Email address" id="email" size="50" required>
             </div><br>
             <div>
-                <label for="phone">Phone Number<span class="required"> *</span></label>
-                <input type="tel" name="phone-num" placeholder="2135558970" pattern="[0-9]{10}" required>
+                <!-- <label for="phone">Phone Number<span class="required"> *</span></label> -->
+                <input type="tel" name="phone-num" placeholder="Phone number" pattern="[0-9]{10}" required>
             </div><br>
 
             <!-- pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" -->
@@ -63,15 +63,15 @@
             </div> -->
 
             <div>
-                <label>Password<span class="required"> *</span></label>
-                <input type="password" name="password" placeholder="●●●●●●●●" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
+                <!-- <label>Password<span class="required"> *</span></label> -->
+                <input type="password" name="password" placeholder="Password (8+ characters)" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
             </div><br>
             <div>
-                <small><em>Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or more characters</em></small>
+                <small><em>Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters</em></small>
             </div>
             <div>
-                <label>Enter your favorite mantra <em>(Optional)</em>:</label> 
-                <textarea name="quote" placeholder="Get inspired!"></textarea>
+                <!-- <label>Enter your favorite mantra <em>(Optional)</em>:</label> --> 
+                <textarea name="quote" placeholder="Enter your favorite mantra (Optional)"></textarea>
             </div><br>
             <button type="submit"><strong>Create Account</strong></button>
         </form>

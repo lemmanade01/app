@@ -7,8 +7,8 @@
 <h1>Meditation Catalog</h1>
 
 {% for meditation in meditations %}
-{% for fav_meditation in fav_meditations %}
-{% if meditation.meditation_id == fav_meditation.meditation_id %}
+<!-- {% for fav_meditation in fav_meditations %}
+{% if meditation.meditation_id == fav_meditation.meditation_id %} -->
 <div class="catalog-container">
   <div class="col" id="meditation" style="text-align:center" margin-top="50px">
     <p><strong>{{ meditation.track_name }}</strong>
@@ -36,7 +36,7 @@
   </div>
 </div>
 
-{% else %}
+<!-- {% else %}
 <div class="catalog-container">
   <div class="col" id="meditation" style="text-align:center" margin-top="50px">
     <p><strong>{{ meditation.track_name }}</strong>
@@ -62,7 +62,7 @@
           </form>
         </div>
   </div>
-</div>
+</div> -->
 
 {% endif %}
 {% endfor %}
