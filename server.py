@@ -715,10 +715,21 @@ def get_journal_input():
     gratitude_1 = request.json.get("gratitude1")
     gratitude_2 = request.json.get("gratitude2")
     gratitude_3 = request.json.get("gratitude3")
-    time_stamp = request.json.get("time")
+    journal_input = request.json.get("journal")
+    # get time stamp of when the server receives the fetch request after form submission
+    time_stamp = datetime.now()
+    print(time_stamp)
+    print("**************")
+    # convert datetime.datetime object into a string
+    time_stamp_str = time_stamp.strftime("%m/%d/%Y, %H:%M:%S")
+    print("date and time:", time_stamp_str)
+    # date = time_stamp_str.split(" ")
+    # print("date:", date)
+    # # convert the time_stamp_str into a date
+    # time_stamp = datetime.strptime(f"{date[0]}", "%Y-%m-%d %H:%M:%S")
+    # print(time_stamp)
+    # print("**************")
     # dt_object = datetime.fromtimestamp(time)
-    journal = request.json.get("journal")
-    
     
     # create journal entry for user in session
     crud.create_journal_entry(mood=mood,
@@ -726,13 +737,14 @@ def get_journal_input():
                               gratitude_1=gratitude_1,
                               gratitude_2=gratitude_2,
                               gratitude_3=gratitude_3,
-                              journal_input=journal,
+                              journal_input=journal_input,
                               time_stamp=time_stamp,
                               user_id=user_id)
     
     flash("Cheers! You have logged your journal entry. Keep up the self-reflection!")
 
-    return jsonify({mood: mood, color: color, gratitude_1: gratitude_1, gratitude_2: gratitude_2, gratitude_3: gratitude_3, journal: journal, time_stamp: dt_object})
+    return jsonify({"mood": mood, "color": color, "gratitude_1": gratitude_1, "gratitude_2": gratitude_2, "gratitude_3": gratitude_3, "journal_input": journal_input, "time_stamp": time_stamp_str})
+
 
 # @app.route("/journal.json", methods=["POST"])
 # def get_journal_input():

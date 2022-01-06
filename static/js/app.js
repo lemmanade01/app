@@ -193,7 +193,7 @@ for (const moodBtn of moodBtnsArr) {
         // console.log(parsedDateTimes);
 
 
-        console.log('The mood button has been disabled');
+        console.log('The mood buttons have been disabled');
 
         // Get the value of that specific mood button
         const moodBtnValue = moodBtn.value;
@@ -214,15 +214,16 @@ for (const moodBtn of moodBtnsArr) {
 
 const journalSubmission = document.querySelector('#journal-submission');
 
-journalSubmission.addEventListener('submit', (evt) => {
+journalSubmission.addEventListener('click', (evt) => {
     evt.preventDefault();
 
-    const timeStamp = new Date();
-    console.log(timeStamp);
-    const parsedDateTime = Date.parse(timeStamp)
-    console.log(parsedDateTime);
+    // const timeStamp = new Date();
+    // console.log(timeStamp);
+    // const parsedDateTime = Date.parse(timeStamp)
+    // console.log(parsedDateTime);
 
-    const journalInput = document.querySelector('#journal-input').value;
+    const journal = document.querySelector('.journal-field').value;
+    console.log('Journal Input:', journal);
 
     const gratitude1 = document.querySelector('#gratitude-1').value;
 
@@ -240,12 +241,10 @@ journalSubmission.addEventListener('submit', (evt) => {
         gratitude1: gratitude1,
         gratitude2: gratitude2,
         gratitude3: gratitude3,
-        journal: journalInput,
-        time: parsedDateTime
+        journal: journal
     };
     console.log(journalValues);
 
-    console.log('Again: ', journalValues);
     // send a fetch request to the '/journal.json' route so that journal entry can be created on the back-end and stored in the database
     fetch('/journal.json', {
         method: 'POST',

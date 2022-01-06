@@ -61,7 +61,7 @@ def create_user(fname, lname, email, phone_num, password, quote):
     return user
 
 
-def create_journal_entry(mood, color, gratitude_1, gratitude_2, gratitude_3, journal_input, time_stamp):
+def create_journal_entry(mood, color, gratitude_1, gratitude_2, gratitude_3, journal_input, time_stamp, user_id):
     """Create and return a journal entry."""
 
     journal = Journal(mood=mood,
