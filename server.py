@@ -3,7 +3,7 @@
 from flask import Flask, render_template, request, flash, session, redirect, jsonify, url_for
 # from flask_login import login_required, current_user
 from model import connect_to_db
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 from datetime import datetime
 from flask_oauthlib.client import OAuth, OAuthException
 
@@ -29,6 +29,7 @@ import os
 
 import spotipy
 from spotipy import oauth2 
+# from spotipy.oauth2 import SpotifyClientCredentials
 # SpotifyClientCredentials, SpotifyOAuth
 import spotipy.util as util
 
@@ -123,6 +124,14 @@ def process_create_account():
     # phone_num = phone_num.split("-")
     # phone_num = f"{phone_num[0]}{phone_num[1]}{phone_num[2]}"
     crud.create_user(fname, lname, email, phone_num, password, quote)
+    
+    user = crud.get_user_by_email(email)
+    user_id = user.user_id
+    
+    crud.create_meditations(user_id)
+    
+    # crud.create_meditations(track_name, artist_name, image_url, spotify_url, preview_link, user_id)
+    
     flash(f"Welcome, {fname.capitalize()}! Please login.")
     return render_template("login.html")
 
@@ -429,7 +438,7 @@ def show_profile(user_id):
    
     # this route is also available when selected from the navigation bar
     
-    meditations = crud.get_all_meditations()
+    meditations = crud.get_all_meditations_by_user_id(user_id)
     # should this be a crud funtions?
     random_meditation = random.choice(meditations)
     # store random meditation in session
@@ -450,12 +459,30 @@ def list_meditations():
     # each meditation has a button
     # when clicked take to route "/meditation/<meditation_id>"
 
+    user_email = session.get("user_email")
+    user = crud.get_user_by_email(user_email)
+    user_id = user.user_id
+    
     # get all meditations's data
-    meditations = crud.get_all_meditations()
+    meditations = crud.get_all_meditations_by_user_id(user_id)
+
+    print(meditations)
+    # print(meditations)
+    # for meditation in meditations:
+    #     print(meditation)
+    #     print(meditation.track_name)
+    #     print(meditation.spotify_url)
+    # print("**********************")
     
     # get all of user's favorite meditations
-    fav_meditations = crud.get_fav_meditations()
-
+    fav_meditations = crud.get_fav_meditations_by_user_id(user_id)
+    if not fav_meditations:
+        fav_meditations = []
+    # if fav_meditations != []:
+    #     for fav_meditation in fav_meditations:
+    #         print(fav_meditation)
+    #         print("!!!!!!!!!!!")
+    
     return render_template("all_meditations.html", meditations=meditations, fav_meditations=fav_meditations)
 
 
@@ -486,8 +513,8 @@ def handle_journal_submission():
     """Show user they have successfully submitted their journal entry"""
    
     # get user by user email, then pass in the user id
-    email = session["user_email"]
-    user = crud.get_user_by_email(email)
+    user_email = session.get("user_email")
+    user = crud.get_user_by_email(user_email)
     user_id = user.user_id
 
     journal_count = crud.get_journal_count(user_id)
@@ -530,8 +557,12 @@ def search():
     
     # user can search for meditation by title or artist name
 
+    user_email = session.get("user_email")
+    user = crud.get_user_by_email(user_email)
+    user_id = user.user_id
+    
     # get all meditations
-    meditations = crud.get_all_meditations()
+    meditations = crud.get_all_meditations_by_user_id(user_id)
 
     return render_template("search_by_meditations.html", meditations=meditations)
 
@@ -583,12 +614,13 @@ def get_favorite():
     """
 
     # get the user id of user in session
-    user_email = session["user_email"]
+    user_email = session.get("user_email")
     user = crud.get_user_by_email(user_email)
     user_id = user.user_id
 
     # get the medtation id from the front-end
     meditation_id = request.json.get("meditation_id")
+    print(meditation_id)
 
     # check to see if this specific meditation exists within the favorites table
     exists = crud.does_fav_meditation_exist(meditation_id)
@@ -623,7 +655,7 @@ def remove_favorite():
 
     # get the user id of user in session
     # user = session.get("user")
-    user_email = session["user_email"]
+    user_email = session.get("user_email")
     user = crud.get_user_by_email(user_email)
     user_id = user.user_id
 
@@ -657,7 +689,13 @@ def remove_favorite():
 @app.route("/favorites")
 def show_favorite_meditations():
     """Show a user's favorite meditations"""
-    favs = crud.get_fav_meditations()
+    
+    # get the user id of user in session
+    user_email = session.get("user_email")
+    user = crud.get_user_by_email(user_email)
+    user_id = user.user_id
+    
+    favs = crud.get_fav_meditations_by_user_id(user_id)
    
     fav_meditations = crud.get_fav_meditation_details()
     
@@ -668,10 +706,9 @@ def show_favorite_meditations():
 def get_journal_input():
     
     # get the user id of user in session
-    user_email = session["user_email"]
+    user_email = session.get("user_email")
     user = crud.get_user_by_email(user_email)
     user_id = user.user_id
-
     # get the journal input values from the front-end
     mood = request.json.get("mood")
     color = request.json.get("color")

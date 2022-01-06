@@ -96,77 +96,75 @@
 const heartBtns = document.querySelectorAll('.heart-btn');
 
 // Convert buttons NodeList to an array
-const heartBtnsArr = Array.prototype.slice.call(heartBtns);
+// const heartBtnsArr = Array.prototype.slice.(callheartBtns);
 
+let last_button = null;
 // Loop through all of the queried meditation heart buttons
-for (const heartBtn of heartBtnsArr) {
+for (const heartBtn of heartBtns) {
     
     // Add an event listener for each meditation heart button
     heartBtn.addEventListener('click', (evt) => {
+
+        if(evt == undefined)return;
+
         evt.preventDefault();
         console.log('The button has been clicked!');
+        console.log(evt);
        
-        const heartBtnValue = heartBtn.value;
-     
-        // the element the event came from
+        const heartBtnClicked = evt.target;
+        const heartBtnValue = heartBtnClicked.value;
+        console.log(heartBtnClicked.value);
+        const heartBtnClasses = heartBtnClicked.classList;
+        let url = '/favorite.json';
+
+
+        
+
+        // the element ithe event came from
         // const button = evt.target;
      
         // When a button has been clicked, check to see if its class value is 'btn-light'
-        if (heartBtn.classList.contains('btn-light')) {
-            heartBtn.classList.remove('btn-light');
-            heartBtn.classList.add('btn-dark');
-
-            // if yes, query the value of that specific button which is the meditation's id
-            const favMeditation = {
-                meditation_id: heartBtnValue
-            }
-            console.log(favMeditation);
-
-            // send a fetch request to the '/favorite.json' route so that favorite can be created on the back-end and stored in the database
-            fetch('/favorite.json', {
-                method: 'POST',
-                body: JSON.stringify(favMeditation),
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                // return the promised response in JSON
-            })
-                .then(response => response.json())
-                .then(responseJson => {
-                    console.log(responseJson);
-                });
-          // When a button has been clicked, check to see if its class value is 'btn-dark'
-        } else if (heartBtn.classList.contains('btn-dark')) {
-            heartBtn.classList.remove('btn-dark');
-            heartBtn.classList.add('btn-light');
-        
+  
             // if yes, query the value of that specific button which is the meditation's id
             const favMeditation = {
                 meditation_id: heartBtnValue
             }
             console.log(favMeditation);
             // send a fetch request to the '/remove-favorite.json' route so that favorite can be removed from the database
-            fetch('/remove-favorite.json', {
+            
+            fetch(url, {
                 method: 'POST',
                 body: JSON.stringify(favMeditation),
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 // return the promised response in JSON
-            })
-                .then(response => response.json())
+            }).then(response => response.json())
                 .then(responseJson => {
+
+
+                    if (heartBtnClasses.contains('btn-light')) {
+                        heartBtnClasses.remove('btn-light');
+                        heartBtnClasses.add('btn-dark');
+                        // if yes, query the value of that specific button which is the meditation's id
+                
+                      // When a button has been clicked, check to see if its class value is 'btn-dark'
+                    } else {
+                        heartBtnClasses.remove('btn-dark');
+                        heartBtnClasses.add('btn-light');
+                        url = '/remove-favorite.json';
+                    }
+
                     console.log(responseJson);
                 });
-        }
     });
 }
 
 
 
 
-// Deactivate the reamining mood buttons when one is selected
-// Store value of selected button into a constant
+// // Deactivate the reamining mood buttons when one is selected
+// // Store value of selected button into a constant
 
 // Query all mood buttons
 const moodBtns = document.querySelectorAll('.mood-button');

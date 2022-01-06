@@ -133,3 +133,8 @@ margin-top: 20px;
 .nav-links:hover {
   color: purple;
 }
+
+.bi-heart {
+  /* ensure svg will never be the target of mouse event */
+  pointer-events: none;
+}

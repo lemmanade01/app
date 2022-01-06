@@ -92,8 +92,11 @@ def get_journal_count(user_id):
     # so i can assign a specific flash message to their first entry
     return journal_entry
 
+# def get_meditation_details():
+    
 
-def create_meditations(track_name, artist_name, image_url, spotify_url, preview_link, user_id):
+# def create_meditations(track_name, artist_name, image_url, spotify_url, preview_link, user_id):
+def create_meditations(user_id):
     """Create and return a new Spotify meditation track."""
     # overview of this function
     # for each meditation, create an object/instance with those arguments
@@ -105,6 +108,7 @@ def create_meditations(track_name, artist_name, image_url, spotify_url, preview_
     # access function from spotiy.py to retrieve the data from my spotify playlist
     # pass through username and playlist_id
     results = spotify.get_playlist_tracks(spotify_username, spotify_playlist)
+    print(results)
     
     # each result is a track_key
     for result in results:
@@ -129,16 +133,24 @@ def create_meditations(track_name, artist_name, image_url, spotify_url, preview_
     return meditation
 
 
-def get_all_meditations():
-    """Get and return all meditations."""
+# def get_all_meditations():
+#     """Get and return all meditations."""
 
-    # all_meditations = Meditation.query.all()
-    all_meditations = Meditation.query.order_by(Meditation.track_name.desc()).all()
+#     # all_meditations = Meditation.query.all()
+#     all_meditations = Meditation.query.order_by(Meditation.track_name.desc()).all()
 
-    return all_meditations
-    # not sure if this is right?
+#     return all_meditations
+#     # not sure if this is right?
     
+    
+def get_all_meditations_by_user_id(user_id):
+    """Get all meditations associated with user in session"""
+    
+    all_meditations = Meditation.query.filter(Meditation.user_id==user_id).order_by(Meditation.track_name.desc()).all()
+    
+    return all_meditations
 
+    
 def get_meditation_by_id(meditation_id):
     """Return a meditation by primary key."""
     
@@ -159,7 +171,7 @@ def does_fav_meditation_exist(meditation_id):
 def get_fav_meditation_by_id(meditation_id):
     """Check to see if a meditation id currently exists in favorites"""
     
-    fav_meditation = Favorite.query.filter_by(meditation_id=meditation_id).first()
+    fav_meditation = Favorite.query.filter(Favorite.meditation_id==meditation_id).first()
     
     return fav_meditation
 
@@ -172,7 +184,7 @@ def get_fav_meditation_details():
     return fav_meditation_ids
 
 
-def get_fav_meditations():
+def get_fav_meditations_by_user_id(user_id):
     """Get and return all favorite meditations."""
     
     fav_meditations = Favorite.query.all()
@@ -335,6 +347,15 @@ def create_quotes(inspo_quote, author):
     
     return quote
 
+
+def create_txt_message(txt_message):
+    
+    message = Message(txt_message=txt_message)
+    
+    db.session.add(message)
+    db.session.commit()
+    
+    return message
 
 
 

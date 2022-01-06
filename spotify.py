@@ -1,12 +1,12 @@
 import spotipy
 import os
 from spotipy.oauth2 import SpotifyClientCredentials, SpotifyOAuth
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 from pprint import pprint
 from time import sleep
 
 # load environment variables from .env.
-load_dotenv()  
+# load_dotenv()  
 
 auth_manager = SpotifyClientCredentials()
 sp = spotipy.Spotify(auth_manager=auth_manager)
@@ -35,7 +35,7 @@ def get_playlist_tracks(username, playlist_id):
     username = os.environ["SPOTIFY_USERNAME"]
     playlist_id = os.environ["SPOTIFY_PLAYLIST_ID"]
 
-    results = sp.user_playlist_tracks(username,playlist_id)
+    results = sp.user_playlist_tracks(username, playlist_id)
     
     # create an open dictionary to store retrieved Spotify playlist data
     playlist_tracks = {}

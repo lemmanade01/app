@@ -29,17 +29,19 @@
       </div>
     </nav> 
 
-    {% block body %}
+  {% for msg in get_flashed_messages() %}
+    <p class="flash-msg">
+      {{ msg }}
+    </p>
+  {% endfor %}
+
+  {% block body %}
     <!-- Show flashed messages -->
-    {% for msg in get_flashed_messages() %}
-      <p class="flash-msg">
-        {{ msg }}
-      </p>
-    {% endfor %}
+ 
 
     <!-- <footer>Helping build councious awareness one day at a time</footer> -->
   {% endblock %}
   <script src="/static/js/app.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script> -->
   </body>
 </html>
