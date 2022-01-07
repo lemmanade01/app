@@ -1,3 +1,87 @@
+/* All meditations image hover */
+.track-img {
+  opacity: 1.0;
+  transition: opacity 1s ease-in-out;
+  -moz-transition: opacity 1s ease-in-out;
+  -webkit-transition: opacity 1s ease-in-out;
+  }
+  a:hover .track-img {
+  opacity: .6;
+  transition: opacity .55s ease-in-out;
+  -moz-transition: opacity .55s ease-in-out;
+  -webkit-transition: opacity .55s ease-in-out;
+  }
+
+
+
+/* Modal */
+
+*, *::after, *::before {
+  box-sizing: border-box;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: 200ms ease-in-out;
+  border: 1px solid black;
+  border-radius: 10px;
+  z-index: 10;
+  background-color: white;
+  width: 500px;
+  max-width: 80%;
+}
+
+.modal.active {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.modal-header {
+  padding: 10px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid black;
+}
+
+.modal-header .title {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.modal-header .close-button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background: none;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.modal-body {
+  padding: 10px 15px;
+}
+
+#overlay {
+  position: fixed;
+  opacity: 0;
+  transition: 200ms ease-in-out;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, .5);
+  pointer-events: none;
+}
+
+#overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+
 
 /* Journal page */
 .journal-field {
@@ -138,3 +222,35 @@ margin-top: 20px;
   /* ensure svg will never be the target of mouse event */
   pointer-events: none;
 }
+
+
+/* #app-calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  height: 100%;
+}
+
+.day {
+  border-bottom: 1px solid var(--light-gray);
+  border-right: 1px solid var(--light-grey);
+  text-align: center;
+  padding-top: 5px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 200ms, color 200ms;
+}
+
+.name {
+  padding-bottom: 5px;
+}
+
+.weekend {
+  color: var(--light-blue);
+}
+
+.selected {
+  background-color: var(--light-blue);
+  color: white;
+} */
+

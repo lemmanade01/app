@@ -104,9 +104,10 @@ with open("data/txt_message_notifications.json") as f:
 
     txt_messages_in_db = []
     for message in txt_message_data:
-        txt_message = (
+        txt_message, reminder_type = (
             message["txt_message"],
-        )   
+            message["reminder_type"]
+        ) 
 
-        db_txt_message = crud.create_txt_message(txt_message)
+        db_txt_message = crud.create_txt_message(txt_message, reminder_type)
         txt_messages_in_db.append(db_txt_message)

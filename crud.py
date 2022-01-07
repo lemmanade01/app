@@ -277,10 +277,12 @@ def get_all_quotes():
 #     return deleted_event
 
 
-def create_notification(date, user_id, message_id):
+def create_reminder(date, reminder_type, description, user_id, message_id):
     """Create and return a scheduled calendar notification."""
 
     notification = Notification(date=date,
+                                reminder_type=reminder_type,
+                                description=description,
                                 user_id=user_id,
                                 message_id=message_id)
 
@@ -289,6 +291,18 @@ def create_notification(date, user_id, message_id):
 
     return notification
 
+
+def get_messages_by_type(reminder_type):
+    """Get all messages associated with the same reminder type"""
+    
+    messages = Message.query.filter(Message.reminder_type==reminder_type).all()
+    
+    return messages
+
+# def get_random_message_id(random_message):
+#     """Get the message id associated with the randomly selected reminder message"""
+    
+#     message_id = Message.query.get(rand)
 
 def update_notification(user_id):
     """Get notification by date
@@ -348,9 +362,10 @@ def create_quotes(inspo_quote, author):
     return quote
 
 
-def create_txt_message(txt_message):
+def create_txt_message(txt_message, reminder_type):
     
-    message = Message(txt_message=txt_message)
+    message = Message(txt_message=txt_message,
+                      reminder_type=reminder_type)
     
     db.session.add(message)
     db.session.commit()

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %} {% endblock %}
+
+{% block head %} {% endblock %}
+
+{% block body %}
+
+  
+<div class="suggested-meditation-container">
+
+  <div>
+
+    <h1>Today's Suggested Meditation</h1>
+      <h4>{{ random_meditation.track_name }}</h4>
+      <p><em>{{ random_meditation.artist_name }}</em></p>
+      <a href="/meditation/{{ random_meditation.meditation_id }}">
+      <img src="{{ random_meditation.image_url }}" width="300px" height="300px">
+      </a>
+
+    <div>
+      <form action="/meditation/{{ random_meditation.meditation_id }}">
+        <button>Explore this track</button>
+      </form>
+    </div>
+
+    <div>
+        <form action="/profile/{{user_id}}">
+            <button>My Profile</button>
+        </form>
+    </div>
+
+  </div>
+  
+</div>
+
+{% endblock %}

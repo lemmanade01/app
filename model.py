@@ -154,44 +154,6 @@ class MeditationJournal(db.Model):
         return f"<Media meditation_id={self.media_id} title={self.title}>"
 
 
-# the cloned repo had this class commented out
-# class Friend(db.Model):
-#     """A user's friend"""
-
-#     __tablename__ = "friends"
-
-#     friend_id = db.Column(db.Integer,
-#                           autoincrement=True,
-#                           primary_key=True)
-#     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
-#     friend = db.Column(db.Integer)
-
-#     # user
-#     # (db.relatiionship("Friend", secondary="users_friends", backref="user") on User model)
-
-#     def __repr__(self):
-#         return f"<Friend friend_id={self.friend_id}>"
-
-
-# class Event(db.Model):
-#     """A user's scheduled meditation events"""
-
-#     __tabelname__ = "events"
-    
-#     event_id = db.Column(db.Integer,
-#                          autoincrement=True,
-#                          primary_key=True)
-#     summary = db.Column(db.String(250))
-#     location = db.Column(db.String(250))
-#     description = db.Column(db.Text)
-#     start_datetime = db.Column(db.DateTime, nullable=True)
-#     start_timezone = db.Column(db.String(100), nullable=True)
-#     end_datetime = db.Column(db.DateTime, nullable=True)
-#     end_timezone = db.Column(db.String(100), nullable=True)
-#     recurrence
-    
-
-
 class Notification(db.Model):
     """A scheduled calendar reminder"""
 
@@ -201,6 +163,8 @@ class Notification(db.Model):
                                 autoincrement=True,
                                 primary_key=True)
     date = db.Column(db.DateTime, nullable=True)
+    reminder_type = db.Column(db.String(25), nullable=True) 
+    description = db.Column(db.Text)
     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
     message_id = db.Column(db.Integer, db.ForeignKey("messages.message_id"), nullable=False)
 
@@ -219,9 +183,9 @@ class Message(db.Model):
     __tablename__ = "messages"
 
     message_id = db.Column(db.Integer,
-                           autoincrement=True,
                            primary_key=True)
     txt_message = db.Column(db.Text, nullable=False)
+    reminder_type = db.Column(db.String(25), nullable=False)
 
     notifications = db.relationship("Notification", backref="message")
     # a message can have many notifications, but a notifcation can't have many messages
@@ -236,7 +200,6 @@ class Quote(db.Model):
     __tablename__ = "quotes"
 
     quote_id = db.Column(db.Integer,
-                         autoincrement=True,
                          primary_key=True)
     inspo_quote = db.Column(db.Text, nullable=False)
     author = db.Column(db.String(100))

@@ -10,28 +10,6 @@
 </div><br>
   
 <div class="profile-container">
-  <div>
-    <h2>"{{ random_quote.inspo_quote }}"</h2>
-    {% if random_quote.author == " " %}
-    <br>
-    {% else %}
-    <p><em>- {{ random_quote.author }}</em></p>
-  </div><br>
-  {% endif %}
-  
-  <div>
-    <h1>Today's Suggested Meditation</h1>
-      <h4>{{ random_meditation.track_name }}</h4>
-      <p><em>{{ random_meditation.artist_name }}</em></p>
-      <a href="/meditation/{{ random_meditation.meditation_id }}">
-      <img src="{{ random_meditation.image_url }}" width="300px" height="300px">
-      </a>
-    <div>
-      <form action="/meditation/{{ random_meditation.meditation_id }}">
-        <button>Discover More</button>
-      </form>
-    </div>
-  </div><br>
 
   <div>
     <h1>Self-Care</h1>
@@ -41,7 +19,6 @@
       </a>
   </div><br>
 
-
   <div>
     <h1>Your Favorites</h1>
       <h4>Recenter and Reconnect. Spend time with comforting familiars. Magic awaits.</h4>
@@ -49,8 +26,6 @@
       <p><em>Jump back in!</em></p>
       </a>
   </div><br>
-
-
   
 </div>
 

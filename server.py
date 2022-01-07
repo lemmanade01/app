@@ -1,23 +1,26 @@
 """Server for mindfulness app."""
 
 from flask import Flask, render_template, request, flash, session, redirect, jsonify, url_for
-# from flask_login import login_required, current_user
+# from flask_apscheduler import APScheduler
 from model import connect_to_db
-# from dotenv import load_dotenv
 from datetime import datetime
-from flask_oauthlib.client import OAuth, OAuthException
+# from flask_oauthlib.client import OAuth, OAuthException
 
 # from authlib.integrations.flask_client import OAuth
 
 import random
-# random.choice([name_of_dict.keys()])
-# to return random values from a dictionary
 import crud
 import json
 import requests
 import re
 import uuid
 
+# import sys
+# import subprocess
+# from playsound import playsound
+import pygame
+
+# import calendar_oauth
 # import google.oauth2.credentials
 # import google_auth_oauthlib.flow
 # import googleapiclient.discovery
@@ -35,8 +38,6 @@ import spotipy.util as util
 
 from jinja2 import StrictUndefined
 
-# load environment variables from .env.
-# load_dotenv()  
 
 
 PORT_NUMBER = 5000
@@ -48,6 +49,7 @@ CACHE = '.spotipyoauthcache'
 # This variable specifies the name of a file that contains the OAuth 2.0
 # information for this application, including its client_id and client_secret.
 CLIENT_SECRETS_FILE = "data/client_secret.json"
+
 
 # This OAuth 2.0 access scope allows for full read/write access to the
 # authenticated user's account and requires requests to use an SSL connection.
@@ -63,6 +65,7 @@ app.secret_key = os.environ['SECRET_KEY']
 # Jinja silently ignores this. This makes debugging difficult, so we'll
 # set an attribute of the Jinja environment that says to make this an
 # error.
+# scheduler = APScheduler()
 app.jinja_env.undefined = StrictUndefined
 
 
@@ -165,262 +168,75 @@ def process_login():
         session["user_email"] = user.email
         user_in_session = session["user_email"]
         
-        # Check if they have spotify account
-
-
+        # Check if they have spotify and gmail account
+        
+        # calendar_oauth.main()
 
         # print(token)
-        sp_oauth = oauth2.SpotifyOAuth( SPOTIPY_CLIENT_ID, 
-                                        SPOTIPY_CLIENT_SECRET,
-                                        SPOTIPY_REDIRECT_URI)
-
-        return redirect(f"/profile/{user_id}")
+        # token = util.prompt_for_user_token("31xennyy3dcnjh4tmhm4qumdc7sm", #Spotify user
     
+        #                                 'user-library-read',
+        #                                 SPOTIPY_CLIENT_ID, 
+        #                                 SPOTIPY_CLIENT_SECRET,
+        #                                 SPOTIPY_REDIRECT_URI)
+
+        # print("TOKEN"*20)
+        # print(token)
 
 
-        # spotipy.oauth2.SpotifyClientCredentials()
-
-        # token_info = sp_oauth.get_cached_token()
-
-        # print(token_info)
-        # if token_info:
-        #     print("Found cached token!")
-        #     access_token = token_info['access_token']
+        # if token:
+        #     sp = spotipy.Spotify(auth=token)
+        #     results = sp.current_user_saved_tracks()
+        #     for item in results['items']:
+        #         track = item['track']
+        #         print(track['name'] + ' - ' + track['artists'][0]['name'])
         # else:
-        #     url = request.url
-        #     code = sp_oauth.parse_response_code(url)
-        
-        #     if code:
-        #         print("Found Spotify auth code in Request URL! Trying to get valid access token...")
-        #         token_info = sp_oauth.get_access_token(code)
-        #         access_token = token_info['access_token']
+        #     print("Can't get token for", username)
 
-        #         if access_token:
-        #             print ("Access token available! Trying to get user information...")
-        #             sp = spotipy.Spotify(access_token)
-        #             results = sp.current_user()
-        
-        # print(results)
-        
-        # return redirect("/oauth_login")
-        
-        
-        # if 'credentials' not in session:
-        #     return redirect('/authorize')
-
-        # # Load credentials from the session.
-        # credentials = google.oauth2.credentials.Credentials(
-        #     session['credentials'])
-
-        # drive = googleapiclient.discovery.build(
-        #     API_SERVICE_NAME, API_VERSION, credentials=credentials)
-
-        # files = drive.files().list().execute()
-
-        # # Save credentials back to session in case access token was refreshed.
-        # # ACTION ITEM: In a production app, you likely want to save these
-        # #              credentials in a persistent database instead.
-        # session['credentials'] = credentials_to_dict(credentials)
-        
-        # return redirect(f"https://accounts.spotify.com/authorize?client_id={SPOTIPY_CLIENT_ID}&response_type=code&scope={SCOPE}&redirect_uri={SPOTIPY_REDIRECT_URI}")
-        
-        # return jsonify(**files)
-        # return render_template("profile.html", user=user)
-        # return render_template("spotify_authorization.html")
-
-
-  
-        
-# @app.route("/oauth_login")
-# def oauth_login():
+        return redirect("/quote")
     
-# #     util.prompt_for_user_token(username,
-# #                            scope,
-# #                            client_id=os.environ["SPOTIPY_CLIENT_ID"],
-# #                            client_secret=os.environ["SPOTIPY_CLIENT_SECRET"],
-# #                            redirect_uri=os.environ["SPOTIFY_REDIRECT_URI"])
-#     callback = url_for(
-#         'spotify_authorized',
-#         next=request.args.get('next') or request.referrer or None,
-#         _external=True
-#     )
     
-# #   redirect_uri = "http://localhost:5000/callback"
- 
-#     return spotify.authorize(callback=callback)
+@app.route("/quote")
+def display_quote():
+    """Display entry quote upon login"""
     
-# #     return redirect("/callback")
+    # playsound("C:/Users/emmalyddon/hb-dev/src/app/static/mp3/sea-waves-loop.mp3")
+    
+    # pygame.mixer.init()
+    # pygame.mixer.music.load("/static/mp3/sea-waves-loop.mp3")
+    # pygame.mixer.music.load("C:/Users/emmalyddon/Music/Music/Media/Music/Unknown Artist/Unknown Album/sea-waves-loop.mp3")
+    # pygame.mixer.music.play()
+     
+    # Get a random quote from database
+    quotes = crud.get_all_quotes()
+    random_quote = random.choice(quotes)
+    
+    
+    return render_template("quote.html", random_quote=random_quote)
 
 
-# @app.route("/callback")
-# def callback():
+@app.route("/suggested-meditation")
+def display_suggested_meditation():
+    """Display suggest meditation"""
     
-#     # get user by user email, then pass in the user id
-#     email = session["user_email"]
-#     user = crud.get_user_by_email(email)
-#     user_id = user.user_id
-    
-#     return redirect(f"/profile/{user_id}")
-    
-
-# @app.route('/login/authorized')
-# def spotify_authorized():
-#     resp = spotify.authorized_response()
-   
-#     if resp is None:
-#         return 'Access denied: reason={0} error={1}'.format(
-#             request.args['error_reason'],
-#             request.args['error_description']
-#         )
-#     if isinstance(resp, OAuthException):
-#         return 'Access denied: {0}'.format(resp.message)
-
-#     session['oauth_token'] = (resp['access_token'], '')
-#     me = spotify.get('https://api.spotify.com/v1/me')
-    
-#     return 'Logged in as id={0} name={1} redirect={2}'.format(
-#         me.data['id'],
-#         me.data['display_name'],
-#         request.args.get('next')
-#     )
-    
-
-    
-# #     return redirect("/callback")
-
-@app.route("/callback")
-def callback():
-    
-    code = request.args.get("code")
-    state = request.args.get("state")
-    print("************************************")
-    print(code)
-    print(state)
-
-    
-    # token = util.prompt_for_user_token(user.fname,
-    #         SCOPE,
-    #         client_id = SPOTIPY_CLIENT_ID,
-    #         client_secret = SPOTIPY_CLIENT_SECRET)
-
-
-    
+    # Get user in session
     user_email = session.get("user_email")
     user = crud.get_user_by_email(user_email)
     user_id = user.user_id
     
-    return redirect(f"/profile/{user_id}")
+    # Get all meditations by user_id
+    meditations = crud.get_all_meditations_by_user_id(user_id)
+    # Get a random meditation
+    random_meditation = random.choice(meditations)
     
+    return render_template("suggested-meditation.html", random_meditation=random_meditation, user_id=user_id)
     
-# # @spotify.tokengetter
-# # def get_spotify_oauth_token():
-    
-# #     return session.get('oauth_token')
-
-
-
-
-    
-# @app.route("/authorize")
-# def authorize_google_account():
-#     # Create flow instance to manage the OAuth 2.0 Authorization Grant Flow steps.
-#     flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
-#         CLIENT_SECRETS_FILE, scopes=SCOPES)
-
-#     # The URI created here must exactly match one of the authorized redirect URIs
-#     # for the OAuth 2.0 client, which you configured in the API Console. If this
-#     # value doesn't match an authorized URI, you will get a 'redirect_uri_mismatch'
-#     # error.
-#     flow.redirect_uri = url_for('oauth2callback', _external=True)
-
-#     authorization_url, state = flow.authorization_url(
-#         # Enable offline access so that you can refresh an access token without
-#         # re-prompting the user for permission. Recommended for web server apps.
-#         access_type='offline',
-#         # Enable incremental authorization. Recommended as a best practice.
-#         include_granted_scopes='true')
-
-#     # Store the state so the callback can verify the auth server response.
-#     session['state'] = state
-
-#     return redirect(authorization_url)
-        
-        
-# @app.route('/oauth2callback')
-# def oauth2callback():
-#     # Specify the state when creating the flow in the callback so that it can
-#     # verified in the authorization server response.
-#     state = session['state']
-
-#     flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
-#         CLIENT_SECRETS_FILE, scopes=SCOPES, state=state)
-#     flow.redirect_uri = url_for('oauth2callback', _external=True)
-
-#     # Use the authorization server's response to fetch the OAuth 2.0 tokens.
-#     authorization_response = request.url
-#     flow.fetch_token(authorization_response=authorization_response)
-
-#     # Store credentials in the session.
-#     # ACTION ITEM: In a production app, you likely want to save these
-#     #              credentials in a persistent database instead.
-#     credentials = flow.credentials
-#     session['credentials'] = credentials_to_dict(credentials)
-
-#     return redirect(url_for('test_api_request'))
-    
-    
-# @app.route('/revoke')
-# def revoke():
-#     if 'credentials' not in session:
-#         return ('You need to <a href="/authorize">authorize</a> before ' +
-#                 'testing the code to revoke credentials.')
-
-#     credentials = google.oauth2.credentials.Credentials(
-#         session['credentials'])
-
-#     revoke = requests.post('https://oauth2.googleapis.com/revoke',
-#         params={'token': credentials.token},
-#         headers = {'content-type': 'application/x-www-form-urlencoded'})
-
-#     status_code = getattr(revoke, 'status_code')
-#     if status_code == 200:
-#         return('Credentials successfully revoked.')
-#     else:
-#         return('An error occurred.')
-
-
-# @app.route('/clear')
-# def clear_credentials():
-#     if 'credentials' in session:
-#         del session['credentials']
-    
-#     return ('Credentials have been cleared.<br><br>')
-    
-    
-# def credentials_to_dict(credentials):
-#       return {'token': credentials.token,
-#           'refresh_token': credentials.refresh_token,
-#           'token_uri': credentials.token_uri,
-#           'client_id': credentials.client_id,
-#           'client_secret': credentials.client_secret,
-#           'scopes': credentials.scopes}
-      
-
-@app.route("/logout")
-def logout():
-    """Log user out of session."""
-
-    session.clear()
-    flash("You are logged out.")
-    return redirect("/login")
-
 
 @app.route("/profile")
-def redirect_to_show_profile():
-    """Show profile page with user information"""
-
-    # this route is also available when selected from the navigation bar
+def redirect_to_profile():
+    """Redirect to profile page with user information"""
     
+    # Get user in session
     user_email = session.get("user_email")
     user = crud.get_user_by_email(user_email)
     user_id = user.user_id
@@ -432,56 +248,71 @@ def redirect_to_show_profile():
 def show_profile(user_id):
     """Show profile page with user information"""
     
+    # This route is also available when selected from the navigation bar
+     
+    # Get user in session
     user_email = session.get("user_email")
     user = crud.get_user_by_email(user_email)
     user_id = user.user_id
    
-    # this route is also available when selected from the navigation bar
+    return render_template("profile.html", user_id=user_id, user=user)
+
+
+# @app.route("/callback")
+# def callback_for_spotify():
     
-    meditations = crud.get_all_meditations_by_user_id(user_id)
-    # should this be a crud funtions?
-    random_meditation = random.choice(meditations)
-    # store random meditation in session
-    # session["random_meditation"] = random_meditation
+#     code = request.args.get("code")
+#     state = request.args.get("state")
+#     print("************************************")
+#     print(code)
+#     print(state)
+
     
-    quotes = crud.get_all_quotes()
-    random_quote = random.choice(quotes)
-    # session["random_quote"] = random_quote
-   
-    return render_template("profile.html", user_id=user_id, user=user, random_meditation=random_meditation, random_quote=random_quote)
+#     # token = util.prompt_for_user_token(user.fname,
+#     #         SCOPE,
+#     #         client_id = SPOTIPY_CLIENT_ID,
+#     #         client_secret = SPOTIPY_CLIENT_SECRET)
+
+
+    
+#     user_email = session.get("user_email")
+#     user = crud.get_user_by_email(user_email)
+#     user_id = user.user_id
+    
+#     return redirect(f"/profile/{user_id}")
+    
+
+# def schedule_task():
+#     random_meditation = random.choice(meditations)
+#     print("This test runs every 15 seconds")
+    
+#     return random_meditation
+    
+    
+@app.route("/logout")
+def logout():
+    """Log user out of session."""
+
+    session.clear()
+    flash("You are logged out.")
+    return redirect("/login")    
 
 
 @app.route("/meditation-catalog")
 def list_meditations(): 
     """Return page showing a list of all available meditations"""
 
-    # list browsable catalog of meditations
-    # each meditation has a button
-    # when clicked take to route "/meditation/<meditation_id>"
-
     user_email = session.get("user_email")
     user = crud.get_user_by_email(user_email)
     user_id = user.user_id
     
-    # get all meditations's data
+    # Get all meditations by user id
     meditations = crud.get_all_meditations_by_user_id(user_id)
-
-    print(meditations)
-    # print(meditations)
-    # for meditation in meditations:
-    #     print(meditation)
-    #     print(meditation.track_name)
-    #     print(meditation.spotify_url)
-    # print("**********************")
     
-    # get all of user's favorite meditations
+    # Get all of user's favorite meditations
     fav_meditations = crud.get_fav_meditations_by_user_id(user_id)
     if not fav_meditations:
         fav_meditations = []
-    # if fav_meditations != []:
-    #     for fav_meditation in fav_meditations:
-    #         print(fav_meditation)
-    #         print("!!!!!!!!!!!")
     
     return render_template("all_meditations.html", meditations=meditations, fav_meditations=fav_meditations)
 
@@ -489,14 +320,15 @@ def list_meditations():
 @app.route("/meditation/<meditation_id>")
 def show_meditation(meditation_id):
     """Return page showing the details of a given meditation"""
-
-    # add button that allows user to play the meditation on this page 
     
-    # get each meditation by id
+    # Get each meditation by id
     meditation = crud.get_meditation_by_id(meditation_id)
     
-    # query favorites to see if selected meditation exists as a favorite    
+    # Query favorites to see if selected meditation exists as a favorite    
     exists = crud.does_fav_meditation_exist(meditation_id)
+    
+    print(meditation.spotify_url)
+    print("*****************")
 
     return render_template("meditation_details.html", display_meditation=meditation, exists=exists)  
 
@@ -512,7 +344,7 @@ def show_journal_prompt():
 def handle_journal_submission():
     """Show user they have successfully submitted their journal entry"""
    
-    # get user by user email, then pass in the user id
+    # Get user by user email, then pass in the user id
     user_email = session.get("user_email")
     user = crud.get_user_by_email(user_email)
     user_id = user.user_id
@@ -544,11 +376,72 @@ def show_friends():
     return render_template("friends.html")
 
 
-@app.route("/schedule-reminders")
-def schedule_reminders():
+@app.route("/reminders")
+def show_reminders():
     """Return page that allows user's to schedule their meditation reminders"""
 
-    return render_template("calendar.html")
+    return render_template("reminders.html")
+
+
+@app.route("/schedule-reminder.json", methods=["POST"])
+def scheudle_reminder():
+    
+    # Get user by user email, then pass in the user id
+    user_email = session.get("user_email")
+    user = crud.get_user_by_email(user_email)
+    user_id = user.user_id
+    
+    # Get user's reminder input
+    date = request.json.get("date")
+    # print(date_str)
+    # print("******************")
+    # # convert date string to a different date and time order
+    # date = date_str.strftime("%m/%d/%Y, %H:%M:%S")
+    # print(date)
+    reminder_type = request.json.get("type")
+    description = request.json.get("description")
+    print(description)
+    
+    # retrieve the date from the notification table when sending an automated text and put a line before the retrieved random message
+    # reminder_time = f"Your scheduled check-in is at {date}"
+    
+    # Get messages related to user's selected reminder type
+    # Choose one random message from those messages
+    # Get that specific message's message id 
+    if reminder_type == "meditate":
+        message = crud.get_messages_by_type(reminder_type)
+        random_message= random.choice(message)
+        message_id = random_message.message_id
+        
+    elif reminder_type == "journal":
+        message = crud.get_messages_by_type(reminder_type)
+        random_message = random.choice(message)
+        message_id = random_message.message_id
+        
+    elif reminder_type == "meditate and journal":
+        message = crud.get_messages_by_type(reminder_type)
+        random_message = random.choice(message)
+        message_id = random_message.message_id
+        
+    elif reminder_type == "inspo message":
+        message = crud.get_messages_by_type(reminder_type)
+        random_message = random.choice(message)
+        message_id = random_message.message_id
+    
+    # create reminder for user in session
+    crud.create_reminder(date=date,
+                         reminder_type=reminder_type,
+                         description=description,
+                         user_id=user_id,
+                         message_id=message_id)
+    
+    return jsonify({"Success": "Here is your reminder information", "Description": description, "Type": reminder_type, "Date": date})
+
+
+@app.route("/remove-reminder.json")
+def remove_reminder():
+    
+    return jsonify({})
 
 
 @app.route("/search-meditations")
@@ -718,18 +611,8 @@ def get_journal_input():
     journal_input = request.json.get("journal")
     # get time stamp of when the server receives the fetch request after form submission
     time_stamp = datetime.now()
-    print(time_stamp)
-    print("**************")
     # convert datetime.datetime object into a string
     time_stamp_str = time_stamp.strftime("%m/%d/%Y, %H:%M:%S")
-    print("date and time:", time_stamp_str)
-    # date = time_stamp_str.split(" ")
-    # print("date:", date)
-    # # convert the time_stamp_str into a date
-    # time_stamp = datetime.strptime(f"{date[0]}", "%Y-%m-%d %H:%M:%S")
-    # print(time_stamp)
-    # print("**************")
-    # dt_object = datetime.fromtimestamp(time)
     
     # create journal entry for user in session
     crud.create_journal_entry(mood=mood,
@@ -746,35 +629,6 @@ def get_journal_input():
     return jsonify({"mood": mood, "color": color, "gratitude_1": gratitude_1, "gratitude_2": gratitude_2, "gratitude_3": gratitude_3, "journal_input": journal_input, "time_stamp": time_stamp_str})
 
 
-# @app.route("/journal.json", methods=["POST"])
-# def get_journal_input():
-    
-#     # get the user id of user in session
-#     user_email = session["user_email"]
-#     user = crud.get_user_by_email(user_email)
-#     user_id = user.user_id
-
-#     # get the journal input values from the front-end
-#     mood = request.json.get("mood")
-#     color = request.json.get("color")
-
-
-#     return jsonify({mood: mood, color: color})
-
-# @app.route("/journal-submission")
-# def handle_journal_submission():
-    
-#     # create journal entry for user in session
-#     journal_entry = crud.create_journal_entry(mood=mood,
-#                                               color=color,
-#                                               journal_input=journal,
-#                                               time_stamp=date)
-    
-#     date = request.form.get("time-stamp")
-#     journal = request.form.get("journal-entry")
-
-#     flash("Cheers! You have logged your journal entry. Keep up the self-reflection!")
-
 
 if __name__ == "__main__":
     # When running locally, disable OAuthlib's HTTPs verification.
@@ -782,6 +636,9 @@ if __name__ == "__main__":
     #     When running in production *do not* leave this option enabled.
     # os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
     # DebugToolbarExtension(app)
+    # scheduler.add_job(id = "Scheduled Quote and Meditation Suggestion", func=schedule_task, trigger="interval", seconds=15)
+    # 86400
+    # scheduler.start()
     connect_to_db(app)
     app.run(host="localhost", debug=True)
     
@@ -791,67 +648,3 @@ if __name__ == "__main__":
     
     
 # app.run(threaded=True, port=int(os.environ.get("PORT", os.environ.get("SPOTIPY_REDIRECT_URI", 8080).split(":")[-1])))
-
-# PSEUDOCODE
-# @app.route("/")
-# def index(): 
-    # render homepage.html template
-
-# in homepage.html there are two buttons: actions = "/create account" or "/login" -- both POST methods
-    # "create-account" button --> takes you to '/create-account' route
-        # form action='/create-account"
-    # "login" button --> takes you to '/login' route
-        # form action="/login"
-
-# @app.route("/create-account") 
-# def create_account():
-    # an input form --> login data gets stored into database in the User table 
-        # keywords: first-name" "last-name" "email" "phone-number" "username" "password"
-    # set conditions:
-        # login info must meet certain criteria
-        # if conditions are met --> render profile.html template    
-
-# @app.route("/login", methods=["POST"]) 
-# def process_login():
-    # check to see if user already exists once user submits login info
-        # if yes, redender profile.html template
-        # if no, generate text saying: username and password do not match
-            # allow user to reenter login info
-
-# in profile.html
-    # 3 buttons: actions = "/meditation-catalog" "/journaling" "/friends"
-
-# @app.route("/meditation-catalog")
-# def list_meditations(): 
-    # list browsable catalog of meditations
-    # each meditation has a button
-    # when clicked take to route '/meditation' 
-
-# @app.route('/meditation/<meditation_id>')
-# def show_meditation(melon_id):
-    # returns page "meditation_details.html" showing details of a given meditation
-    # button that allows user to play the meditation on this page   
-
-# @app.route("/journaling")
-# def show_journal_prompt():
-    # returns page (journal.html) showing journal prompt with a text field form
-
-
-# @app.route("/friends")
-# def show_friends():
-    # returns page (friends.html)
-    # shows user a list of their current friends
-        # can engage with user by sending them a text
-    # user can invite friends, search users by username and add them as a friend, unfollow friend
-
-# @app.route("/search")
-# def search():
-    # renders search page
-    # user can search for users by username
-    # user can search for meditation by title
-
-# @app.route("/search-results")
-# def search_results():
-    # lists all users == the submitted username
-    # lists all meditations matching submitted keyword(s)
-

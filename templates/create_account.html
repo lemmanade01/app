@@ -22,8 +22,10 @@
     </p>
     {% endfor %}
     <section>
+
         <form action="/handle-create-account" method="POST">
             <div><strong>Create an Account:</strong></div>
+
             <div id="required-fields"><small><em>All fields are required</em></small></div><br>
             <div>
                 <!-- <label>First Name<span class="required"> *</span></label> -->
@@ -73,17 +75,29 @@
                 <!-- <label>Enter your favorite mantra <em>(Optional)</em>:</label> --> 
                 <textarea name="quote" placeholder="Enter your favorite mantra (Optional)"></textarea>
             </div><br>
+           
+            <div>This app requires a Spotify account.</div>
+                
+            <div>
+                Do you have a Spotify account?
+                <input type="radio" name="spotify-account" value="yes">
+                <label>Yes</label>
+
+                <input type="radio" name="spotify-account" value="no">
+                <label>No</label>
+            </div><br>
+
             <button type="submit"><strong>Create Account</strong></button>
         </form>
       </section>
 </body>
-<script>
+<!-- <script>
     const phoneInputField = document.querySelector("#phone");
     const phoneInput = window.intlTelInput(phoneInputField, {
       utilsScript:
         "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
     });
-  </script>
+  </script> -->
 </html>
 
 
