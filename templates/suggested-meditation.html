@@ -16,11 +16,14 @@
       <a href="/meditation/{{ random_meditation.meditation_id }}">
       <img src="{{ random_meditation.image_url }}" width="300px" height="300px">
       </a>
+      <span>
+        <audio id="audio-preview" src="{{ random_meditation.preview_link }}"></audio>
+      </span>
 
     <div>
-      <form action="/meditation/{{ random_meditation.meditation_id }}">
+        <a href="{{ random_meditation.spotify_url }}" target="_blank">
         <button>Explore this track</button>
-      </form>
+      </a> 
     </div>
 
     <div>
@@ -33,4 +36,8 @@
   
 </div>
 
+{% endblock %}
+
+{% block script %}
+<script src="/static/js/meditation_preview.js"></script>
 {% endblock %}

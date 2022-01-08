@@ -53,9 +53,11 @@ const journalSubmission = document.querySelector('#journal-submission');
 
 journalSubmission.addEventListener('click', (evt) => {
     evt.preventDefault();
+    
+    const scale = document.querySelector('input[name="scale"]:checked').value;
 
-    const journal = document.querySelector('.journal-field').value;
-    console.log('Journal Input:', journal);
+    const mood = selectedBtnValues[0]
+    const hexColor = selectedBtnValues[1]
 
     const gratitude1 = document.querySelector('#gratitude-1').value;
 
@@ -63,11 +65,11 @@ journalSubmission.addEventListener('click', (evt) => {
 
     const gratitude3 = document.querySelector('#gratitude-3').value;
 
-    const mood = selectedBtnValues[0]
-    const hexColor = selectedBtnValues[1]
-    // const allMoodBtns = document.querySelector('.all-mood-buttons');
+    const journal = document.querySelector('.journal-field').value;
+    console.log('Journal Input:', journal);
 
     const journalValues = {
+        scale: scale,
         mood: mood,
         color: hexColor,
         gratitude1: gratitude1,
@@ -90,5 +92,7 @@ journalSubmission.addEventListener('click', (evt) => {
     .then(responseJson => {
             console.log('Success!: ', responseJson);
             // alert('Cheers! You have logged your journal entry. Keep up the self-reflection!');
+
+            // window.location.href = '/journal-success';
     });    
 });

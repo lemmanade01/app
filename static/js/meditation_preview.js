@@ -1,18 +1,30 @@
 'use strict';
 
-const trackImg = document.querySelector('#track-img');
-trackImg.addEventListener("mouseover", (evt) => {
-    console.log('You are hovering!');
-   
-    const audio = document.querySelector('#audio-preview');
-    audio.muted = false;
-    audio.play();
-    console.log('Sound has played');
-})
+const trackImgs = document.querySelectorAll('.track-img');
 
-trackImg.addEventListener("mouseout", (evt) => {
-    const audio = document.querySelector('#audio-preview');
-    audio.muted = true;
-    audio.stop();
-    // audio.currentTime = 0;
-})
+for (const trackImg of trackImgs) {
+    trackImg.addEventListener('mouseover', (evt) => {
+        console.log('You are hovering!');
+       
+        const audio = document.querySelector('.audio-preview');
+        audio.muted = false;
+        audio.play();
+        console.log('Sound has played');
+    })
+        
+}
+    
+for (const trackImg of trackImgs) {
+    trackImg.addEventListener('mouseout', (evt) => {
+        console.log('You are no longer hovering');
+
+        const audio = document.querySelector('.audio-preview');
+        audio.muted = true;
+        audio.pause();
+        // audio.currentTime = 0;
+    })
+}
+
+
+
+

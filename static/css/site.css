@@ -164,6 +164,65 @@
 } */
 
 
+/* Key boxes for graph */
+.box {
+  /* float: left; */
+  height: 100px;
+  width: 100px;
+  margin-bottom: 15px;
+  /* border: 1px solid black; */
+  /* clear: both; */
+}
+
+.one {
+  background-color: #fbd8fa;
+}
+
+.two {
+  background-color: #f9ceea;
+}
+
+.three {
+  background-color: #f8c3d9;
+}
+
+.four {
+  background-color: #f8b8c9
+}
+
+.five {
+  background-color: #f7adb9;
+}
+
+.six {
+  background-color: #f6a2a7;
+}
+
+.seven {
+  background-color: #f69797 ;
+}
+
+.eight {
+  background-color: #f58c86;
+}
+
+.nine {
+  background-color: #f48175 ;
+}
+
+.ten {
+  background-color: #f47665 ;
+}
+
+.eleven {
+  background-color: #f26a54 ;
+}
+
+.twelve {
+  background-color: #f36044;
+}
+
+
 
 
 /* All Meditations page */

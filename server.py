@@ -14,11 +14,13 @@ import json
 import requests
 import re
 import uuid
+import time
 
 # import sys
 # import subprocess
-# from playsound import playsound
-import pygame
+from playsound import playsound
+# import pygame
+# import vlc
 
 # import calendar_oauth
 # import google.oauth2.credentials
@@ -169,29 +171,6 @@ def process_login():
         user_in_session = session["user_email"]
         
         # Check if they have spotify and gmail account
-        
-        # calendar_oauth.main()
-
-        # print(token)
-        # token = util.prompt_for_user_token("31xennyy3dcnjh4tmhm4qumdc7sm", #Spotify user
-    
-        #                                 'user-library-read',
-        #                                 SPOTIPY_CLIENT_ID, 
-        #                                 SPOTIPY_CLIENT_SECRET,
-        #                                 SPOTIPY_REDIRECT_URI)
-
-        # print("TOKEN"*20)
-        # print(token)
-
-
-        # if token:
-        #     sp = spotipy.Spotify(auth=token)
-        #     results = sp.current_user_saved_tracks()
-        #     for item in results['items']:
-        #         track = item['track']
-        #         print(track['name'] + ' - ' + track['artists'][0]['name'])
-        # else:
-        #     print("Can't get token for", username)
 
         return redirect("/quote")
     
@@ -200,7 +179,14 @@ def process_login():
 def display_quote():
     """Display entry quote upon login"""
     
+    # playsound("/static/mp3/sea-waves-loop.mp3")
+    # print("Playing sound using playsound")
+    
+    # with open("/static/mp3/sea-waves-loop.mp3") as f:
     # playsound("C:/Users/emmalyddon/hb-dev/src/app/static/mp3/sea-waves-loop.mp3")
+    
+    # p = vlc.MediaPlayer("/static/mp3/sea-waves-loop.mp3")
+    # p.play()
     
     # pygame.mixer.init()
     # pygame.mixer.music.load("/static/mp3/sea-waves-loop.mp3")
@@ -239,9 +225,9 @@ def redirect_to_profile():
     # Get user in session
     user_email = session.get("user_email")
     user = crud.get_user_by_email(user_email)
-    user_id = user.user_id
+    fname = user.fname.lower()
    
-    return redirect(f"/profile/{user_id}")
+    return redirect(f"/profile/{fname}")
 
 
 @app.route("/profile/<user_id>")
@@ -258,37 +244,6 @@ def show_profile(user_id):
     return render_template("profile.html", user_id=user_id, user=user)
 
 
-# @app.route("/callback")
-# def callback_for_spotify():
-    
-#     code = request.args.get("code")
-#     state = request.args.get("state")
-#     print("************************************")
-#     print(code)
-#     print(state)
-
-    
-#     # token = util.prompt_for_user_token(user.fname,
-#     #         SCOPE,
-#     #         client_id = SPOTIPY_CLIENT_ID,
-#     #         client_secret = SPOTIPY_CLIENT_SECRET)
-
-
-    
-#     user_email = session.get("user_email")
-#     user = crud.get_user_by_email(user_email)
-#     user_id = user.user_id
-    
-#     return redirect(f"/profile/{user_id}")
-    
-
-# def schedule_task():
-#     random_meditation = random.choice(meditations)
-#     print("This test runs every 15 seconds")
-    
-#     return random_meditation
-    
-    
 @app.route("/logout")
 def logout():
     """Log user out of session."""
@@ -324,40 +279,193 @@ def show_meditation(meditation_id):
     # Get each meditation by id
     meditation = crud.get_meditation_by_id(meditation_id)
     
-    # Query favorites to see if selected meditation exists as a favorite    
+    # Query favorites to see if selected meditation exists as a favorite
     exists = crud.does_fav_meditation_exist(meditation_id)
-    
-    print(meditation.spotify_url)
-    print("*****************")
 
-    return render_template("meditation_details.html", display_meditation=meditation, exists=exists)  
+    return render_template("meditation_details.html",display_meditation=meditation, exists=exists)
 
 
 @app.route("/journal")
-def show_journal_prompt():
-    """Show page with journaling prompt form"""
-
-    return render_template("journal.html")
-
-
-@app.route("/journal-submission")
-def handle_journal_submission():
-    """Show user they have successfully submitted their journal entry"""
-   
-    # Get user by user email, then pass in the user id
+def show_journal_homepage():
+    """Show page with journaling options"""
+    
+    # Get user in session
     user_email = session.get("user_email")
     user = crud.get_user_by_email(user_email)
     user_id = user.user_id
-
+    
+    # Get total count of journal entries by user id
     journal_count = crud.get_journal_count(user_id)
-        
-    if journal_count == 1:
-        flash("Congrats on your first journal entry! Every small motion makes a difference.")
-    else:
-        # flash("Cheers to you! You have logged another journal entry. Keep up the self-reflection!")
-        flash("Cheers to you! You have logged {journal_count} journal entries. Keep up the self-reflection!")
 
-    return redirect("/profile/{user_id}")
+    return render_template("journal.html", journal_count=journal_count)
+
+
+@app.route("/journal-prompt")
+def show_journal_prompt():
+    """Show page with journaling prompt"""
+         
+    return render_template("journal_entry.html")
+
+
+@app.route("/journal.json", methods=["POST"])
+def get_journal_input():
+    
+    # get the user id of user in session
+    user_email = session.get("user_email")
+    user = crud.get_user_by_email(user_email)
+    user_id = user.user_id
+    # get the journal input values from the front-end
+    scale = request.json.get("scale")
+    mood = request.json.get("mood")
+    color = request.json.get("color")
+    gratitude_1 = request.json.get("gratitude1")
+    gratitude_2 = request.json.get("gratitude2")
+    gratitude_3 = request.json.get("gratitude3")
+    journal_input = request.json.get("journal")
+    # get time stamp of when the server receives the fetch request after form submission
+    time_stamp = datetime.now()
+    # convert datetime.datetime object into a string
+    time_str = time_stamp.strftime("%m/%d/%Y, %H:%M:%S")
+
+    # # Slice string to retrieve individual date attributes
+    # year = time_str[6:10]
+    mth = time_str[:2]
+    # day = time_str[3:5]
+    # time_stamp = time_str[-8:]
+    
+    # # Concatenate values into one string
+    # date_stamp = mth + "/" + day + "/" + year
+    
+    # Account for user input where months are written out instead of integers
+    # Reassign variables with numerical string values to alphabetical months
+    if mth == "01":
+        mnth = "january"
+    elif mth == "02":
+        mnth = "february"
+    elif mth == "03":
+        mnth = "march"
+    elif mth == "04":
+        mnth = "april"
+    elif mth == "05":
+        mnth = "may"
+    elif mth == "06":
+        mnth = "june"
+    elif mth == "07":
+        mnth = "july"
+    elif mth == "08":
+        mnth = "august"
+    elif mth == "09":
+        mnth = "september"
+    elif mth == "10":
+        mnth = "october"
+    elif mth == "11":
+        mnth = "november"
+    elif mth == "12":
+        mnth = "december"
+    
+    # create journal entry for user in session
+    crud.create_journal_entry(scale=scale,
+                              mood=mood,
+                              color=color,
+                              gratitude_1=gratitude_1,
+                              gratitude_2=gratitude_2,
+                              gratitude_3=gratitude_3,
+                              journal_input=journal_input,
+                              time_stamp=time_stamp,
+                              mnth=mnth,
+                              user_id=user_id)
+
+    return jsonify({"scale": scale, "mood": mood, "color": color, "gratitude_1": gratitude_1, "gratitude_2": gratitude_2, "gratitude_3": gratitude_3, "journal_input": journal_input, "time_stamp": time_stamp, "month": mnth})
+
+
+@app.route("/journal-data.json")
+def get_journal_data():
+    """Get and return all journal entries in JSON for a user in session"""
+    
+    # Get user in session
+    user_email = session.get("user_email")
+    user = crud.get_user_by_email(user_email)
+    user_id = user.user_id
+    
+    # Get all journal entries
+    journal_entries = crud.get_all_journal_entries(user_id)
+   
+    if journal_entries:
+        
+        journal_entries_dict = {}
+
+        for journal_entry in journal_entries:
+            
+            journal_id = journal_entry.journal_id
+                
+            journal_entries_dict[journal_id] = {
+                "scale": journal_entry.scale,
+                "mood": journal_entry.mood,
+                "color": journal_entry.color,
+                "gratitude_1": journal_entry.gratitude_1,
+                "gratitude_2": journal_entry.gratitude_2,
+                "gratitude_3": journal_entry.gratitude_3,
+                "journal_input": journal_entry.journal_input,
+                "time_stamp": journal_entry.time_stamp,
+                "month": journal_entry.mnth
+            }
+  
+    return jsonify(journal_entries_dict)
+
+
+@app.route("/journal-success")
+def show_submission_success():
+    """Show user they have successfully submitted a journal entry
+    
+    Flash their total journal count
+    """
+    
+    # time.sleep(5)
+    
+    return redirect("profile.html")
+
+
+@app.route("/journal-search-results", methods=["POST"])
+def display_journal_search_results():
+    """Get and return journal entries that match dates user searches by"""
+    
+    # Get user in session
+    user_email = session.get("user_email")
+    user = crud.get_user_by_email(user_email)
+    user_id = user.user_id
+    
+    # Get user's journal search input
+    search_input = request.form.get("journal-search").lower()
+    
+    # Get journal entries in ascending chronological order that match user's input
+    search_results = crud.get_journal_by_search_input(search_input, user_id)
+
+    # all_datetimes = crud.get_journal_entries_ordered_by_date(user_id)  
+    
+    # date = crud.get_journal_by_date
+    
+    return render_template("search_results_journals.html", search_results=search_results, search_input=search_input, all_datetimes=all_datetimes, date=date)
+
+
+
+# @app.route("/journal-submission")
+# def handle_journal_submission():
+#     """Show user they have successfully submitted their journal entry"""
+   
+#     # Get user by user email, then pass in the user id
+#     user_email = session.get("user_email")
+#     user = crud.get_user_by_email(user_email)
+#     user_id = user.user_id
+
+#     journal_count = crud.get_journal_count(user_id)
+        
+#     if journal_count == 1:
+#         flash("Congrats on your first journal entry! Every small motion makes a difference.")
+#     else:
+#         # flash("Cheers to you! You have logged another journal entry. Keep up the self-reflection!")
+#         flash("Cheers to you! You have logged {journal_count} journal entries. Keep up the self-reflection!")
+
+#     return redirect("/profile/{user_id}")
 
 
 @app.route("/friends")
@@ -476,8 +584,8 @@ def meditation_search_results():
 def search_friends():
     """Show search bar to find friends"""
 
-    #   user can search for users by first and/or last name
-    #   user can search through their friend list
+    # user can search for users by first and/or last name
+    # user can search through their friend list
     # get all friends
     friends = crud.get_all_friends()
 
@@ -546,34 +654,31 @@ def remove_favorite():
     Remove user's favorite from database.
     """
 
-    # get the user id of user in session
-    # user = session.get("user")
+    # Get the user id of user in session
     user_email = session.get("user_email")
     user = crud.get_user_by_email(user_email)
     user_id = user.user_id
 
-    # get the medtation id from the front-end
+    # Get the medtation id from the front-end
     meditation_id = request.json.get("meditation_id")
     
-    # check to see if this specific meditation exists within the favorites table
+    # Check to see if this specific meditation exists within the favorites table
     exists = crud.does_fav_meditation_exist(meditation_id)
     
     if exists == True:
-        # remove the user's favorite from the database
+        # Remove the user's favorite from the database
         crud.remove_favorite(meditation_id, user_id)
 
-        # get the liked meditations in session
+        # Get the liked meditations in session
         liked_meditations_lst = session.get("liked_meditations")
     
-        # check to see if the unhearted meditation id exists in the session's liked meditations list
+        # Check to see if the unhearted meditation id exists in the session's liked meditations list
         if meditation_id in liked_meditations_lst:
-            # if yes, remove that specific meditation from the list
+            # If yes, remove that specific meditation from the list
             liked_meditations_lst.remove(meditation_id)
 
-        # return the updated session's liked meditations list
-        # return liked_meditations_lst
-        # flash("This meditation has been removed from your favorites.")
-
+        # Return the updated session's liked meditations list
+        # Return liked_meditations_lst
         return jsonify({"success": True, "status": "This meditation has been removed from your favorites", "list": liked_meditations_lst})
     
     return jsonify({"message": "This favorite has already been removed from the database"})
@@ -594,39 +699,6 @@ def show_favorite_meditations():
     
     return render_template("favorites.html", fav_meditations=fav_meditations, favs=favs)
 
-
-@app.route("/journal.json", methods=["POST"])
-def get_journal_input():
-    
-    # get the user id of user in session
-    user_email = session.get("user_email")
-    user = crud.get_user_by_email(user_email)
-    user_id = user.user_id
-    # get the journal input values from the front-end
-    mood = request.json.get("mood")
-    color = request.json.get("color")
-    gratitude_1 = request.json.get("gratitude1")
-    gratitude_2 = request.json.get("gratitude2")
-    gratitude_3 = request.json.get("gratitude3")
-    journal_input = request.json.get("journal")
-    # get time stamp of when the server receives the fetch request after form submission
-    time_stamp = datetime.now()
-    # convert datetime.datetime object into a string
-    time_stamp_str = time_stamp.strftime("%m/%d/%Y, %H:%M:%S")
-    
-    # create journal entry for user in session
-    crud.create_journal_entry(mood=mood,
-                              color=color,
-                              gratitude_1=gratitude_1,
-                              gratitude_2=gratitude_2,
-                              gratitude_3=gratitude_3,
-                              journal_input=journal_input,
-                              time_stamp=time_stamp,
-                              user_id=user_id)
-    
-    flash("Cheers! You have logged your journal entry. Keep up the self-reflection!")
-
-    return jsonify({"mood": mood, "color": color, "gratitude_1": gratitude_1, "gratitude_2": gratitude_2, "gratitude_3": gratitude_3, "journal_input": journal_input, "time_stamp": time_stamp_str})
 
 
 

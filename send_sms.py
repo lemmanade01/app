@@ -1,4 +1,7 @@
 """Send an sms using Twilio"""
+# query database
+# figure out what it needs to send
+# have server load and run send_sms
 
 # Download the helper library from https://www.twilio.com/docs/python/install
 import os
@@ -6,10 +9,13 @@ import random
 import crud
 from model import User, Message, Notification
 from twilio.rest import Client
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
+
+
+
 
 # load environment variables from .env.
-load_dotenv()  
+# load_dotenv()  
 
 # This code creates a new instance of the Message resource and sends an HTTP POST to the Message resource URI.
 

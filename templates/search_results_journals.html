@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %} {% endblock %}
+
+{% block head %} {% endblock %}
+
+{% block body %}
+
+<h1>Search Results</h1>
+
+{% for search_result in search_results %}
+
+{{ search_result.mnth}}
+{{ search_result.time_stamp.day}}
+{{ search_result.time_stamp.year }}
+
+
+{% endfor %}
+{{ date }}
+
+{% if search_results|length == 0 %}
+  <div>There are no journal entries on this day</div>
+{% endif %}
+
+
+
+{% endblock %}

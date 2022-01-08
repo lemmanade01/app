@@ -118,6 +118,7 @@ class Journal(db.Model):
     journal_id = db.Column(db.Integer, 
                            autoincrement=True,
                            primary_key=True)
+    scale = db.Column(db.Integer, nullable=False)
     mood = db.Column(db.String(25), nullable=False)
     color = db.Column(db.String(7), nullable=False)
     gratitude_1 =db.Column(db.String(200), nullable=False)
@@ -125,6 +126,7 @@ class Journal(db.Model):
     gratitude_3 =db.Column(db.String(200), nullable=False)
     journal_input = db.Column(db.Text, nullable=False)
     time_stamp = db.Column(db.DateTime, nullable=False)
+    mnth = db.Column(db.String(9), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"), nullable=False)
     
     # user

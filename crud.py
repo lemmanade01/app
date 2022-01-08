@@ -57,20 +57,22 @@ def create_user(fname, lname, email, phone_num, password, quote):
 
     db.session.add(user)
     db.session.commit()
-   # username=username,
+ 
     return user
 
 
-def create_journal_entry(mood, color, gratitude_1, gratitude_2, gratitude_3, journal_input, time_stamp, user_id):
+def create_journal_entry(scale, mood, color, gratitude_1, gratitude_2, gratitude_3, journal_input, time_stamp, mnth, user_id):
     """Create and return a journal entry."""
 
-    journal = Journal(mood=mood,
+    journal = Journal(scale=scale,
+                      mood=mood,
                       color=color,
                       gratitude_1=gratitude_1,
                       gratitude_2=gratitude_2,
                       gratitude_3=gratitude_3,
                       journal_input=journal_input,
                       time_stamp=time_stamp,
+                      mnth=mnth,
                       user_id=user_id)
 
     db.session.add(journal)
@@ -85,23 +87,52 @@ def get_journal_count(user_id):
     # get journal count by user_id
     journal_entry = Journal.query.filter_by(user_id=user_id).count()
 
-    
-    # check if this query is correct
-    # i want to get the count of a logged in user's journal entries
-    # to check and see if it is the user's first submission
-    # so i can assign a specific flash message to their first entry
     return journal_entry
 
-# def get_meditation_details():
-    
 
-# def create_meditations(track_name, artist_name, image_url, spotify_url, preview_link, user_id):
+def get_all_journal_entries(user_id):
+    """Get and return all journal entries for user in session"""
+
+    journal_entries = Journal.query.filter(Journal.user_id==user_id).all()
+    
+    return journal_entries
+
+
+def get_journal_entries_ordered_by_date(user_id):
+    """Get and return all journal entries for user in session
+     
+    Retrieve entries in chronological order.
+    """
+
+    journal_entries = Journal.query.filter(Journal.user_id==user_id).order_by(Journal.time_stamp.asc()).all()
+    
+    return journal_entries
+
+
+def get_journal_by_search_input(search_input, user_id):
+    """Order chronologically and return all journal entries that match user's search input
+    
+    User can retrieve entries by searching by date"""
+    
+    # search_results = Journal.query.filter(Journal.user_id==user_id, Journal.mnth.ilike(f"%{search_input}%"), Journal.time_stamp.day.ilike(f"%{search_input}%"), Journal.time_stamp.year.ilike(f"%{search_input}%")).order_by(Journal.time_stamp.asc()).all()
+    
+    search_results = Journal.query.filter(Journal.mnth.ilike(f"{search_input}%"), Journal.user_id==user_id).all()
+    
+    return search_results
+
+
+# def get_journal_by_date(search_input):
+    
+#     date = Journal.query.filter(Journal.time_stamp.day==search_input)
+    
+#     return date
+
+    
 def create_meditations(user_id):
     """Create and return a new Spotify meditation track."""
-    # overview of this function
+    
     # for each meditation, create an object/instance with those arguments
-    # add those to session
-
+    # spotify username and playlist id
     spotify_username = os.environ["SPOTIFY_USERNAME"]
     spotify_playlist = os.environ["SPOTIFY_PLAYLIST_ID"]
 
