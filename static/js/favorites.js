@@ -3,7 +3,7 @@
 //     console.log('DOM fully loaded and parsed');
 
 
-// fetch to get what things have been favorited in db and update DOM to reflect that
+// Fetch to get what meditations have been favorited in db and update DOM to reflect that
 
 // User can favorite a meditation
 // Get all buttons with the class 'heart-btn' as a NodeList
@@ -31,17 +31,17 @@ for (const heartBtn of heartBtns) {
         const heartBtnClasses = heartBtnClicked.classList;
         let url = '/favorite.json';
 
-        // the element ithe event came from
+        // The element ithe event came from
         // const button = evt.target;
      
         // When a button has been clicked, check to see if its class value is 'btn-light'
   
-            // if yes, query the value of that specific button which is the meditation's id
+            // If yes, query the value of that specific button which is the meditation's id
             const favMeditation = {
                 meditation_id: heartBtnValue
             }
             console.log(favMeditation);
-            // send a fetch request to the '/remove-favorite.json' route so that favorite can be removed from the database
+            // Send a fetch request to the '/remove-favorite.json' route so that favorite can be removed from the database
             
             fetch(url, {
                 method: 'POST',
@@ -49,10 +49,9 @@ for (const heartBtn of heartBtns) {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                // return the promised response in JSON
+                // Return the promised response in JSON
             }).then(response => response.json())
                 .then(responseJson => {
-
 
                     if (heartBtnClasses.contains('btn-light')) {
                         heartBtnClasses.remove('btn-light');

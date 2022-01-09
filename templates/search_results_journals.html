@@ -9,18 +9,25 @@
 
 {% for search_result in search_results %}
 
-{{ search_result.mnth}}
-{{ search_result.time_stamp.day}}
-{{ search_result.time_stamp.year }}
-
+<div class="entry">
+  <h5 class="date">{{ search_result.mnth}} {{ search_result.time_stamp.day}}, {{ search_result.time_stamp.year }}</h5>
+  <p>Today you felt {{ search_result.mood }} and marked a {{search_result.scale}}.</p>
+  <ul>
+    <li>{{ search_result.gratitude_1 }}</li>
+    <li>{{ search_result.gratitude_1 }}</li>
+    <li>{{ search_result.gratitude_1 }}</li>
+</ul>
+<h5>Observations and Notes:</h5>
+<p>{{ search_result.journal_input }}</p>
+</div><br>
 
 {% endfor %}
 
-
 {% if search_results|length == 0 %}
-  <div>There are no journal entries on this day</div>
+  <div>No journal entries match your input</div>
 {% endif %}
 
 
-
 {% endblock %}
+
+<!--   <div>There are no journal entries on this day</div> -->
