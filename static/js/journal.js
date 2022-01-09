@@ -1,98 +1,66 @@
 'use strict';
 
-// // Deactivate the reamining mood buttons when one is selected
-// // Store value of selected button into a constant
+const btn = document.querySelector('#show-journal-entries');
 
-// Query all mood buttons
-const moodBtns = document.querySelectorAll('.mood-button');
-
-// Convert buttons NodeList to an array
-const moodBtnsArr = Array.prototype.slice.call(moodBtns);
-
-const selectedBtnValues = [];
-
-// Add an event listener for each mood button
-for (const moodBtn of moodBtnsArr) {
-    // If a mood button is clicked
-    moodBtn.addEventListener('click', (evt) => {
-        evt.preventDefault();
-        console.log('The mood button has been clicked')
-        // Disable that specific mood button
-        // if (moodBtn.disabled == false){
-        for (const mdBtn of moodBtns) {
-            mdBtn.disabled = true;
-        }
-      
-        
-        // const timeStamps = new Date();
-        // console.log(timeStamps);
-        // const parsedDateTimes = Date.parse(timeStamps)
-        // console.log(parsedDateTimes);
-
-
-        console.log('The mood buttons have been disabled');
-
-        // Get the value of that specific mood button
-        const moodBtnValue = moodBtn.value;
-        console.log(moodBtnValue);
-        
-        // separate the two values stored in its value
-        const moodBtnValuesArr = moodBtnValue.split(' ');
-        const moodValue = moodBtnValuesArr[0];
-        selectedBtnValues.push(moodValue);
-        console.log('mood: ', moodValue);
-        const hexValue = moodBtnValuesArr[1];
-        selectedBtnValues.push(hexValue);
-        console.log('hex: ', hexValue);
-
-        document.querySelector('.selected-mood').innerHTML = `I am feeling <strong>${moodValue}</strong>.`
-    })
-}
-
-const journalSubmission = document.querySelector('#journal-submission');
-
-journalSubmission.addEventListener('click', (evt) => {
+btn.addEventListener('click', (evt) => {
     evt.preventDefault();
-    
-    const scale = document.querySelector('input[name="scale"]:checked').value;
 
-    const mood = selectedBtnValues[0]
-    const hexColor = selectedBtnValues[1]
-
-    const gratitude1 = document.querySelector('#gratitude-1').value;
-
-    const gratitude2 = document.querySelector('#gratitude-2').value;
-
-    const gratitude3 = document.querySelector('#gratitude-3').value;
-
-    const journal = document.querySelector('.journal-field').value;
-    console.log('Journal Input:', journal);
-
-    const journalValues = {
-        scale: scale,
-        mood: mood,
-        color: hexColor,
-        gratitude1: gratitude1,
-        gratitude2: gratitude2,
-        gratitude3: gratitude3,
-        journal: journal
-    };
-    console.log(journalValues);
-
-    // send a fetch request to the '/journal.json' route so that journal entry can be created on the back-end and stored in the database
-    fetch('/journal.json', {
-        method: 'POST',
-        body: JSON.stringify(journalValues),
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        // return the promised response in JSON
-    })
+    fetch('/journal-data.json')
     .then(response => response.json())
-    .then(responseJson => {
-            console.log('Success!: ', responseJson);
-            // alert('Cheers! You have logged your journal entry. Keep up the self-reflection!');
+    .then(responseData => {
+        console.log(responseData);
+        console.log(Object.keys(responseData));
 
-            // window.location.href = '/journal-success';
-    });    
+        const datesAndScale = [];
+        let count = 1;
+
+        for (const key of Object.keys(responseData)) {
+           console.log(responseData[key]['scale']);
+           console.log(responseData[key]['time_stamp']);
+           
+           // The month in all lowercase letters
+           const mnth = responseData[key]['mnth'];
+           // Make the first letter of each month capitalized
+           const str1 = mnth.charAt(0);
+           const str1Upper = str1.toUpperCase();
+           const str2 = mnth.slice(1);
+           // The month as a proper noun
+           const upperMnth = str1Upper + str2;
+           
+           // Get the timestamp of the journal entry
+           const timeStamp = responseData[key]['time_stamp'];
+           console.log(timeStamp);
+           // Slice the timestamp to extract the day
+           const day = timeStamp.slice(5, 8);
+           // Slice the timestamp to extract the year
+           const year = timeStamp.slice(12, 16);
+
+           // Get remaining journal data to display on user's page
+           const scale = responseData[key]['scale'];
+           const mood = responseData[key]['mood'];
+           const g1 = responseData[key]['gratitude_1'];
+           const g2 = responseData[key]['gratitude_2'];
+           const g3 = responseData[key]['gratitude_3'];
+           const reflection = responseData[key]['journal_input'];
+           
+           // Insert each journal entry with their corresponding data into the DOM
+           const entries = document.querySelector('#display-entries-container').insertAdjacentHTML('beforeend', 
+               `<div class="entry">
+                    <h3>Journal ${count}</h3>
+                    <p class="date">${upperMnth} ${day}, ${year}</p>
+                    <p>Today you felt ${mood} and marked a ${scale}.</p>
+                    <p>Gratitude List</p>
+                    <ul>
+                        <li>${g1}</li>
+                        <li>${g2}</li>
+                        <li>${g3}</li>
+                    </ul>
+                    <h5>Observations and Notes:</h5>
+                    <p>${reflection}</p>
+               </div><br>`
+           );
+
+           count += 1;
+       }
+    });
 });

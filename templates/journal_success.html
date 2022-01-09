@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %} {% endblock %}
+
+{% block head %} 
+<meta http-equiv="refresh" content="3;url=/profile"/>
+{% endblock %}
+
+
+{% block body %}
+{% if count == 1 %}
+<h1>Keep the momentum going! You have logged your first jouranl entry!</h1>
+
+{% else %}
+<h1>You have logged a total of {{count}} journal entries!</h1>
+
+{% endif %}
+
+{% endblock %}

@@ -6,6 +6,7 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript" src="/static/js/mood_graph.js"></script>
 
+
 {% endblock %}
 
 {% block body %}
@@ -35,12 +36,23 @@
     <form action="/journal-search-results" method="POST">
         <input type="text" name="journal-search" placeholder="Search for journal entry by date">
         <button id="journal-search">Search</button>
+    </form>
 
 </div><br>
 
+<div>
+
+  <button id="show-journal-entries">View all Journal Entries</button>
+
+</div>
+
+<div id="display-entries-container"></div>
+
 {% endblock %}
 
-
+{% block script %}
+<script src="/static/js/journal.js"></script>
+{% endblock %}
 
   <!-- <div class="row">
       <div class="box one col-lg-1">1</div>

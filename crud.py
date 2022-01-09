@@ -3,6 +3,8 @@
 from model import db, User, Journal, Meditation, Notification, Message, Favorite, Quote, Tip, connect_to_db
 import spotify
 import os
+from datetime import datetime
+
 
 def get_user_by_email(email):
     """Get and return user's email."""
@@ -93,10 +95,22 @@ def get_journal_count(user_id):
 def get_all_journal_entries(user_id):
     """Get and return all journal entries for user in session"""
 
-    journal_entries = Journal.query.filter(Journal.user_id==user_id).all()
+    journal_entries = Journal.query.filter(Journal.user_id==user_id).order_by(Journal.time_stamp.asc()).all()
     
     return journal_entries
 
+
+def get_todays_journal_count(user_id):
+    """Get and return a user's journal count for today"""
+    
+    # journal_count = Journal.query.filter(Journal.user_id==user_id, Journal.time_stamp==date).count()
+    
+    date = datetime.now()
+    
+    journal_count = Journal.query.filter(Journal.user_id==user_id, Journal.time_stamp==date).count()
+    
+    return journal_count
+    
 
 def get_journal_entries_ordered_by_date(user_id):
     """Get and return all journal entries for user in session
@@ -259,12 +273,12 @@ def get_users_by_search_input(search_input):
     return search_results
 
 
-def get_friends_by_search_input(search_input):
-    """Return all friends that match user's input."""
+# def get_friends_by_search_input(search_input):
+#     """Return all friends that match user's input."""
 
-    search_results = Friend.query.filter(User.fname.ilike(f"%{search_input}%") | User.lname.ilike(f"%{search_input}%")).all()
+#     search_results = Friend.query.filter(User.fname.ilike(f"%{search_input}%") | User.lname.ilike(f"%{search_input}%")).all()
 
-    return search_results
+#     return search_results
 
 
 def get_all_messages():

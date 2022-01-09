@@ -307,13 +307,34 @@ def show_journal_prompt():
     return render_template("journal_entry.html")
 
 
+@app.route("/journal-check.json")
+def check_entry_count():
+    """Check to see if user has already submitted a journal entry for today
+    
+    Limit one entry per day"""
+    
+    # Get user in session
+    user_email = session.get("user_email")
+    user = crud.get_user_by_email(user_email)
+    user_id = user.user_id
+    
+    # THIS QUERY IS INCORRECT -- FIX!
+    entry = crud.get_todays_journal_count(user_id)
+    print(entry)
+    print("************")
+    
+    return jsonify({"count": entry})
+    
+
 @app.route("/journal.json", methods=["POST"])
 def get_journal_input():
+    """Get and return user's journal input and create a journal entry in the database"""
     
     # get the user id of user in session
     user_email = session.get("user_email")
     user = crud.get_user_by_email(user_email)
     user_id = user.user_id
+    
     # get the journal input values from the front-end
     scale = request.json.get("scale")
     mood = request.json.get("mood")
@@ -322,21 +343,24 @@ def get_journal_input():
     gratitude_2 = request.json.get("gratitude2")
     gratitude_3 = request.json.get("gratitude3")
     journal_input = request.json.get("journal")
-    # get time stamp of when the server receives the fetch request after form submission
+    # Get time stamp of when the server receives the fetch request after form submission
     time_stamp = datetime.now()
-    # convert datetime.datetime object into a string
+   
+    # Convert datetime.datetime object into a string
     time_str = time_stamp.strftime("%m/%d/%Y, %H:%M:%S")
 
-    # # Slice string to retrieve individual date attributes
-    # year = time_str[6:10]
+    # Slice string to retrieve individual date attributes
+    # mth is numerical (but a string)
     mth = time_str[:2]
+      
+    # year = time_str[6:10]
     # day = time_str[3:5]
     # time_stamp = time_str[-8:]
     
     # # Concatenate values into one string
     # date_stamp = mth + "/" + day + "/" + year
     
-    # Account for user input where months are written out instead of integers
+    # Account for user input where months are written out instead of numbers
     # Reassign variables with numerical string values to alphabetical months
     if mth == "01":
         mnth = "january"
@@ -375,7 +399,7 @@ def get_journal_input():
                               mnth=mnth,
                               user_id=user_id)
 
-    return jsonify({"scale": scale, "mood": mood, "color": color, "gratitude_1": gratitude_1, "gratitude_2": gratitude_2, "gratitude_3": gratitude_3, "journal_input": journal_input, "time_stamp": time_stamp, "month": mnth})
+    return jsonify({"scale": scale, "mood": mood, "color": color, "gratitude_1": gratitude_1, "gratitude_2": gratitude_2, "gratitude_3": gratitude_3, "journal_input": journal_input, "time_stamp": time_stamp, "time_stamp_str": time_str, "month": mnth})
 
 
 @app.route("/journal-data.json")
@@ -390,14 +414,19 @@ def get_journal_data():
     # Get all journal entries
     journal_entries = crud.get_all_journal_entries(user_id)
    
+    # If a journal entry exists
     if journal_entries:
         
+        # Create an open dictionary
         journal_entries_dict = {}
 
+        # For each journal entry object in the list of journal entry objects
         for journal_entry in journal_entries:
             
+            # Get each journal's journal id
             journal_id = journal_entry.journal_id
                 
+            # Create a nested dictionary where journal id is the key to a dictionary containing that journal's attributes through key/value pairs
             journal_entries_dict[journal_id] = {
                 "scale": journal_entry.scale,
                 "mood": journal_entry.mood,
@@ -407,9 +436,12 @@ def get_journal_data():
                 "gratitude_3": journal_entry.gratitude_3,
                 "journal_input": journal_entry.journal_input,
                 "time_stamp": journal_entry.time_stamp,
-                "month": journal_entry.mnth
+                "mnth": journal_entry.mnth
             }
-  
+            # Mnth without the O represents the month spelled with letters
+            # .month is a datetime attribute that represents the month by integer
+    
+    # Return a jsonified form of this nested dictionary
     return jsonify(journal_entries_dict)
 
 
@@ -420,9 +452,15 @@ def show_submission_success():
     Flash their total journal count
     """
     
+    # Get user in session
+    user_email = session.get("user_email")
+    user = crud.get_user_by_email(user_email)
+    user_id = user.user_id
+    
+    count = crud.get_journal_count(user_id)
     # time.sleep(5)
     
-    return redirect("profile.html")
+    return render_template("journal_success.html", count=count)
 
 
 @app.route("/journal-search-results", methods=["POST"])
@@ -444,7 +482,7 @@ def display_journal_search_results():
     
     # date = crud.get_journal_by_date
     
-    return render_template("search_results_journals.html", search_results=search_results, search_input=search_input, all_datetimes=all_datetimes, date=date)
+    return render_template("search_results_journals.html", search_results=search_results, search_input=search_input)
 
 
 
