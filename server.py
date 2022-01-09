@@ -534,7 +534,14 @@ def show_reminders():
     user = crud.get_user_by_email(user_email)
     user_id = user.user_id
     
-    reminders = crud.get_all_reminders(user_id)
+    # Get current time and date
+    time_stamp = datetime.now()
+    
+    # Get user's reminders that are for today and future dates
+    reminders = crud.get_uptodate_reminders(user_id, time_stamp)
+    
+    # Delete reminders that are past today's date and time
+    old_reminders = crud.remove_outofdate_reminders(user_id, time_stamp)
 
     return render_template("reminders.html", reminders=reminders)
 
@@ -645,6 +652,7 @@ def meditation_search_results():
     search_results = crud.get_meditation_by_search_input(search_input)
 
     return render_template("search_results_meditations.html", search_results=search_results)
+
 
 @app.route("/search-friends")
 def search_friends():

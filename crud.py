@@ -4,6 +4,7 @@ from model import db, User, Journal, Meditation, Notification, Message, Favorite
 import spotify
 import os
 from datetime import datetime
+from sqlalchemy import delete, update
 
 
 def get_user_by_email(email):
@@ -340,12 +341,12 @@ def create_reminder(date, reminder_type, description, user_id, message_id):
 def remove_reminder(notification_id, user_id):
     """Remove existing reminder notification"""
 
-    remove_reminder = Notification.query.filter_by(notification_id=notification_id, user_id=user_id).first()
+    reminder = Notification.query.filter(Notification.notification_id==notification_id, Notification.user_id==user_id).first()
 
-    db.session.delete(remove_reminder)
+    db.session.delete(reminder)
     db.session.commit()
     
-    return remove_reminder
+    return reminder
 
 
 def get_all_reminders(user_id):
@@ -354,6 +355,32 @@ def get_all_reminders(user_id):
     all_reminders = Notification.query.filter(Notification.user_id==user_id).order_by(Notification.date.asc()).all()
     
     return all_reminders
+
+
+# def get_all_reminders_dates(user_id):
+#     """Get all dates for scheudled reminders"""
+    
+#     reminder_dates = Notification.query.filter(Notifiation.user_id==user_id)
+
+
+def get_uptodate_reminders(user_id, time_stamp):
+    """Get and return reminders that are current"""
+    
+    reminders = Notification.query.filter(Notification.user_id==user_id, Notification.date >= time_stamp).order_by(Notification.date.asc()).all()
+    
+    return reminders
+
+
+def remove_outofdate_reminders(user_id, time_stamp):
+    """Get and return reminders that are past the current date"""
+
+    old_reminders = Notification.query.filter(Notification.user_id==user_id, Notification.date < time_stamp).order_by(Notification.date.asc()).all()
+    
+    for old_reminder in old_reminders:
+        db.session.delete(old_reminder)
+        db.session.commit()
+        
+    return old_reminders
 
 
 def get_most_recent_reminder(user_id):
