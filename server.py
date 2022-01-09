@@ -363,29 +363,29 @@ def get_journal_input():
     # Account for user input where months are written out instead of numbers
     # Reassign variables with numerical string values to alphabetical months
     if mth == "01":
-        mnth = "january"
+        mnth = "January"
     elif mth == "02":
-        mnth = "february"
+        mnth = "February"
     elif mth == "03":
-        mnth = "march"
+        mnth = "March"
     elif mth == "04":
-        mnth = "april"
+        mnth = "April"
     elif mth == "05":
-        mnth = "may"
+        mnth = "May"
     elif mth == "06":
-        mnth = "june"
+        mnth = "June"
     elif mth == "07":
-        mnth = "july"
+        mnth = "July"
     elif mth == "08":
-        mnth = "august"
+        mnth = "August"
     elif mth == "09":
-        mnth = "september"
+        mnth = "September"
     elif mth == "10":
-        mnth = "october"
+        mnth = "October"
     elif mth == "11":
-        mnth = "november"
+        mnth = "November"
     elif mth == "12":
-        mnth = "december"
+        mnth = "December"
     
     # create journal entry for user in session
     crud.create_journal_entry(scale=scale,
@@ -441,8 +441,11 @@ def get_journal_data():
             # Mnth without the O represents the month spelled with letters
             # .month is a datetime attribute that represents the month by integer
     
-    # Return a jsonified form of this nested dictionary
-    return jsonify(journal_entries_dict)
+        # Return a jsonified form of this nested dictionary
+        return jsonify(journal_entries_dict)
+    
+    else:
+        return jsonify({"Response": "No journal entries exist"})
 
 
 @app.route("/journal-success")
@@ -525,8 +528,15 @@ def show_friends():
 @app.route("/reminders")
 def show_reminders():
     """Return page that allows user's to schedule their meditation reminders"""
+    
+    # Get user by user email, then pass in the user id
+    user_email = session.get("user_email")
+    user = crud.get_user_by_email(user_email)
+    user_id = user.user_id
+    
+    reminders = crud.get_all_reminders(user_id)
 
-    return render_template("reminders.html")
+    return render_template("reminders.html", reminders=reminders)
 
 
 @app.route("/schedule-reminder.json", methods=["POST"])
@@ -554,22 +564,22 @@ def scheudle_reminder():
     # Get messages related to user's selected reminder type
     # Choose one random message from those messages
     # Get that specific message's message id 
-    if reminder_type == "meditate":
-        message = crud.get_messages_by_type(reminder_type)
-        random_message= random.choice(message)
-        message_id = random_message.message_id
-        
-    elif reminder_type == "journal":
+    if reminder_type == "Meditate":
         message = crud.get_messages_by_type(reminder_type)
         random_message = random.choice(message)
         message_id = random_message.message_id
         
-    elif reminder_type == "meditate and journal":
+    elif reminder_type == "Journal":
         message = crud.get_messages_by_type(reminder_type)
         random_message = random.choice(message)
         message_id = random_message.message_id
         
-    elif reminder_type == "inspo message":
+    elif reminder_type == "Meditate and Journal":
+        message = crud.get_messages_by_type(reminder_type)
+        random_message = random.choice(message)
+        message_id = random_message.message_id
+        
+    elif reminder_type == "Inspirational Message":
         message = crud.get_messages_by_type(reminder_type)
         random_message = random.choice(message)
         message_id = random_message.message_id
@@ -581,13 +591,31 @@ def scheudle_reminder():
                          user_id=user_id,
                          message_id=message_id)
     
-    return jsonify({"Success": "Here is your reminder information", "Description": description, "Type": reminder_type, "Date": date})
-
-
-@app.route("/remove-reminder.json")
-def remove_reminder():
+    reminder = crud.get_most_recent_reminder(user_id)
+    reminder_id = reminder.notification_id
     
-    return jsonify({})
+    return jsonify({"Success": "Here is your reminder information", "description": description, "type": reminder_type, "date": date, "ID": reminder_id})
+
+
+@app.route("/remove-reminder.json", methods=["POST"])
+def remove_reminder():
+    """Remove a user's reminder from database"""
+    
+     # Get user by user email, then pass in the user id
+    user_email = session.get("user_email")
+    user = crud.get_user_by_email(user_email)
+    user_id = user.user_id
+    
+    # Get reminder by reminder id
+    notification_id = request.json.get("reminder_id")
+    
+    # Get reminder by reminder id
+    reminder = crud.remove_reminder(notification_id, user_id)
+    
+    # # Get user's most recently created reminder
+    # reminder = crud.get_most_recent_reminder(user_id, reminder_id)
+    
+    return jsonify({"Success!": "Your reminder has been deleted"})
 
 
 @app.route("/search-meditations")

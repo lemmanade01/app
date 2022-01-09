@@ -337,6 +337,33 @@ def create_reminder(date, reminder_type, description, user_id, message_id):
     return notification
 
 
+def remove_reminder(notification_id, user_id):
+    """Remove existing reminder notification"""
+
+    remove_reminder = Notification.query.filter_by(notification_id=notification_id, user_id=user_id).first()
+
+    db.session.delete(remove_reminder)
+    db.session.commit()
+    
+    return remove_reminder
+
+
+def get_all_reminders(user_id):
+    """Get user's reminders"""
+
+    all_reminders = Notification.query.filter(Notification.user_id==user_id).order_by(Notification.date.asc()).all()
+    
+    return all_reminders
+
+
+def get_most_recent_reminder(user_id):
+    """Get user's most recently created reminder"""
+    
+    reminder = Notification.query.filter(Notification.user_id==user_id).order_by(Notification.notification_id.desc()).first()
+    
+    return reminder
+
+
 def get_messages_by_type(reminder_type):
     """Get all messages associated with the same reminder type"""
     
@@ -358,16 +385,6 @@ def update_notification(user_id):
     notification = Notification.query.filter(Notification.date, Notification.user_id).first()    
     
     return updated_notification
-
-
-def delete_notification():
-    """Delete existing calendar notification"""
-
-
-    db.session.delete(deleted_notification)
-    db.session.commit()
-    
-    return deleted_notification
 
 
 # def send_notification():

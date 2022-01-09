@@ -27,15 +27,15 @@
     <div>
       <label>Reminder type:</label>
       <select name="reminder-type" id="reminder-type">
-        <option name="meditate" value="meditate">Meditate</option>
-        <option name="journal" value="journal">Journal</option>
-        <option name="meditate-and-journal" value="meditate and journal">Meditate and Journal</option>
-        <option name="inspirational-message" value="inspo message">Inspirational Message</option>
+        <option name="meditate" value="Meditate">Meditate</option>
+        <option name="journal" value="Journal">Journal</option>
+        <option name="meditate-and-journal" value="Meditate and Journal">Meditate and Journal</option>
+        <option name="inspirational-message" value="Inspirational Message">Inspirational Message</option>
       </select>
     </div><br>
 
     <div>
-      <input type="datetime-local" id="reminder-time">
+      <input type="datetime-local" id="reminder-time" required>
     </div><br>
 
     <div>
@@ -45,11 +45,81 @@
   </form>
 </div>
 
-<div id="display-reminders">
+{% for reminder in reminders %}
+<div class="display-reminders">
+  <div class="reminder">
+    <h3>Your Reminders:</h3>
+    <ul>
+        <li>Reminder to: {{reminder.reminder_type}} at {{reminder.date}}</li>
+        {% if reminder.description|length > 0 %}
+        <p>Details: {{reminder.description}}</p>
+        {% endif %}
+        <button class="remove-reminder" value="{{reminder.notification_id}}">Delete Reminder</button>
+    </ul>
 </div>
+</div>
+<!-- for reminder in reminders:
+        
+console.log('Success!: ', responseData);
+   const id = responseData['ID']
+   console.log(id);
+   const type = responseData['type']
+   const date = responseData['date']
+   console.log(date);
+   const month = date.slice(5, 7);
+   console.log(month);
+   let day = date.slice(8, 10);
+   console.log(day);
+   const yr = date.slice(0, 4);
+   console.log(yr);
+
+   let mth = ''
+   if (month == '01') {
+       mth = 'January'
+   } else if (month == '02') {
+       mth = 'February'
+   } else if (month == '03') {
+       mth = 'March'
+   } else if (month == '04') {
+       mth = 'April'
+   } else if (month == '05') {
+       mth = 'May'
+   } else if (month == '06') {
+       mth = 'June'
+   } else if (month == '07') {
+       mth = 'July'
+   } else if (month == '08') {
+       mth = 'August'
+   } else if (month == '09') {
+       mth = 'September'
+   } else if (month == '10') {
+       mth = 'October'
+   } else if (month == '11') {
+       mth = 'November'
+   } else if (month == '12') {
+       mth = 'December'
+   }
+
+   if (day.slice(0, 1) == '0') {
+       day = day.slice(1);
+   }
+  -->
+
+
+{% endfor %}
 
 {% endblock %}
 
 {%block script%}
 <script src="/static/js/reminders.js"></script>
 {%endblock%}
+
+
+<!-- <h3>Your Reminders:</h3>
+<ul>
+    <li>Reminder to: {{type}} at {{date}}</li>
+        <p>Details: {{description}}</p>
+        <form action="/remove-reminder">
+          <button class="remove-reminder">Delete Reminder</button>
+        </form>
+</ul> -->
