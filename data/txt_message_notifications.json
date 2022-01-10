@@ -3,7 +3,7 @@
     "message_id": 1,
     "txt_message": "Thanks for signing up for notifications from Mindful Moments. YOU are always a priority :)",
     "reminder_type": "Meditate"
-},
+  },
   {
     "message_id": 2,
     "txt_message": "Reminder to take a pause for yourself today. Reconnect and recenter.",
@@ -14,14 +14,14 @@
     "txt_message": "The quieter you become, the more you can hear. What are you waiting for?",
     "reminder_type": "Inspirational Message"
   },
-{
+  {
   "message_id": 4,
   "txt_message": "Knowing yourself is the beginning of all wisdom. No time like the present for some self-reflection.",
   "reminder_type": "Journal"
-},
-{
+  },
+  {
   "message_id": 5,
   "txt_message": "Your journal and meditations are waiting for you. Set aside some time to connect with yourself.",
   "reminder_type": "Meditate and Journal"
-}
+  }
 ]

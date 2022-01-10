@@ -417,7 +417,7 @@ def update_notification(user_id):
 # def send_notification():
 
 def create_favorite(meditation_id, user_id):
-    """Create and return a user's favorite meditation."""
+    """Create and return a user's favorite meditation"""
 
     fav = Favorite(meditation_id=meditation_id,
                    user_id=user_id)
@@ -429,7 +429,7 @@ def create_favorite(meditation_id, user_id):
 
 
 def remove_favorite(meditation_id, user_id):
-    """Remove a user's favorite meditation."""
+    """Remove a user's favorite meditation"""
 
     removed_fav = Favorite.query.filter_by(meditation_id=meditation_id, user_id=user_id).first()
 
@@ -439,11 +439,12 @@ def remove_favorite(meditation_id, user_id):
     return removed_fav
 
 
-def create_quotes(inspo_quote, author):
-    """Create and return inspo quote."""
+def create_quote(quote_id, inspo_quote, author):
+    """Create and return inspo quote"""
     
-    quote = Quote(inspo_quote=inspo_quote,
-                   author=author)
+    quote = Quote(quote_id=quote_id,
+                  inspo_quote=inspo_quote,
+                  author=author)
     
     db.session.add(quote)
     db.session.commit()
@@ -451,15 +452,38 @@ def create_quotes(inspo_quote, author):
     return quote
 
 
-def create_txt_message(txt_message, reminder_type):
+def create_txt_message(message_id, txt_message, reminder_type):
+    """Create and return a text message"""
     
-    message = Message(txt_message=txt_message,
+    message = Message(message_id=message_id,
+                      txt_message=txt_message,
                       reminder_type=reminder_type)
     
     db.session.add(message)
     db.session.commit()
     
     return message
+
+
+def create_wellness_tip(tip_id, wellness_tip, source):
+    """Create and return a wellness tip"""
+    
+    tip = Tip(tip_id=tip_id, 
+              wellness_tip=wellness_tip,
+              source=source)
+    
+    db.session.add(tip)
+    db.session.commit()
+    
+    return tip
+
+
+def get_wellness_tips():
+    """Get and return all wellness tips"""
+    
+    tips = Tip.query.all()
+    
+    return tips
 
 
 

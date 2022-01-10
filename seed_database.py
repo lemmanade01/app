@@ -89,12 +89,13 @@ with open("data/quotes.json") as f:
 
     quotes_in_db = []
     for quote in quote_data:
-        inspo_quote, author = (
+        quote_id, inspo_quote, author = (
+            quote["quote_id"],
             quote["inspo_quote"],
             quote["author"],
         )   
 
-        db_quote = crud.create_quotes(inspo_quote, author)
+        db_quote = crud.create_quote(quote_id, inspo_quote, author)
         quotes_in_db.append(db_quote)
         
         
@@ -104,10 +105,27 @@ with open("data/txt_message_notifications.json") as f:
 
     txt_messages_in_db = []
     for message in txt_message_data:
-        txt_message, reminder_type = (
+        message_id, txt_message, reminder_type = (
+            message["message_id"],
             message["txt_message"],
             message["reminder_type"]
         ) 
 
-        db_txt_message = crud.create_txt_message(txt_message, reminder_type)
+        db_txt_message = crud.create_txt_message(message_id, txt_message, reminder_type)
         txt_messages_in_db.append(db_txt_message)
+        
+        
+# Create wellness tips with .json file
+with open("data/wellness_tips.json") as f:
+    wellness_tips_data = json.loads(f.read())
+
+    wellness_tips_in_db = []
+    for tip in wellness_tips_data:
+        tip_id, wellness_tip, source = (
+            tip["tip_id"],
+            tip["wellness_tip"],
+            tip["source"]
+        ) 
+
+        db_wellness_tip = crud.create_wellness_tip(tip_id, wellness_tip, source)
+        wellness_tips_in_db.append(db_wellness_tip)

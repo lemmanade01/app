@@ -15,7 +15,6 @@
 </div> -->
 
 <h4>Schedule a reminder</h4>
-<div class="missing-field"></div>
 
 <div>
   <form id="reminder">
@@ -41,10 +40,12 @@
 
     <div>
       <button id="submit-reminder">Submit</button>
+      <span class="missing-field"></span>
     </div>
     
   </form>
 </div>
+
 
 <div class="recently-added-reminders"></div>
 
@@ -62,6 +63,8 @@
         <li>Reminder to: {{reminder.reminder_type}} on {{reminder.date}}</li>
         {% if reminder.description|length > 0 %}
         <p>Details: {{reminder.description}}</p>
+        {% elif reminder.description|length == 0 %}
+        <p>Details: None</p>
         {% endif %}
         <button class="remove-reminder" value="{{reminder.notification_id}}">Delete Reminder</button>
         <p>{{reminder.notification_id}}</p>

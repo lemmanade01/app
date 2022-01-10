@@ -216,7 +216,6 @@ class Tip(db.Model):
     __tablename__ = "tips"
 
     tip_id = db.Column(db.Integer,
-                       autoincrement=True,
                        primary_key=True)
     wellness_tip = db.Column(db.Text, nullable=False)
     source = db.Column(db.String(150))

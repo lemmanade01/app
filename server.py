@@ -281,8 +281,13 @@ def show_meditation(meditation_id):
     
     # Query favorites to see if selected meditation exists as a favorite
     exists = crud.does_fav_meditation_exist(meditation_id)
+    
+    # Get all welness tips
+    tips = crud.get_wellness_tips()
+    
+    random_tip = random.choice(tips)
 
-    return render_template("meditation_details.html",display_meditation=meditation, exists=exists)
+    return render_template("meditation_details.html",display_meditation=meditation, exists=exists, random_tip=random_tip)
 
 
 @app.route("/journal")

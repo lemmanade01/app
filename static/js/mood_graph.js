@@ -1,9 +1,11 @@
 
-// Make an AJAX call to server side to get all of user's journal data to display their journal mood chart
+// Make an AJAX call to server side to get all of user's journal data 
+// to display their journal mood chart
 fetch('/journal-data.json')
     .then(response => response.json())
     .then(responseData => {
           console.log(responseData);
+          
           console.log(responseData['Response']);
           // const number = 3;
           console.log(Object.keys(responseData));
@@ -150,4 +152,5 @@ fetch('/journal-data.json')
   
             chart.draw(dataTable, options);
           }
+        }     
     })
