@@ -192,7 +192,7 @@ def create_meditations(user_id):
 def get_all_meditations_by_user_id(user_id):
     """Get all meditations associated with user in session"""
     
-    all_meditations = Meditation.query.filter(Meditation.user_id==user_id).order_by(Meditation.track_name.desc()).all()
+    all_meditations = Meditation.query.filter(Meditation.user_id==user_id).order_by(Meditation.artist_name.asc()).all()
     
     return all_meditations
 

@@ -4,19 +4,22 @@
 {% block head %} {% endblock %}
 
 {% block body %}
-
-<h1><strong>Your Journal</strong></h1>
-<p><em>Set your intentions. It's time to soar! Please fill in all fields. </em></p><br>
-<div>
+<div class="journal-container">
+<h1 class="main-journal-header"><strong>Your Journal</strong></h1>
+<!-- <p class="main-subheader"><em>Set your intentions. It's time to soar! Please fill in all fields. </em></p><br>
+<div> -->
   <form id="journal-input">
    
       <!--- <p>On a scale of 1 to 12, how centered do you feel?</p>
       <span><em>1 feeling completely in sync with yourself and 12 feeling disassociated</em></span> -->
-      <div>
-      <p>On a scale of 1 to 12, how centered do you feel?</p>
-      <span><em>1 feeling balanced and in sync with yourself and 12 feeling completely ungrounded</em></span>
-      </div><br>
-
+      
+      <div class="full-scale-container">
+        <h3 class="scale-header">Wellness Scale</h3>
+        <div>
+          <p class="scale-subheader">On a scale of 1 to 10, how grounded do you feel?</p>
+          <!-- <span class="scale-subheader2"><em>1 feeling balanced and in sync with yourself and 12 feeling completely ungrounded</em></span>
+        </div><br> -->
+      <div class="scale-container">
       <div class="row" id="scale">
         <div class="box one col-lg-1">
           <input type="radio" name="scale" value="1">
@@ -67,8 +70,8 @@
           <input type="radio" name="scale" value="10">
           <label>10</label>
         </div>
-
-        <div class="box eleven col-lg-1">
+      </div>
+        <!-- <div class="box eleven col-lg-1">
           <input type="radio" name="scale" value="11">
           <label>11</label>
         </div>
@@ -76,13 +79,15 @@
         <div class="box twelve col-lg-1">
           <input type="radio" name="scale" value="12">
           <label>12</label>
-        </div>
+        </div> -->
       </div><br>
+    </div>
+  </div>
 
         
         <div class="all-mood-buttons">
-          <h3>Mood Check-in</h3>
-          <p>How are you feeling?</p>
+          <h3 class="journal-header">Mood Check-in</h3>
+          <p class="journal-subheader">How are you feeling?</p>
           <div class="selected-mood"></div>
           <div class="row">
             <div class="col-4">
@@ -130,35 +135,35 @@
           </div>
         </div><br>
 
-        <div>
-          <h3>Gratitude</h3>
+        <div class"gratitude-container">
+          <h3 class="gratitude-header">Gratitude</h3>
           <div>
-            <label>List 3 things you are grateful for today:</label>
+            <label class="gratitude-subheader">List 3 things you are grateful for today:</label>
           <div><br>
           <div>
-            <span>1. <input type="text" id="gratitude-1" required></span>
+            <span class="num">1. <input class="journal-field" type="text" id="gratitude-1" required></span>
           </div><br>
           <div>
-            <span>2. <input type="text" id="gratitude-2" required></span>
+            <span class="num">2. <input class="journal-field" type="text" id="gratitude-2" required></span>
           </div><br>
           <div>
-            <span>3. <input type="text" id="gratitude-3" required></span>
+            <span class="num">3. <input class="journal-field" type="text" id="gratitude-3" required></span>
           </div><br>
         </div><br>
 
-        <div>
-          <h3>Let It Flow</h3>
+        <div class="jrnl-input-container">
+          <h3 class="input-header">Let It Flow</h3>
           <div>
-            <label>Write reflections on today's session:</label>
+            <label class="input-details">Write reflections on today's session:</label>
           </div>
-          <textarea class="journal-field" id="journal-input" name="journal-entry" required></textarea>
+          <textarea class="jrnl-txt-input" id="journal-input" name="journal-entry" required></textarea>
         </div>
-        
-        <div>
           <button id="journal-submission">Submit Entry</button>
+          <p class="main-subheader"><em>*Please fill in all fields before submitting</em></p><br>
         </div>
   
     </form>
+</div>
 </div>
 
 {% endblock %}

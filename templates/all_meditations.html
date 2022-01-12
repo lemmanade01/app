@@ -4,17 +4,20 @@
 {% block head %} {% endblock %}
 
 {% block body %}
-<h1>Meditation Catalog</h1>
 
-{% for meditation in meditations %}
+<div class="row catalog-container">
+  <h1 id="catalog-header">Meditation Catalog</h1>
 
-{% if meditation.meditation_id not in fav_meditations %}
+  {% for meditation in meditations %}
+  {% if meditation.meditation_id not in fav_meditations %}
 
-
-<div class="catalog-container">
-  <div class="col" class="meditation" style="text-align:center" margin-top="50px">
-    <p><strong>{{ meditation.track_name }}</strong>
-    </p>
+  <div class="col-6" class="meditation" style="text-align:center" margin-top="50px">
+    <div class="track-name-container">
+      <p class="track-name"><strong>{{ meditation.track_name }}</strong>
+      </p>
+    </div>
+    <div class="track-artist-container">
+    </div>
       <div class ="meditation">
         <a href="/meditation/{{ meditation.meditation_id }}">
           <img class="track-img" src="{{ meditation.image_url }}" width="200px" height="200px">
@@ -31,18 +34,20 @@
             </a> -->
             <audio class="audio-preview" src="{{ meditation.preview_link }}"></audio>
           </span>
-            <form action="/meditation/{{ meditation.meditation_id }}" class="meditation-detail">
-              <button>Get Details
+          <div class="catalog-btn-container">  
+            <form action="/meditation/{{ meditation.meditation_id }}">
+              <button class="catalog-btns">
+                Details
               </button>
-          </form>
+            </form>
+          </div>
         </div>
-  </div>
-</div>
+      </div>
 
 {% else %}
 
-<div class="catalog-container">
-  <div class="col" class="meditation" style="text-align:center" margin-top="50px">
+<!-- <div class="catalog-container"> -->
+  <div class="col-6" class="meditation" style="text-align:center" margin-top="50px">
     <p><strong>{{ meditation.track_name }}</strong>
     </p>
       <div class="meditation">
@@ -71,6 +76,7 @@
 
 {% endif %}
 {% endfor %}
+</div>
 
 {% endblock %}
 

@@ -20,29 +20,42 @@
 {% endblock %}
 
 {% block body %}
-
+<div class="profile-container">
 <div class="profile-header">
-    <h1>Welcome Back, {{user.fname.capitalize()}}!</h1>
+    <h1 class="profile-header">Welcome back, {{user.fname.capitalize()}}!</h1>
 </div><br>
   
-<div class="profile-container">
 
-  <div>
-    <h1>Self-Care</h1>
-      <h4>Check-in with yourself. Pause and Reflect. Record today's thoughts and feelings.</h4>
+<div class="row profile">
+  <div class="col-8 profile">
+    <h1 class="profile-subheaders">Self-Care</h1>
+      <h4 class="profile-text">Check-in with yourself. Pause and Reflect. Record today's thoughts, feelings or observations.</h4>
       <a href="/journal">
-      <p><em>Set your intentions.</em></p>
+      <p class="profile-link"><em>Set your intentions.</em></p>
       </a>
   </div><br>
+</div>
 
-  <div>
-    <h1>Your Favorites</h1>
-      <h4>Recenter and Reconnect. Spend time with comforting familiars. Magic awaits.</h4>
+<div class="row profile">
+  <div class="col-8 profile">
+    <h1 class="profile-subheaders">Your Favorites</h1>
+      <h4 class="profile-text">Recenter and Reconnect. Spend time with comforting familiars. Magic awaits.</h4>
       <a href="/favorites">
-      <p><em>Jump back in!</em></p>
+      <p class="profile-link"><em>Jump back in!</em></p>
       </a>
   </div><br>
-  
+</div>
+
+<div class="row profile">
+  <div class="col-8 profile">
+    <h1 class="profile-subheaders">Explore</h1>
+      <h4 class="profile-text">Uncover more gems. Your inner self awaits.</h4>
+      <a href="/meditation-catalog">
+      <p class="profile-link"><em>Free your mind.</em></p>
+      </a>
+  </div><br>
+</div>
+</div>
 </div>
 
     

@@ -24,7 +24,3 @@ for (const trackImg of trackImgs) {
         // audio.currentTime = 0;
     })
 }
-
-
-
-

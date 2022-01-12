@@ -13,14 +13,12 @@
 
   </head>
 <body>
-    <!-- <nav class="navbar navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/homepage"></a>Mindful Moments</a>
-            <a class="nav-links" href="/login">Login</a>
-            <a class="nav-links" href="/create-account">Create Account</a>  
-        </div>
-    </nav> -->
-<nav class="navbar navbar-light bg-light justify-content-within">
+    <nav class="navbar navbar-custom">
+        <a class="navbar-brand" href="/"></a>Mindful Moments</a>
+        <a class="nav-links" href="/login">Login</a>
+        <a class="nav-links" href="/create-account">Create Account</a>  
+      </nav> 
+<!-- <nav "navbar navbar-custom justify-content-within">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">Mindful Moments</a>
         <div class="d-flex flex-row-reverse">
@@ -28,7 +26,7 @@
             <a id="nav-link2" href="/create-account">Create Account</a>  
         </div>
     </div>
-</nav> 
+</nav> -->
     <div class="account-container">
     {% for msg in get_flashed_messages() %}
     <p class="flash-msg">
@@ -36,7 +34,6 @@
     </p>
     {% endfor %}
     <section>
-
         <form action="/handle-create-account" method="POST">
             <div id="account-title"><strong>Create an Account:</strong></div>
 

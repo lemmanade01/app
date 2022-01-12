@@ -7,12 +7,18 @@
 
 
 {% block body %}
+<div class"success-container">
 {% if count == 1 %}
-<h1>Keep the momentum going! You have logged your first journal entry!</h1>
+    <div>
+        <h1 class="success-header">Keep the momentum going! You have logged your first journal entry!</h1>
+    </div>
 
 {% else %}
-<h1>You have logged a total of {{count}} journal entries!</h1>
+    <div>
+        <h1 class="success-header">You have logged a total of {{count}} journal entries!</h1>
+    </div>
 
 {% endif %}
+</div>
 
 {% endblock %}

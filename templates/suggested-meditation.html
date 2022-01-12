@@ -9,28 +9,35 @@
 <div class="suggested-meditation-container">
 
   <div>
+    <h1 id="suggested-meditation">SUGGESTED MEDITATION</h1>
+    <p id="line">__________________________________</p>
+  </div>
 
-    <h1>Today's Suggested Meditation</h1>
-      <h4>{{ random_meditation.track_name }}</h4>
-      <p><em>{{ random_meditation.artist_name }}</em></p>
+  <div>
+      <h4 id="random-title">{{ random_meditation.track_name }}</h4>
+      <p id="random-artist"><em>{{ random_meditation.artist_name }}</em></p>
       <a href="/meditation/{{ random_meditation.meditation_id }}">
-      <img src="{{ random_meditation.image_url }}" width="300px" height="300px">
+        <img class="track-img" id="random-img" src="{{ random_meditation.image_url }}">
       </a>
       <span>
-        <audio id="audio-preview" src="{{ random_meditation.preview_link }}"></audio>
+        <audio 
+          <source class="audio-preview" id="random-audio-preview" src="{{ random_meditation.preview_link }}"></source>
+        </audio>
       </span>
+    </div>    
 
-    <div>
+    <div class="track-btns">
         <a href="{{ random_meditation.spotify_url }}" target="_blank">
-        <button>Explore this track</button>
-      </a> 
+          <button id="random-track-btn">Explore this track</button>
+        </a> 
     </div>
 
-    <div>
+    <!-- <div>
         <form action="/profile/{{user_id}}">
             <button>My Profile</button>
         </form>
-    </div>
+    </div> -->
+  </div>
 
   </div>
   

@@ -8,12 +8,17 @@
     <link href="/static/css/site.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Kite+One&family=Krona+One&family=Spartan&family=Trirong:ital,wght@1,200&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,300&family=Julius+Sans+One&family=Kite+One&family=Kotta+One&family=Krona+One&family=Lexend+Exa:wght@300;400;500&family=Lexend+Mega&family=Montserrat:wght@500;600;700&family=Quintessential&family=Sansita+Swashed:wght@500&family=Simonetta:ital@1&family=Spartan&family=Trirong:ital,wght@1,200&display=swap" rel="stylesheet">
   </head>
 <body>
 
-  <nav class="navbar navbar-light bg-light justify-content-within">
+  <nav class="navbar navbar-custom">
+    <a class="navbar-brand" href="/"></a>Mindful Moments</a>
+    <a class="nav-links" href="/login">Login</a>
+    <a class="nav-links" href="/create-account">Create Account</a>  
+  </nav> 
+
+  <!-- <nav class="navbar navbar-custom justify-content-within">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">Mindful Moments</a>
         <div class="d-flex flex-row-reverse">
@@ -21,7 +26,7 @@
           <a id="nav-link2" href="/create-account">Create Account</a>  
         </div>
     </div>
-  </nav> 
+  </nav> -->
 
     <div class="login-container">
     {% for msg in get_flashed_messages() %}
@@ -41,10 +46,12 @@
             <button class="login-button" type="submit">Submit</button?
         </form>
     </section>
-    <!-- <div id="welcome">Welcome</div><br>
-    <div id="back">Back</div> -->
+    <!-- <div id="be">Welcome</div><br>
+    <div id="present">Back</div> -->
+   <div id="statement">
     <div id="be">Be</div><br>
     <div id="present">Present</div> 
+   </div>
     <!-- <div id="be">Magic</div><br>
     <div id="present">Awaits</div> -->
   </div>
