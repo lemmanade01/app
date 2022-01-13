@@ -10,7 +10,7 @@
 {% if exists == True %}
 
 <div class="row display-container liked-meditation">
-  <div class="col-5 display">
+  <div class="col-lg-5 col-md-12 display">
   <h1 class="display-track-name">{{ display_meditation.track_name }}</h1>
   <p class="display-track-artist"><em>{{ display_meditation.artist_name }}</em></p>
 
@@ -48,7 +48,7 @@
 {% else %}
 
 <div class="row display-container">
-  <div class="col-5 display">
+  <div class="col-lg-5 col-md-12 display">
     <h1 class="display-track-name">{{ display_meditation.track_name }}</h1>
     <p class="display-artist-name"><em>{{ display_meditation.artist_name }}</em></p>
 
@@ -96,10 +96,10 @@
 
 
 {% endif %}
-  <div class="col-7 display">
+  <div class="col-lg-7 col-md-12 display">
     <div>
       <p class="tip-header">Wellness Tip</p>
-      <span  class="wellness-tip">{{ random_tip.wellness_tip }}</span>
+      <span class="wellness-tip">{{ random_tip.wellness_tip }}</span>
     </div>
   </div>
 </div>

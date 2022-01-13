@@ -11,11 +11,25 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,300&family=Kite+One&family=Krona+One&family=Lexend+Exa:wght@300;400;500&family=Quintessential&family=Sansita+Swashed:wght@500&family=Spartan&family=Trirong:ital,wght@1,200&display=swap" rel="stylesheet">
   </head>
   <body>
-      <nav class="navbar navbar-custom">
-        <a class="navbar-brand" href="/"></a>Mindful Moments</a>
-        <a class="nav-links" href="/login">Login</a>
-        <a class="nav-links" href="/create-account">Create Account</a>  
-      </nav> 
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/">Mindful Moments</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/login">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link"  href="/create-account">Create Account</a> 
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    
       <div class="welcome-container">
         <h1 id="welcome-header">WELCOME TO</h1>
           <h1 id="welcome-header2">Mindful Moments</h1>
@@ -28,14 +42,13 @@
                 </div>
                 <!-- <p id="happy-greeting"><em>Happy you're here</em></p> -->
         
-            <div id="login-hmpg">
+            <div class="login-btn-container" id="login-hmpg">
               <form action="/login">
-                <button class="btn" type="click"><strong>Login</strong></button>
+                <button class="btn-homepage" type="click"><strong>Login</strong></button>
               </form>
-             </div>
-             <div id="accnt-hmpg">
+           
               <form action="/create-account">
-                <button class="btn" type="click"><strong>Create an Account</strong></button>
+                <button class="btn-homepage" id="accnt-hmg" type="click"><strong>Create an Account</strong></button>
               </form>
             </div>
          

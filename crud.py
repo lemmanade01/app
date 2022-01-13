@@ -196,6 +196,46 @@ def get_all_meditations_by_user_id(user_id):
     
     return all_meditations
 
+
+def get_all_meditations_an_asc(user_id):
+    """Get all meditations associated with user in session"""
+    
+    all_meditations = Meditation.query.filter(Meditation.user_id==user_id).order_by(Meditation.artist_name.asc()).all()
+    
+    return all_meditations
+
+
+def get_all_meditations_an_desc(user_id):
+    """Get all meditations associated with user in session"""
+    
+    all_meditations = Meditation.query.filter(Meditation.user_id==user_id).order_by(Meditation.artist_name.desc()).all()
+    
+    return all_meditations
+
+
+def get_all_meditations_tn_asc(user_id):
+    """Get all meditations associated with user in session"""
+    
+    all_meditations = Meditation.query.filter(Meditation.user_id==user_id).order_by(Meditation.track_name.asc()).all()
+    
+    return all_meditations
+
+
+def get_all_meditations_tn_desc(user_id):
+    """Get all meditations associated with user in session"""
+    
+    all_meditations = Meditation.query.filter(Meditation.user_id==user_id).order_by(Meditation.track_name.desc()).all()
+    
+    return all_meditations
+
+
+def get_all_meditations_an_desc(user_id):
+    """Get all meditations associated with user in session"""
+    
+    all_meditations = Meditation.query.filter(Meditation.user_id==user_id).order_by(Meditation.track_name.desc()).all()
+    
+    return all_meditations
+
     
 def get_meditation_by_id(meditation_id):
     """Return a meditation by primary key."""

@@ -12,21 +12,24 @@
   </head>
 <body>
 
-  <nav class="navbar navbar-custom">
-    <a class="navbar-brand" href="/"></a>Mindful Moments</a>
-    <a class="nav-links" href="/login">Login</a>
-    <a class="nav-links" href="/create-account">Create Account</a>  
-  </nav> 
-
-  <!-- <nav class="navbar navbar-custom justify-content-within">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/">Mindful Moments</a>
-        <div class="d-flex flex-row-reverse">
-          <a id="nav-link1" href="/login">Login</a>
-          <a id="nav-link2" href="/create-account">Create Account</a>  
-        </div>
+      <a class="navbar-brand" href="/">Mindful Moments</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/login">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"  href="/create-account">Create Account</a> 
+          </li>
+        </ul>
+      </div>
     </div>
-  </nav> -->
+  </nav>
 
     <div class="login-container">
     {% for msg in get_flashed_messages() %}
@@ -43,15 +46,19 @@
             <div id="login-div2">
               <input class="login-field" type="password" name="password" placeholder="Password" required>
             </div>
-            <button class="login-button" type="submit">Submit</button?
+            <button class="login-button" type="submit">Submit</button>
         </form>
     </section>
     <!-- <div id="be">Welcome</div><br>
     <div id="present">Back</div> -->
-   <div id="statement">
+    <div id="statement">
+      <div id="be">So happy</div><br>
+      <div id="present">you're here.</div> 
+    </div>
+   <!-- <div id="statement">
     <div id="be">Be</div><br>
     <div id="present">Present</div> 
-   </div>
+   </div> -->
     <!-- <div id="be">Magic</div><br>
     <div id="present">Awaits</div> -->
   </div>

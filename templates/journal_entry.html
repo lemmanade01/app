@@ -90,46 +90,46 @@
           <p class="journal-subheader">How are you feeling?</p>
           <div class="selected-mood"></div>
           <div class="row">
-            <div class="col-4">
+            <div class="col-lg-4 col-md-4 col-sm-1">
               <button class="mood-button" id="anxious" name="anxious" value="anxious #c22ed0">Anxious</button>
             </div>
-            <div class="col-4">
+            <div class="col-lg-4 col-md-4 col-sm-1">
               <button class="mood-button" id="calm" name="calm" value="calm #b7cbff">Calm</button>
             </div>
-            <div class="col-4">
+            <div class="col-lg-4 col-md-4 col-sm-1">
               <button class="mood-button" id="depleted" name="depleted" value="depleted #f2ecb6">Depleted</button>
             </div>
           </div>
           <div class="row">
-            <div class="col-4">
+            <div class="col-lg-4 col-md-4 col-sm-1">
               <button class="mood-button" id="discouraged" name="discouraged" value="discouraged #a96f44">Discouraged</button>
             </div>
-            <div class="col-4">
+            <div class="col-lg-4 col-md-4 col-sm-1">
               <button class="mood-button" id="energized" name="energized" value="energized #e3ff73">Energized</button>
             </div>
-            <div class="col-4">
+            <div class="col-lg-4 col-md-4 col-sm-1">
               <button class="mood-button" id="fearful" name="fearful" value="fearful #af6480">Fearful</button>
             </div>
           </div>
           <div class="row">
-            <div class="col-4">
+            <div class="col-lg-4 col-md-4 col-sm-1">
               <button class="mood-button" id="frustrated" name="frustrated" value="frustated #e0364f">Frustrated</button>
             </div>
-            <div class="col-4">
+            <div class="col-lg-4 col-md-4 col-sm-1">
               <button class="mood-button" id="happy" name="happy" value="happy #fea858">Happy</button>
             </div>
-            <div class="col-4">
+            <div class="col-lg-4 col-md-4 col-sm-1">
               <button class="mood-button" id="inspired" name="inspired" value="inspired #ef33b1">Inspired</button>
             </div>
           </div>
           <div class="row">
-            <div class="col-4">
+            <div class="col-lg-4 col-md-4 col-sm-1">
               <button class="mood-button" id="overwhelmed" name="overwhelmed" value="overwhelmed #fa5f40">Overwhelmed</button>
             </div>
-            <div class="col-4">
+            <div class="col-lg-4 col-md-4 col-sm-1">
               <button class="mood-button" id="sad" name="sad" value="sad #0c7bb3">Sad</button>
             </div>
-            <div class="col-4">
+            <div class="col-lg-4 col-md-4 col-sm-1">
               <button class="mood-button" id="tired" name="tired" value="tired #7dc387">Tired</button>
             </div>
           </div>
@@ -149,7 +149,7 @@
           <div>
             <span class="num">3. <input class="journal-field" type="text" id="gratitude-3" required></span>
           </div><br>
-        </div><br>
+        </div>
 
         <div class="jrnl-input-container">
           <h3 class="input-header">Let It Flow</h3>
@@ -157,9 +157,12 @@
             <label class="input-details">Write reflections on today's session:</label>
           </div>
           <textarea class="jrnl-txt-input" id="journal-input" name="journal-entry" required></textarea>
-        </div>
+          <div id="submission-btn-container">
           <button id="journal-submission">Submit Entry</button>
-          <p class="main-subheader"><em>*Please fill in all fields before submitting</em></p><br>
+          <!-- <p class="main-subheader"><em>*Please fill in all fields before submitting</em></p><br> -->
+          </div>
+        </div>
+         
         </div>
   
     </form>

@@ -7,14 +7,27 @@
 
 <div class="row catalog-container">
   <h1 id="catalog-header">Meditation Catalog</h1>
+  <!-- <div class="dropdown-container">
+    <form id="order-menu" placeholder="Order meditations by">
+      <select name="order" id="order">
+        <option value="a-n-asc">Artist Name (Asc)</option>
+        <option value="a-n-desc">Artist Name (Desc)</option>
+        <option value="t-n-asc">Track Name (Asc)</option>
+        <option value="t-n-asc">Track Name (Desc)</option>
+      </select>
+      <button id="order-btn">order</button>
+    </form>
+  </div> -->
+  
 
   {% for meditation in meditations %}
   {% if meditation.meditation_id not in fav_meditations %}
-
-  <div class="col-6" class="meditation" style="text-align:center" margin-top="50px">
+  
+  <div class="col-lg-6 col-sm-12 meditation" style="text-align:center" margin-top="50px">
     <div class="track-name-container">
       <p class="track-name"><strong>{{ meditation.track_name }}</strong>
       </p>
+      <p class="track-artist">{{ meditation.artist_name }}</p>
     </div>
     <div class="track-artist-container">
     </div>
@@ -23,24 +36,20 @@
           <img class="track-img" src="{{ meditation.image_url }}" width="200px" height="200px">
         </a>
       </div>
-      <div>
-        <button class="heart-btn btn-light" value="{{ meditation.meditation_id }}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
-          <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
-        </svg></button>
-      </div>
         <div class="meditation">
           <span>
             <!-- <a href="{{ meditation.preview_link }}">
             </a> -->
             <audio class="audio-preview" src="{{ meditation.preview_link }}"></audio>
           </span>
-          <div class="catalog-btn-container">  
-            <form action="/meditation/{{ meditation.meditation_id }}">
-              <button class="catalog-btns">
-                Details
-              </button>
-            </form>
-          </div>
+        <div>  
+          <form class="btn-container" action="/meditation/{{ meditation.meditation_id }}">
+            <button class="catalog-btns">Explore</button>
+            <button class="heart-btn btn-light" value="{{ meditation.meditation_id }}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+              <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+            </svg></button>
+          </form>
+        </div>
         </div>
       </div>
 
@@ -67,8 +76,7 @@
             <audio class="audio-preview" src="{{ meditation.preview_link }}"></audio>
           </span>
             <form action="/meditation/{{ meditation.meditation_id }}" class="meditation-detail">
-              <button>Get Details
-              </button>
+              <button>Explore</button>
           </form>
         </div>
   </div>
@@ -83,4 +91,5 @@
 {% block script %}
 <script src="/static/js/meditation_preview.js"></script>
 <script src="/static/js/favorites.js"></script>
+<script src="/static/js/order_meditations.js"></script>
 {% endblock %}

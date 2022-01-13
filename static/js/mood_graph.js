@@ -110,6 +110,7 @@ fetch('/journal-data.json')
           height: 350,
           noDataPattern: {
           backgroundColor: '#fff8ee',
+          // '#fff8ee',
           //color: '#fff7ff'
           },
           calendar: { 
@@ -119,14 +120,14 @@ fetch('/journal-data.json')
               strokeOpacity: 1,
               strokeWidth: 1,
           },
-            monthLabel : {
+            monthLabel: {
               fontName: 'Trebuchet MS',
               fontSize: 12,
-              color: '#7e2423',
+              color: '#f36044',
               bold: true
             },
             monthOutlineColor: {
-              stroke: '#ffc067',
+              stroke: '#213557',
               strokeOpacity: 0.8,
               strokeWidth: 2
             },
@@ -140,7 +141,7 @@ fetch('/journal-data.json')
             yearLabel: {
               fontName: 'Trebuchet MS',
               fontSize: 40,
-              color: '#ffc067',
+              color: '#213557',
               //color: '#ffb672',
               bold: true,
               //italic: true,
@@ -148,7 +149,7 @@ fetch('/journal-data.json')
             dayOfWeekLabel: {
               fontName: 'Trebuchet MS',
               fontSize: 12,
-              color: '#7e2423',
+              color: '#f36044',
               //color: '#acc0f3',
               bold: true,
               italic: false,

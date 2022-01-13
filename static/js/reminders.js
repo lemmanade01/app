@@ -50,7 +50,7 @@ const removeReminder = () => {
 }
 
 // Schedule reminders
-document.getElementById('submit-reminder').addEventListener('click', (evt) => {
+document.getElementById('#submit-reminder').addEventListener('click', (evt) => {
     evt.preventDefault();
     console.log('Submit button has been clicked!');
 

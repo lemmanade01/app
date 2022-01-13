@@ -13,49 +13,74 @@
 
   </head>
 <body>
-    <nav class="navbar navbar-custom">
-        <a class="navbar-brand" href="/"></a>Mindful Moments</a>
-        <a class="nav-links" href="/login">Login</a>
-        <a class="nav-links" href="/create-account">Create Account</a>  
-      </nav> 
-<!-- <nav "navbar navbar-custom justify-content-within">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="/">Mindful Moments</a>
-        <div class="d-flex flex-row-reverse">
-            <a id="nav-link1" href="/login">Login</a>
-            <a id="nav-link2" href="/create-account">Create Account</a>  
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="/">Mindful Moments</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/login">Login</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link"  href="/create-account">Create Account</a> 
+              </li>
+            </ul>
+          </div>
         </div>
-    </div>
-</nav> -->
+      </nav>
+      
     <div class="account-container">
     {% for msg in get_flashed_messages() %}
     <p class="flash-msg">
     {{ msg }}
     </p>
     {% endfor %}
+    <div class="account-container">
     <section>
-        <form action="/handle-create-account" method="POST">
-            <div id="account-title"><strong>Create an Account:</strong></div>
+        <form class="account-form" action="/handle-create-account" method="POST">
+            <div id="account-title">Create an Account:</div>
 
-            <div id="required-fields"><small><em>*All fields are required</em></small></div><br>
-            <div>
-                <!-- <label>First Name<span class="required"> *</span></label> -->
-                <input class="create" id="group1" type="text" name="fname" placeholder="First Name" required>
-            </div><br>
-            <div>
-                <!-- <label>Last Name<span class="required"> *</span></label> -->
-                <input class="create" id="group2" type="text" name="lname" placeholder="Last Name" required>
-            </div><br>
-            <div>
-                <!-- <label for="email">Email<span class="required"> *</span></label> -->
-                <input class="create" type="email" name="email" placeholder="Email Address" id="email" size="50" required>
-            </div><br>
-            <div>
-                <!-- <label for="phone">Phone Number<span class="required"> *</span></label> -->
-                <input class="create" type="tel" name="phone-num" placeholder="Phone Number" pattern="[0-9]{10}" required>
-            </div><br>
+            <div id="note"><small><em>Please note: This app requires a <a id="spotify-link" href="https://www.spotify.com/us/" target="_blank">Spotify account</a></em></small><div><br>
 
-            <!-- pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" -->
+            <div id="required-fields"><small><em>*Please fill in the required fields</em></small></div><br>
+            <div class="inputs-container">
+            <div class="row">
+                <div class="col-lg-6 col-md-1">
+                    <input class="create" id="group1" type="text" name="fname" placeholder="First Name*" required>
+                    <input class="create" id="group2" type="text" name="lname" placeholder="Last Name*" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 col-md-1">
+                    <input class="create" type="email" name="email" placeholder="Email Address" id="email*" size="50" required>
+                    <input class="create" type="tel" name="phone-num" placeholder="Phone Number*" pattern="[0-9]{10}" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 col-md-1">
+                    <input class="create" type="password" name="password" placeholder="Password* (8+ characters)" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
+                    <input class="create" id="personal-quote" name="quote" placeholder="Enter your favorite mantra (optional)">
+                </div>
+            </div>
+        </div>
+
+            <button id="account-btn" type="submit"><strong>Create Account</strong></button>
+        </form>
+      </section>
+    </div>
+  </div>
+</body>
+</html>
+
+
+  <!-- <div id="requirement-details">
+                <small><em>Must contain at least 1 number and 1 uppercase and lowercase letter, and at least 8 or more characters</em></small>
+            </div> -->
+
+  <!-- pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" -->
 
             <!-- <div class="container">
                 <form id="login" onsubmit="process(event)">
@@ -74,87 +99,3 @@
 
                 <small>Format: 123-456-7890</small>
             </div> -->
-
-            <div>
-                <!-- <label>Password<span class="required"> *</span></label> -->
-                <input class="create" type="password" name="password" placeholder="Password (8+ characters)" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
-            </div><br>
-            <!-- <div id="requirement-details">
-                <small><em>Must contain at least 1 number and 1 uppercase and lowercase letter, and at least 8 or more characters</em></small>
-            </div> -->
-            <div id="personal-quote">
-                <!-- <label>Enter your favorite mantra <em>(Optional)</em>:</label> --> 
-                <textarea name="quote" placeholder="Enter your favorite mantra (optional)"></textarea>
-            </div><br>
-           
-            <div id="note"><small><em>Please note: This app requires a <a href="https://www.spotify.com/us/" target="_blank">Spotify account</em></small></a></div><br>
-                
-            <!-- <div>
-                Do you have a Spotify account?
-                <input type="radio" name="spotify-account" value="yes">
-                <label>Yes</label>
-
-                <input type="radio" name="spotify-account" value="no">
-                <label>No</label>
-            </div><br> -->
-
-            <button class="login-button" type="submit"><strong>Create Account</strong></button>
-        </form>
-      </section>
-      <div id="blurb">
-      <!-- <span id="blurb-pt1">An app to help increase your </span><br> 
-      <span id="blurb-pt2">Mindfulness </span><span id="blurb-pt3">through </span><br><span id="blurb-pt4">Interactive </span><span id="blurb-pt5">engagement </span><br><span id="blurb-pt6">and maintaining </span><span id="blurb-pt7">Accountability </span> -->
-      <!-- <span id="blurb-pt1">An app to help increase your </span><br> 
-      <span id="blurb-pt2">Mindfulness </span><br><span id="blurb-pt3">through Interactive engagement and maintaining Accountability </span> -->
-      </div>
-    </div>
-</body>
-<!-- <script>
-    const phoneInputField = document.querySelector("#phone");
-    const phoneInput = window.intlTelInput(phoneInputField, {
-      utilsScript:
-        "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-    });
-  </script> -->
-</html>
-
-
-<!--
-<div class="row">
-    <div class="col-2"></div>
-<div class="col-3">
-    <input class="create" id="group1" type="text" name="fname" placeholder="First Name" required>
-</div><br>
-<div class="col-2"></div>
-<div class="col-3">
-    <input class="create" id="group2" type="text" name="lname" placeholder="Last Name" required>
-</div><br>
-<div class="col-2"></div>
-</div>
-<div class="row">
-<div class="col-2"></div>
-<div class="col-3">
-    <input class="create" type="email" name="email" placeholder="Email Address" id="email" size="50" required>
-</div><br>
-<div class="col-2"></div>
-<div class="col-3">
-    <input class="create" type="tel" name="phone-num" placeholder="Phone Number" pattern="[0-9]{10}" required>
-</div><br>
-<div class="col-2"></div>
-</div>
-
-
-<div class="row">
-<div class="col-2"></div>
-<div class="col-3">
-    <input class="create" type="password" name="password" placeholder="Password (8+ characters)" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
-</div><br>
-<div class="col-2"></div>
-<div class="col-3" id="personal-quote">
-    <textarea name="quote" placeholder="Enter your favorite mantra (optional)"></textarea>
-</div><br>
-</div>
-<div class="col-2"></div>
-
-<div id="note"><small><em>Please note: This app requires a <a href="https://www.spotify.com/us/" target="_blank">Spotify account</em></small></a></div><br>
--->

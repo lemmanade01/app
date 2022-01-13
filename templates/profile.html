@@ -1,32 +1,65 @@
 {% extends 'base.html' %}
 {% block title %} {% endblock %}
 
-
 {% block head %} 
 
-
-  <!-- <script src="https://cdn.jsdelivr.net/npm/d3-selection@3"></script>
-  <script>
-  
-  const div = d3.selectAll("div");
-  
-  </script> -->
- 
-
-<!-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> -->
-<!-- <script src="/static/js/chart.js"></script>-->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript" src="/static/js/mood_graph.js"></script>
 
 
 {% endblock %}
 
 {% block body %}
 <div class="profile-container">
-<div class="profile-header">
-    <h1 class="profile-header">Welcome back, {{user.fname.capitalize()}}!</h1>
-</div><br>
+  <div class="profile-header">
+      <h1 class="profile-header">Hello, {{user.fname.capitalize()}}!</h1>
+  </div><br>
+<div class="mood-graph">
+
+{% if journal_count == 1 %}
+<p class="profile-text">You have logged your first entry! Continue your self-reflections to see them broad scope.</p><br>
+
+{% elif journal_count > 1 %}
+<p class="profile-text">You have logged <span id="journal-count">{{ journal_count }}</span> journal entries!</p><br>
+
+{% else %}
+<p class="profile-text" id="no-entries" value="no-entries">Make your first journal entry to see an overview of your reflections.</p><br>
+
+{% endif %}
+
+<div class="col-lg-12 mood-chart" id="calendar_basic"></div>
+</div>
+
+<h3 class="profile-subheader">Your past reflections</h3>
+<div class="journal-search-container">
+  <form action="/journal-search-results" method="POST">
+      <input id="journal-search-field" type="text" name="journal-search" placeholder="Search for journal entry by month">
+      <button class="journal-search">Search</button>
   
 
-<div class="row profile">
+  <button class="journal-search">View all Journal Entries</button>
+</form>
+</div>
+
+
+<div id="display-entries-container"></div>
+
+{% endblock %}
+
+{% block script %}
+<script src="/static/js/journal.js"></script>
+{% endblock %}
+
+
+
+ <!-- <h1>Connect with Yourself</h1><br>
+
+<form action="/journal-prompt">
+    <button class"profile-btns">Make a Journal Entry</button>
+</form><br> -->
+
+
+<!-- <div class="row profile">
   <div class="col-8 profile">
     <h1 class="profile-subheaders">Self-Care</h1>
       <h4 class="profile-text">Check-in with yourself. Pause and Reflect. Record today's thoughts, feelings or observations.</h4>
@@ -56,35 +89,4 @@
   </div><br>
 </div>
 </div>
-</div>
-
-    
- 
-
-
-
-<!-- <div id="chartDiv" style="width: 740px;height: 700px;margin: 0px auto">
 </div> -->
-
-<!-- <div id="chartDiv" style="max-width: 740px;height: 600px;margin: 0px auto">
-</div> -->
-
-<!-- <canvas id="test-chart"></canvas> -->
-
-<!-- <script>
-  const testChart = new Chart(
-    document.querySelector('#test-chart'),
-    {
-      type: 'bar',
-      data: {
-        labels: ['does', 'this', 'work'],
-        datasets: [
-          {data: [2, 4, 8]}
-        ]
-      }
-    }
-  );
-</script> -->
-
-{% endblock %}
-

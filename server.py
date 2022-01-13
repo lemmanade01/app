@@ -240,8 +240,11 @@ def show_profile(user_id):
     user_email = session.get("user_email")
     user = crud.get_user_by_email(user_email)
     user_id = user.user_id
+    
+    # Get total count of journal entries by user id
+    journal_count = crud.get_journal_count(user_id)
    
-    return render_template("profile.html", user_id=user_id, user=user)
+    return render_template("profile.html", user_id=user_id, user=user, journal_count=journal_count)
 
 
 @app.route("/logout")
@@ -270,6 +273,38 @@ def list_meditations():
         fav_meditations = []
     
     return render_template("all_meditations.html", meditations=meditations, fav_meditations=fav_meditations)
+    
+
+@app.route("/order-meditations.json", methods=["POST"])
+def show_meditations_in_order():
+    """Order meditations by user's selection"""
+    
+    # order = request.json.get("order")
+    # an_desc = request.form.get("anDesc")
+    # tn_asc = request.form.get("anDesc")
+    # tn_desc = request.json.get("tnDesc")
+    
+    user_email = session.get("user_email")
+    user = crud.get_user_by_email(user_email)
+    user_id = user.user_id
+    
+    order = request.json.get("order")
+    
+    if order == "a-n-asc":
+        display_order = crud.get_all_meditations_an_asc(user_id)
+        return jsonify({"Ooder": display_order})
+        
+    elif order == "a-n-desc":
+        display_order = crud.get_all_meditations_an_desc(user_id)
+        return jsonify({"order": display_order})
+    
+    elif order == "t-n-asc":
+        display_order = crud.get_all_meditations_tn_asc(user_id)
+        return jsonify({"order": display_order})
+    
+    elif order == "t-n-desc":
+        display_order = crud.get_all_meditations_tn_desc(user_id)
+        return jsonify({"order": display_order})
 
 
 @app.route("/meditation/<meditation_id>")
@@ -290,22 +325,22 @@ def show_meditation(meditation_id):
     return render_template("meditation_details.html",display_meditation=meditation, exists=exists, random_tip=random_tip)
 
 
+# @app.route("/journal")
+# def show_journal_homepage():
+#     """Show page with journaling options"""
+    
+#     # Get user in session
+#     user_email = session.get("user_email")
+#     user = crud.get_user_by_email(user_email)
+#     user_id = user.user_id
+    
+#     # Get total count of journal entries by user id
+#     journal_count = crud.get_journal_count(user_id)
+
+#     return render_template("journal.html", journal_count=journal_count)
+
+
 @app.route("/journal")
-def show_journal_homepage():
-    """Show page with journaling options"""
-    
-    # Get user in session
-    user_email = session.get("user_email")
-    user = crud.get_user_by_email(user_email)
-    user_id = user.user_id
-    
-    # Get total count of journal entries by user id
-    journal_count = crud.get_journal_count(user_id)
-
-    return render_template("journal.html", journal_count=journal_count)
-
-
-@app.route("/journal-prompt")
 def show_journal_prompt():
     """Show page with journaling prompt"""
          
@@ -325,8 +360,6 @@ def check_entry_count():
     
     # THIS QUERY IS INCORRECT -- FIX!
     entry = crud.get_todays_journal_count(user_id)
-    print(entry)
-    print("************")
     
     return jsonify({"count": entry})
     
