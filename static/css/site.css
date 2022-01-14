@@ -107,7 +107,6 @@ body .account-container {
   justify-content: center;
   display: inline-block;
   padding-bottom: 40px;
-  margin-left: 370px;
   /* This needs to be fixed -- it needs to be scaleable and centered */
 }
 .create {
@@ -347,6 +346,9 @@ body .container {
   color: black;
   padding-top: 15px;
 }
+.bg-light {
+  background-color: #fff4ceb1;
+}
 
 
 
@@ -416,7 +418,29 @@ body .suggested-meditation-container {
   background: -webkit-linear-gradient(rgb(13, 50, 70), rgba(41, 101, 73, 0.803));
   color: rgb(225, 240, 255);
   border: none;
+}
+.suggested-link {
   text-decoration: none;
+}
+#next {
+  font-family: 'Lexend Mega', sans-serif;
+  font-size: 30px;
+  background: transparent;
+  outline: 1px solid black;
+  color: black;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 4px;
+  width: 85px;
+  border-radius: 50%;
+}
+#next:hover {
+  background: -webkit-linear-gradient(rgb(13, 50, 70), rgba(41, 101, 73, 0.803));
+  color: rgb(225, 240, 255);
+  border: none;
+  outline: none;
 }
 
 
@@ -430,7 +454,7 @@ body .catalog-container {
   height: 100%;
   /* height: 100vh; */
 }
-.col-lg-6 {
+.col-lg-6.meditations {
   flex: 0 0 auto;
   /* width: 50%; */
   height: 750px;
@@ -797,7 +821,7 @@ body .profile-container {
   font-size: 60px;
   padding-top: 30px;
   padding-bottom: 50px;  
-  text-decoration: underline;
+  /* text-decoration: underline; */
 }
 .profile-text {
   font-family: 'Lexend Exa', sans-serif;
@@ -807,7 +831,8 @@ body .profile-container {
   padding-left: 20%;
 }
 #journal-count {
-  color: #f36044;
+  color: rgb(0,143,104);
+  /* color: #f36044; */
 }
 .profile-link:hover {
   color: rgb(255, 0, 225);
@@ -826,7 +851,7 @@ body .profile-container {
   /* background-color: rgb(115, 194, 145); */
   /* background-color: rgb(180, 224, 197); */
   background-color: transparent;
-  outline: .5px solid black;
+  outline: .3px solid black;
   color: black;
   padding: 10px 15px;
   text-align: center;
@@ -834,16 +859,18 @@ body .profile-container {
   border-radius: 50px 50px;
 }
 .journal-search:hover {
-  background: -webkit-linear-gradient(rgb(255, 160, 242), rgb(160, 197, 252));
+  background-color: rgb(0,143,104);
+  /* background: -webkit-linear-gradient(rgb(255, 160, 242), rgb(160, 197, 252)); */
+  color: #fffeec;
   border: none;
   outline: none;
   padding: 20px 18px;
 }
 #journal-search-field {
   font-family: 'Spartan', sans-serif;
-  border-image: linear-gradient(45deg, rgb(255, 160, 242), rgb(160, 197, 252)) 1;
-  outline: none;
-  color:  rgb(0,143,104);
+  /* border-image: linear-gradient(45deg, rgb(255, 160, 242), rgb(160, 197, 252)) 1;
+  outline: none; */
+  color: rgb(0,143,104);
   background-color: rgb(255, 255, 235);
   margin-bottom: 5px;
   text-indent: 10px;
@@ -853,6 +880,10 @@ body .profile-container {
 }
 #journal-search-field:valid {
   background:rgb(255, 255, 235);
+}
+.space2 {
+  background-color: #fffeec;
+  padding: 40px 40px;
 }
 
 
@@ -1137,7 +1168,71 @@ body .success-container {
 
 
 /* Journal Search Results Page */
+body .jrnl-search-results-container {
+  background: repeat center center;
+  background-color:  #fffeec;
+  background-size: cover;
+  background-repeat: repeat;
+  text-align: center;
+  height: 100%;
+}
+body .jrnl-search-no-entries {
+  background: repeat center center;
+  background-color:  #fffeec;
+  background-size: cover;
+  background-repeat: repeat;
+  text-align: center;
+  height: 100vh;
+}
+.jrnl-search-results-header {
+  /* font-family: 'Lexend Exa', sans-serif;
+  font-size: 60px;
+  padding-top: 20px;
+  padding-bottom: 22px; */
 
+  font-family: 'Krona One', sans-serif;
+  font-size: 60px;
+  padding-top: 40px;
+  color: black;
+  text-align: center;
+}
+.jrnl-search-no-entries {
+  font-family: 'Montserrat', sans-serif;
+  color: black;
+  font-size: 28px;
+  text-align: center;
+  margin-top: 50px;
+}
+.row {
+  justify-content: center;
+}
+.col-12 {
+  flex: 0 0 auto;
+  height: 450px;
+  width: 1000px;
+  background-color:  #ffedce;
+  border-radius: 100px;
+  display: inline-block;
+  margin-top: 40px;
+}
+.jrnl-search-txt-container {
+  padding-top: 30px;
+}
+.jrnl-search-date {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 45px;
+  text-decoration: underline;
+}
+.jrnl-search-mood, .jrnl-search-gratitude-list {
+  font-family: 'Montserrat', sans-serif;
+  color: black;
+  font-size: 20px;
+  text-align: center;
+  margin-top: 30px;
+}
+.list, .jrnl-search-notes {
+  font-family: 'Spartan', sans-serif;
+}
 
 
 
@@ -1343,7 +1438,7 @@ body .reminders-container {
   border: none;
 }
 .space {
-  background-color:   #fffeec;
+  background-color:   rgb(33, 53, 87);
   padding: 40px 40px;
 }
 .no-reminders {
@@ -1353,8 +1448,6 @@ body .reminders-container {
   text-decoration: underline;
   padding-top: 50px;
 }
-
-
 
 
 

@@ -34,7 +34,7 @@
   {% for meditation in meditations %}
   {% if meditation.meditation_id not in fav_meditations %}
   
-  <div class="col-lg-6 col-sm-12 meditation" style="text-align:center" margin-top="50px">
+  <div class="col-lg-6 col-sm-12 meditations" style="text-align:center" margin-top="50px">
     <div class="track-name-container">
       <p class="track-name"><strong>{{ meditation.track_name }}</strong>
       </p>
@@ -67,7 +67,7 @@
 {% else %}
 
 <!-- <div class="catalog-container"> -->
-  <div class="col-6" class="meditation" style="text-align:center" margin-top="50px">
+  <div class="col-lg-6 col-sm-12 meditations" class="meditation" style="text-align:center" margin-top="50px">
     <p><strong>{{ meditation.track_name }}</strong>
     </p>
       <div class="meditation">
