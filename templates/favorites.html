@@ -9,6 +9,7 @@
     <h1 class="fav-profile-header">Your Favorites</h1>
 </div>
 
+
 {% for fav_meditation in fav_meditations %}
 <div class="col-lg-6 col-md-12 col-sm-12 meditations">
   <div class="track-name-container">  
@@ -31,7 +32,13 @@
   </div><br>
 
 {% endfor %}
+
+{% if fav_meditations|length == 0 %}
+<div class="no-favorites-container">
+  <h3 class="no-favorites-header">You have no favorites at the moment</h3>
 </div>
+{% endif %}
+
 {% endblock %}
 
 

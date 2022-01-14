@@ -18,6 +18,17 @@
       <button id="order-btn">order</button>
     </form>
   </div> -->
+
+  <div class="searchbar-container">
+    <form action="/meditation-search-results" method=POST class="d-flex" id="search-bar">
+      <input class="search-bar me-2" 
+        type="search" 
+        name="search-input"
+        placeholder="Search Meditations"  
+        aria-label="Search">
+      &nbsp;<button class="search-btn btn-outline-secondary" type="submit">Search</button>
+    </form>
+  </div> 
   
 
   {% for meditation in meditations %}

@@ -202,6 +202,9 @@ body .login-container, .journal-container {
 .login-field:valid{
   background:rgb(255, 255, 235);
 }
+input:-webkit-autofill { 
+  -webkit-background-clip: text;
+}
 .login-button {
   font-family: 'Trirong', serif;
   font-size: 20px;
@@ -308,25 +311,34 @@ body .container {
 
 /* Logged in Nav Bar */
 .navbar {
-  /* background-color: rgba(220, 157, 23, 0.694); */
   background-color: #fff4ceb1;
-  /* rgba(255, 237, 198, 0.69); */
-  /* opacity: 0.5; */
   width: 100%;
   display: block;
   padding: 10px 10px;
   font-family: 'Spartan', sans-serif;
   letter-spacing: 0.1em;
+  cursor: default;
+}
+.nav-link, .nav-item {
+  color: black;
   text-decoration: none;
 }
-.nav-links:hover {
+.nav-link:hover {
+  color:rgb(82, 82, 82)
+}
+.dropdown-menu {
+  color:rgb(82, 82, 82);
+  background-color: #fff4ceb1;
+}
+.dropdown-menu:hover {
   color:rgb(82, 82, 82)
 }
 .navbar-brand {
+  color: black;
   text-decoration: none;
 }
 .navbar-brand:hover {
-  color:rgb(82, 82, 82)
+  color:black;
 }
 .nav-links {
   font-family: 'Spartan', sans-serif;
@@ -372,8 +384,8 @@ body .suggested-meditation-container {
   padding-bottom: 5px;
 }
 #random-img {
-  width: 500px; 
-  height: 500px;
+  width: 430px; 
+  height: 430px;
   padding-bottom: 20px;
   opacity: 1.0;
   transition: opacity 1s ease-in-out;
@@ -410,14 +422,6 @@ body .suggested-meditation-container {
 
 
 /* All Meditations Catalog with image hover */
-body .favorites-container, .reminders-container {
-  /* background-color: #f0efe0; */
-  background-color: #fffeec;
-  background-size: cover;
-  background-repeat: repeat;
-  height: 100%;
-  /* height: 100vh; */
-}
 body .catalog-container {
   /* background-color: #f0efe0; */
   background-color:#213556;
@@ -459,11 +463,56 @@ body .catalog-container {
 #catalog-header {
   font-family: 'Cormorant Garamond', serif;
   font-size: 85px;
-  color: #fffeec;
+  color: #ffedce;
   /* padding-top: 20px; */
   padding-right: 30px;
-  padding-bottom: 50px;
+  padding-bottom: 40px;
   padding-left: 30px;
+}
+.searchbar-container {
+  padding-bottom: 40px;
+  display: flex;
+  justify-content: center;
+}
+.search-bar {
+font-family: 'Spartan', sans-serif;
+width: 80%;
+padding: 10px 0px;
+background: transparent;
+border: 0;
+border-bottom: 2px solid #ffedce;
+color: #ffedce;
+font-size: 24px;
+/* text-align: center; */
+font-family: 'Spartan', sans-serif;
+/* margin-bottom: 25px; */
+/* display: inline-block; */
+text-indent: 13px;
+/* border-radius: 50px 50px; */
+/* text-indent: 10px; */
+text-align: center;
+}
+.search-bar:focus {
+  background: transparent;
+  outline: none;
+  border: 0;
+  border-bottom: 2px solid #ffedce;
+  transition: background 0.3s ease-in-out;
+}
+.search-bar::placeholder {
+  color:rgb(123, 143, 177);
+}
+.search-btn {
+  border-radius: 50%;
+  background-color: rgb(123, 143, 177);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 15px;
+  color: #ffedce;
+  outline: none;
+  border: none;
+}
+.search-btn:hover {
+  background: -webkit-linear-gradient(rgb(255, 160, 242), rgb(160, 197, 252));
 }
 /* .track-name-div {
   padding-top: 20px;
@@ -511,7 +560,7 @@ a:hover .track-img {
 .btn-link {
   text-decoration: none;
 }
-.catalog-btns, .fav-btn, #reminders-submit {
+.catalog-btns, .fav-btn {
   font-family: 'Lexend Mega', sans-serif;
   /* 'Julius Sans One', sans-serif; */
   font-size: 20px;
@@ -548,8 +597,9 @@ a:hover .track-img {
   /* background: -webkit-linear-gradient(rgba(227, 235, 107, 0.981), rgba(225, 151, 40, 0.995)); */
 }
 .heart-btn.btn-dark {
-  /* background-color: rgb(58, 8, 51); */
   background-color: rgb(33, 53, 87);
+  /* rgb(58, 8, 51); */
+  background: -webkit-linear-gradient(rgb(255, 160, 242), rgb(160, 197, 252));
   border: none;
   width: 65px;
   height: 65px;
@@ -566,6 +616,22 @@ a:hover .track-img {
   display: block;
 }
 
+/* Meditation Search Results */
+body .details-container {
+  background-color: #fffeec;
+  background-size: cover;
+  background-repeat: repeat;
+  height: 100%;
+  height: 100vh;
+}
+.no-meditation-results {
+  font-family: 'Montserrat', sans-serif;
+  color: rgb(33, 53, 87);
+  font-size: 28px;
+  text-align: center;
+  margin-top: 30px;
+}
+
 
 
 /* Meditation Details Page */
@@ -574,9 +640,26 @@ body .display-container {
   background-size: cover;
   background-repeat: repeat;
   text-align: center;
+  height: 100%;
+  height: 100vh;
+}
+.results-header {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 85px;
+  color: rgb(33, 53, 87);
+  /* padding-top: 20px; */
+  padding-top: 25px;
+  padding-right: 30px;
+  padding-bottom: 40px;
+  padding-left: 30px;
+  text-align: center;
+}
+.details-link {
+  text-decoration: none;
 }
 .display-track-name {
   font-family: 'Montserrat', sans-serif;
+  color: #213556;
   padding-top: 90px;
   padding-right: 90px;
   padding-left: 90px;
@@ -584,6 +667,8 @@ body .display-container {
 .display-track-artist {
   font-family: 'Cormorant Garamond', serif;
   font-size: 30px;
+  color: #213556;
+  margin-bottom: 50px;
 }
 .display-img {
   width: 300px;
@@ -592,32 +677,59 @@ body .display-container {
 .display-preview {
   background: transparent;
 }
-.col-7 {
+.btn-details-container {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+.col-lg-7.display {
+  background-color: #213556;
   padding-top: 90px;
   padding-right: 100px;
+  justify-content: center;
+  display: flex;
+  padding: 50px 200px 70px 200px;
+  border-radius: 10%;
 }
 .wellness-tip {
-  color:rgb(24, 39, 54);
-  padding-right: 60px;
-  padding-left: 60px;
-  /* width: 900px;
-  height: 800px;
-  border-radius: 50%;
-  background-color: transparent;
-  outline: rgb(255, 233, 199) solid; */
+  color:#fffeec;
 }
 .tip-header {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Krona One', sans-serif;
+  font-size: 70px;
+  padding-top: 10px;
+  color: #fffeec;
+  /* background: -webkit-linear-gradient(rgb(255, 210, 254), rgba(224, 233, 99, 0.803));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; */
+  font-size: 80px;
+  padding-top: 60px;
+  margin-left: 40px;
+  margin-right: 20px;
+  padding-bottom: 40px;
+}
+/* .tip-header-container {
+  background-color: #fffeec;
+  padding-top: 90px;
+  padding-right: 100px;
+  justify-content: center;
+  display: flex;
+  /* padding: 50px 100px; */
+  /* border-radius: 10%;
+}  */
+  
+
+  /* font-family: 'Cormorant Garamond', serif;
   font-size: 100px;
   /* padding-top: 30px; */
-  padding-bottom: 30px;
+  /* padding-bottom: 30px;
   background: -webkit-linear-gradient(rgb(255, 160, 242), rgba(160, 197, 252, 0.803));
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
+  -webkit-text-fill-color: transparent; */
+
 .wellness-tip {
   font-family: 'Cormorant Garamond', serif;
   font-size: 37px;
+  margin-right: 40px;
 }
 /* width: 400px;
   height: 100px;
@@ -639,10 +751,13 @@ body .display-container {
 body .profile-container {
   background:   #fffeec;
   background-size: cover;
+  background-repeat: repeat;
   width: 100%;
   max-width: none;
   padding-left: 30px;
   text-align: center;
+  height: 100vh;
+  height: 100%;
 }
 .calendar-basic {
   width: 1000px; 
@@ -652,6 +767,11 @@ body .profile-container {
 .row.profile {
   padding-bottom: 20px;
   text-align:center;
+}
+.mood-chart-header {
+  font-family: 'Krona One', sans-serif;
+  font-size: 30px;
+  color: rgb(0,143,104);
 }
 .col-8.profile {
   font-family: 'Lexend Exa', sans-serif;
@@ -675,13 +795,16 @@ body .profile-container {
 .profile-subheader {
   font-family: 'Cormorant Garamond', serif;
   font-size: 60px;
-  padding-bottom: 25px;
+  padding-top: 30px;
+  padding-bottom: 50px;  
+  text-decoration: underline;
 }
 .profile-text {
   font-family: 'Lexend Exa', sans-serif;
   font-size: 35px;
-  padding-right: 20px;
+  padding-right: 20%;
   padding-bottom: 20px;
+  padding-left: 20%;
 }
 #journal-count {
   color: #f36044;
@@ -697,18 +820,24 @@ body .profile-container {
   height: 50px
 }
 .journal-search {
-  font-family: 'Trirong', serif;
-  font-size: 24px;
+  font-family: 'Spartan', sans-serif;
+  font-size: 18px;
   /* background-color: rgba(160, 197, 252, 0.803); */
   /* background-color: rgb(115, 194, 145); */
   /* background-color: rgb(180, 224, 197); */
   background-color: transparent;
-  outline: 2px solid black;
+  outline: .5px solid black;
   color: black;
-  padding: 10px 20px;
+  padding: 10px 15px;
   text-align: center;
   margin: 4px 2px 4px 2px;
   border-radius: 50px 50px;
+}
+.journal-search:hover {
+  background: -webkit-linear-gradient(rgb(255, 160, 242), rgb(160, 197, 252));
+  border: none;
+  outline: none;
+  padding: 20px 18px;
 }
 #journal-search-field {
   font-family: 'Spartan', sans-serif;
@@ -902,6 +1031,12 @@ body .profile-container {
   font-size: 30px;
   padding-bottom: 20px;
 }
+.selected-mood {
+  font-family: 'Lexend Exa', sans-serif;
+  font-size: 20px;
+  color: #fffeec;
+  padding-bottom: 15px;
+}
 .num {
   font-family: 'Krona One', sans-serif;
   font-size: 30px;
@@ -1001,10 +1136,22 @@ body .success-container {
 }
 
 
+/* Journal Search Results Page */
+
+
+
+
 
 
 
 /* Favorites Page */
+body .favorites-container {
+  background-color: #fffeec;
+  background-size: cover;
+  background-repeat: repeat;
+  text-align: center;
+  height: 100%;
+}
 .fav-profile-header {
   color: rgb(13, 50, 70);
   font-family: 'Krona One', sans-serif;
@@ -1019,6 +1166,10 @@ body .success-container {
   background-color: rgb(33, 53, 87);
   border-radius: 100px;
   display: inline-block;
+}
+.no-favorites-header {
+  color: rgb(13, 50, 70);
+  font-family: 'Krona One', sans-serif;
 }
 .fav-track-name {
   font-family: 'Montserrat', sans-serif;
@@ -1049,7 +1200,8 @@ body .success-container {
   letter-spacing: 0.1em;
 }
 .fav-btns:hover {
-  background: -webkit-linear-gradient(rgb(13, 50, 70), rgba(41, 101, 73, 0.803));
+  background: -webkit-linear-gradient(rgb(255, 160, 250), rgba(235, 82, 21, 0.803));
+  /* background: -webkit-linear-gradient(rgb(13, 50, 70), rgba(41, 101, 73, 0.803)); */
   color: #fffeec;
   border: none;
   text-decoration: none;
@@ -1064,7 +1216,15 @@ body .success-container {
 
 
 /* Reminders Page */
-.reminders-container {
+/* body .reminders-container {
+  /* background-color: #f0efe0; */
+  /* background-color: #fffeec;
+  background-size: cover;
+  background-repeat: repeat;
+  height: 100%;
+  height: 100vh; */
+/* } */
+body .reminders-container {
   background: repeat center center;
   background-color: rgb(33, 53, 87);
   background-size: cover;
@@ -1103,8 +1263,25 @@ body .success-container {
   text-indent: 13px;
   /* border-radius: 50px 50px; */
 }
-.reminders-input1{
-  text-indent: 10px;
+#reminders-input1::placeholder {
+  color:rgb(0,143,104);
+}
+#reminders-submit {
+  color: #ffedce;
+  font-family: 'Lexend Mega', sans-serif;
+  /* 'Julius Sans One', sans-serif; */
+  font-size: 20px;
+  background-color: rgb(33, 53, 87);
+   /* rgb(179, 108, 22); */
+  border: none;
+  padding: 20px 70px;
+  text-align: center;
+  margin: 4px 2px 4px 2px;
+  border-radius: 50px 50px;
+  letter-spacing: 0.1em;
+}
+#reminders-submit:hover {
+  color: rgb(255, 160, 250);
 }
 #reminders-subheader {
   font-family: 'Lexend Exa', sans-serif;  
@@ -1130,7 +1307,7 @@ body .success-container {
   /* width: 50%; */
   height: 60%;
   width: 60%;
-  background-color:  #ffedce;
+  background-color: #ffedce;
    /* #213556; */
   /* #ffedce
   #333854 */
@@ -1166,7 +1343,15 @@ body .success-container {
   border: none;
 }
 .space {
+  background-color:   #fffeec;
   padding: 40px 40px;
+}
+.no-reminders {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 60px;
+  color:   #ffedce;
+  text-decoration: underline;
+  padding-top: 50px;
 }
 
 

@@ -663,33 +663,43 @@ def remove_reminder():
     return jsonify({"Success!": "Your reminder has been deleted"})
 
 
-@app.route("/search-meditations")
-def search():
-    """Show search bar to find specific meditations"""
+# @app.route("/search-meditations")
+# def search():
+#     """Show search bar to find specific meditations"""
     
-    # user can search for meditation by title or artist name
+#     # user can search for meditation by title or artist name
 
-    user_email = session.get("user_email")
-    user = crud.get_user_by_email(user_email)
-    user_id = user.user_id
+#     user_email = session.get("user_email")
+#     user = crud.get_user_by_email(user_email)
+#     user_id = user.user_id
     
-    # get all meditations
-    meditations = crud.get_all_meditations_by_user_id(user_id)
+#     # get all meditations
+#     meditations = crud.get_all_meditations_by_user_id(user_id)
 
-    return render_template("search_by_meditations.html", meditations=meditations)
+#     return render_template("search_by_meditations.html", meditations=meditations)
 
 
 @app.route("/meditation-search-results", methods=["POST"])
 def meditation_search_results():
     """Return meditation results from user's submitted keywords"""
 
+    # get the user id of user in session
+    user_email = session.get("user_email")
+    user = crud.get_user_by_email(user_email)
+    user_id = user.user_id
+    
     # get user's search input
     search_input = request.form.get("search-input")
 
     # get track names and artist names that match the user's input string
     search_results = crud.get_meditation_by_search_input(search_input)
+    
+    # Get all of user's favorite meditations
+    fav_meditations = crud.get_fav_meditations_by_user_id(user_id)
+    if not fav_meditations:
+        fav_meditations = []
 
-    return render_template("search_results_meditations.html", search_results=search_results)
+    return render_template("search_results_meditations.html", search_results=search_results, fav_meditations=fav_meditations)
 
 
 @app.route("/search-friends")

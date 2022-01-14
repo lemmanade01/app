@@ -123,7 +123,7 @@ fetch('/journal-data.json')
             monthLabel: {
               fontName: 'Trebuchet MS',
               fontSize: 12,
-              color: '#f36044',
+              color: 'rgb(0,143,104)',
               bold: true
             },
             monthOutlineColor: {
@@ -141,7 +141,7 @@ fetch('/journal-data.json')
             yearLabel: {
               fontName: 'Trebuchet MS',
               fontSize: 40,
-              color: '#213557',
+              color: 'rgb(0,143,104)',
               //color: '#ffb672',
               bold: true,
               //italic: true,
@@ -149,7 +149,8 @@ fetch('/journal-data.json')
             dayOfWeekLabel: {
               fontName: 'Trebuchet MS',
               fontSize: 12,
-              color: '#f36044',
+              color: 'rgb(0,143,104)',
+              // '#f36044',
               //color: '#acc0f3',
               bold: true,
               italic: false,
