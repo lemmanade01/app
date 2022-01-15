@@ -32,7 +32,8 @@ const removeReminder = () => {
                 .then(responseData2 => {
                     console.log('This reminder has been removed from the db');
 
-                    btn.parentElement.parentElement.remove();
+                    // Remove the entire container for the reminder
+                    btn.parentElement.parentElement.parentElement.parentElement.parentElement.remove();
                     console.log('Reminder removed');
 
                     // Does a reminder from the database exist
@@ -41,7 +42,7 @@ const removeReminder = () => {
 
                     // If no, remove the header that states "Your Reminders:"
                     if (exist == false) {
-                        document.querySelector('#reminders-header').remove();
+                        document.getElementById('#reminders-header').remove();
                     }
                 });
     });
@@ -50,7 +51,7 @@ const removeReminder = () => {
 }
 
 // Schedule reminders
-document.getElementById('#submit-reminder').addEventListener('click', (evt) => {
+document.querySelector('#reminders-submit').addEventListener('click', (evt) => {
     evt.preventDefault();
     console.log('Submit button has been clicked!');
 
@@ -177,6 +178,10 @@ document.getElementById('#submit-reminder').addEventListener('click', (evt) => {
                     document.querySelector('.no-reminders').remove();
                 }
                 const add = document.querySelector('.recently-added-reminders');
+
+
+
+
                 // if (!!document.querySelector('.recently-added-reminders') == false && description.length > 0) {
                 //     add.insertAdjacentHTML('afterbegin',
                 //     `<div class="recently-added-reminder">
@@ -229,41 +234,39 @@ document.getElementById('#submit-reminder').addEventListener('click', (evt) => {
                     
                 if (description.length > 0) {
                 document.querySelector('.recently-added-reminders').insertAdjacentHTML('afterbegin',
-                `<div class="recently-added-reminder">
-                    <h3>Your Recently Added Reminders:</h3>
-                    <ul>
-                        <li>Reminder to: ${type} on ${mth} ${day}, ${yr}</li>
-                            <p>Details: ${description}</p>
-                            <button class="remove-reminder" value="${id}">Delete Reminder ${id}</button>
-                    </ul>
-                </div>`)
+                `<div class="recently-added-reminder reminders-scheduler-container">
+                <h3 class="reminders-header">Your Recently Added Reminders:</h3>
+                <div class="display-reminders">
+                    <div class="reminder-info"> ${mth} ${day}, ${yr}</div>
+                    <span class="italics">Reminder to:</span> <span class="reminder-info"> ${type}</span>
+                        <div><span class="italics">Details:</span><span class="reminder-info"> ${description}</span></div>
+                        <button class="remove-reminder" value="${id}">Delete Reminder</button>
+                </div>
+            </div>`)
         
                 removeReminder();  
                 } else {
                     document.querySelector('.recently-added-reminders').insertAdjacentHTML('afterbegin',
-                `<div class="recently-added-reminder">
-                    <h3>Your Recently Added Reminders:</h3>
-                    <ul>
-                        <li>Reminder to: ${type} on ${mth} ${day}, ${yr}</li>
-                            <p>Details: None</p>
-                            <button class="remove-reminder" value="${id}">Delete Reminder ${id}</button>
-                    </ul>
+                    `<div class="recently-added-reminder reminders-scheduler-container">
+                    <h3 class="reminders-header">Your Recently Added Reminders:</h3>
+                    <div class="display-reminders">
+                        <div class="reminder-info"> ${mth} ${day}, ${yr}</div>
+                        <span class="italics">Reminder to:</span> <span class="reminder-info"> ${type}</span>
+                            <div><span class="italics">Details:</span><span class="italics"> None</span></div>
+                            <button class="remove-reminder" value="${id}">Delete Reminder</button>
+                    </div>
                 </div>`)
         
                 removeReminder(); 
                 }    
             });  
     } else {
-        document.getElementById('submit-reminder').addEventListener('click', (evt) => {
-            evt.preventDefault();
-
             const msg = document.querySelector('.missing-field');
-            msg.insertAdjacentHTML('afterbegin', `<span>You must select a current or future date.</span>`);
+            msg.insertAdjacentHTML('afterbegin', `<span id="old-date">You must select a current or future date.</span>`);
 
             const timer = setTimeout( function() {
                 msg.remove();
             }, 5000);
-        });
     }  
 });
     

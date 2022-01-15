@@ -4,7 +4,7 @@ from model import db, User, Journal, Meditation, Notification, Message, Favorite
 import spotify
 import os
 from datetime import datetime
-from sqlalchemy import delete, update
+from sqlalchemy import delete, update, extract
 
 
 def get_user_by_email(email):
@@ -129,9 +129,17 @@ def get_journal_by_search_input(search_input, user_id):
     
     User can retrieve entries by searching by date"""
     
+    # search_results = Journal.query.filter(extract('month', Journal.time_stamp).ilike(f"%{search_input}%"), Journal.user_id==user_id).all()
+        
+
+    search_results = Journal.query.filter(Journal.mnth.ilike(f"%{search_input}%"), Journal.user_id==user_id).all()
+    
     # search_results = Journal.query.filter(Journal.user_id==user_id, Journal.mnth.ilike(f"%{search_input}%"), Journal.time_stamp.day.ilike(f"%{search_input}%"), Journal.time_stamp.year.ilike(f"%{search_input}%")).order_by(Journal.time_stamp.asc()).all()
     
-    search_results = Journal.query.filter(Journal.mnth.ilike(f"{search_input}%"), Journal.user_id==user_id).all()
+    # search_results = Journal.query.filter(Journal.mnth.ilike(f"{search_input}%"), Journal.user_id==user_id).all()
+    
+    # search_results = Journal.query.filter(Journal.time_stamp.month.ilike(f"%{search_input}%") | Journal.time_stamp.day.ilike(f"%{search_input}%") | Journal.time_stamp.year.ilike(f"%{search_input}%"), Journal.user_id==user_id).all()
+    
     
     return search_results
 

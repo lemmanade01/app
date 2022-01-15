@@ -7,7 +7,11 @@
 <div class="jrnl-search-results-container">
   <h1 class="jrnl-search-results-header">Journal Search Results</h1>
 
+
 {% for search_result in search_results %}
+
+<!-- {{ search_result.time_stamp.strftime('%B %-d %Y') }} -->
+
   <div class="row jrnl-search-results">
     <div class="col-12 jrnl-search-container entry">
       <div class="jrnl-search-txt-container">

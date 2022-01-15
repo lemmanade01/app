@@ -17,11 +17,11 @@
  <!-- <h4 id="reminders-subheader">Schedule a reminder</h4> -->
 
   <div class="reminders-scheduler-container">
-    <form id="reminder">
+    <form class="reminder" id="reminder">
       
       <div class="reminders-description">
         <!-- <div><label class="txt-label">Your reminder description:</label></div> -->
-        <input id="reminders-input1" type="text" id="reminder-description" placeholder="Your reminder description...">
+        <input class="reminders-input1" type="text" id="reminder-description" placeholder="Your reminder description...">
       </div><br>
 
       <div class="reminders-type">
@@ -36,7 +36,7 @@
 
       <div class="reminders-time">
         <input type="datetime-local" id="reminder-time" required>
-        <div><button id="reminders-submit" button id="submit-reminder">Submit</button></div>
+        <div><button id="reminders-submit">Submit</button></div>
         <span class="missing-field"></span>
       </div>
       
@@ -52,19 +52,20 @@
   {% endif %}
 
   {% if reminders %}
-  <h3 id="reminders-header">Your Reminders</h3>
+  <h3 class="reminders-header" id="reminders-header">Your Reminders</h3>
   {% for reminder in reminders %}
   <div class="col-lg-4 col-md-6 col-sm-1 display-reminders">
     <div class="reminder">
       <div>
         <div>
-        <span class="italics">Reminder to:</span><span class="reminder-info"> {{reminder.reminder_type}} on {{reminder.date}}</span>
-        </div>
+          <div class="reminder-info">{{reminder.date.strftime('%A, %B %-d, %Y')}}</div>
+          <span class="italics">Reminder to:</span><span class="reminder-info"> {{reminder.reminder_type}}</span>
+          </div>
         <div>
         {% if reminder.description|length > 0 %}
-        <span class="italics">Details:</span><span class="reminder-info"> {{reminder.description}}</span>
+        <span class="italics">Details:</span><span class="italics"> {{reminder.description}}</span>
         {% elif reminder.description|length == 0 %}
-        <span class="italics">Details:</span><span class="reminder-info">None</span>
+        <span class="italics">Details:</span><span class="italics"> None</span>
         {% endif %}
         <div><button class="remove-reminder" value="{{reminder.notification_id}}">Delete Reminder</button></div>
         </div>

@@ -512,6 +512,8 @@ def display_journal_search_results():
     user_email = session.get("user_email")
     user = crud.get_user_by_email(user_email)
     user_id = user.user_id
+    # Get all user's journals
+    journals = crud.get_journal_entries_ordered_by_date(user_id)
     
     # Get user's journal search input
     search_input = request.form.get("journal-search").lower()
@@ -523,7 +525,7 @@ def display_journal_search_results():
     
     # date = crud.get_journal_by_date
     
-    return render_template("search_results_journals.html", search_results=search_results, search_input=search_input)
+    return render_template("search_results_journals.html", search_results=search_results, search_input=search_input, journals=journals)
 
 
 

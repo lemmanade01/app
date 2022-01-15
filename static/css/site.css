@@ -1345,6 +1345,7 @@ body .reminders-container {
   background-repeat: repeat;
   text-align: center;
   height: 100vh;
+  height: 100%;
 }
 #reminders-title {
   font-family: 'Krona One', sans-serif;
@@ -1359,7 +1360,7 @@ body .reminders-container {
   margin-right: 300px;
   padding-bottom: 80px;
 }
-#reminders-input1, #reminder-type, #reminder-time {
+.reminders-input1, #reminder-type, #reminder-time {
   font-family: 'Spartan', sans-serif;
   /* width: 800px; */
   width: 70%;
@@ -1377,7 +1378,7 @@ body .reminders-container {
   text-indent: 13px;
   /* border-radius: 50px 50px; */
 }
-#reminders-input1::placeholder {
+.reminders-input1::placeholder {
   color:rgb(0,143,104);
 }
 #reminders-submit {
@@ -1408,7 +1409,7 @@ body .reminders-container {
   color:  #ffedce;
   padding-bottom: 20px;
 }
-#reminders-header {
+.reminders-header {
   font-family: 'Lexend Exa', sans-serif;
   font-size: 40px;
   margin-top: 50px;
@@ -1419,8 +1420,8 @@ body .reminders-container {
 .display-reminders {
   flex: 0 0 auto;
   /* width: 50%; */
-  height: 60%;
-  width: 60%;
+  height: 30%;
+  width: 85%;
   background-color: #ffedce;
    /* #213556; */
   /* #ffedce
@@ -1428,7 +1429,12 @@ body .reminders-container {
   border-radius: 100px;
   display: inline-block;
   padding-top: 30px;
+  padding-right: 20px;
   padding-bottom: 30px;
+  padding-left: 20px;
+}
+.reminder {
+  padding-top: 30px;
 }
 .italics {
   font-family: 'Cormorant Garamond', serif;
@@ -1436,6 +1442,7 @@ body .reminders-container {
 }
 .reminder-info {
   font-family: 'Lexend Exa', sans-serif;
+  /* font-family: 'Cormorant Garamond', serif; */
   font-size: 30px;
 }
 .remove-reminder {
@@ -1463,9 +1470,16 @@ body .reminders-container {
 .no-reminders {
   font-family: 'Cormorant Garamond', serif;
   font-size: 60px;
-  color:   #ffedce;
+  color: #ffedce;
   text-decoration: underline;
   padding-top: 50px;
+}
+#old-date {
+  font-family: 'Montserrat', sans-serif;
+  color: rgb(255, 160, 250);
+  font-size: 20px;
+  text-align: center;
+  margin-top: 30px;
 }
 
 
