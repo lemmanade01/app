@@ -483,7 +483,7 @@ def get_journal_data():
         return jsonify(journal_entries_dict)
     
     else:
-        return jsonify({"Response": "No journal entries exist"})
+        return jsonify({"results": "none"})
 
 
 @app.route("/journal-success")
@@ -504,29 +504,95 @@ def show_submission_success():
     return render_template("journal_success.html", count=count)
 
 
-@app.route("/journal-search-results", methods=["POST"])
-def display_journal_search_results():
-    """Get and return journal entries that match dates user searches by"""
+@app.route("/journal-date-results.json", methods=["POST"])
+def display_journal_date_results():
     
     # Get user in session
     user_email = session.get("user_email")
     user = crud.get_user_by_email(user_email)
     user_id = user.user_id
-    # Get all user's journals
-    journals = crud.get_journal_entries_ordered_by_date(user_id)
     
-    # Get user's journal search input
-    search_input = request.form.get("journal-search").lower()
+    jrnl_input_date = request.json.get("date")
+    # print(jrnl_date)
+    # date_object = datetime.strptime(jrnl_date, "%Y-%m-%d")
+    # print(date_object)
     
-    # Get journal entries in ascending chronological order that match user's input
-    search_results = crud.get_journal_by_search_input(search_input, user_id)
+    # date_object = request.json.get("date")
+    
+    # jrnl_results = crud.get_journal_by_search_input(date_object, user_id)
+    
+    # Get all journal entries
+    jrnl_results = crud.get_all_journal_entries(user_id)
+    
+    if jrnl_results:
+        journal_search_data = {}
+         
+        for journal_entry in jrnl_results:
+            jrnl_date = journal_entry.time_stamp
+            date = jrnl_date.strftime("%Y-%m-%d")
+            # jrnl_date = journal_entry.time_stamp.split(" ")
+            # date = jrnl_date[0]
+            if date == jrnl_input_date:
+                 
+                # Get each journal's journal id
+                journal_id = journal_entry.journal_id
+                    
+                # Create a nested dictionary where journal id is the key to a dictionary containing that journal's attributes through key/value pairs
+                journal_search_data[journal_id] = {
+                    "scale": journal_entry.scale,
+                    "mood": journal_entry.mood,
+                    "color": journal_entry.color,
+                    "gratitude_1": journal_entry.gratitude_1,
+                    "gratitude_2": journal_entry.gratitude_2,
+                    "gratitude_3": journal_entry.gratitude_3,
+                    "journal_input": journal_entry.journal_input,
+                    "time_stamp": journal_entry.time_stamp,
+                    "mnth": journal_entry.mnth
+                }
+                # Mnth without the O represents the month spelled with letters
+                # .month is a datetime attribute that represents the month by integer
 
-    # all_datetimes = crud.get_journal_entries_ordered_by_date(user_id)  
+        # Return a jsonified form of this nested dictionary
+        return jsonify(journal_search_data)
+                    
+    else:
+        return jsonify({"results": "none"})
     
-    # date = crud.get_journal_by_date
     
-    return render_template("search_results_journals.html", search_results=search_results, search_input=search_input, journals=journals)
+    
+    # print(date_str)
+    # print("******************")
+    # # convert date string to a different date and time order
+    # date = date_str.strftime("%m/%d/%Y, %H:%M:%S")
+    # print(date)
+    
+    
+    # return jsonify({})
 
+    
+# @app.route("/journal-search-results.json", methods=["POST"])
+# def display_journal_search_results():
+#     """Get and return journal entries that match dates user searches by"""
+    
+#     # Get user in session
+#     user_email = session.get("user_email")
+#     user = crud.get_user_by_email(user_email)
+#     user_id = user.user_id
+#     # Get all user's journals
+#     journals = crud.get_journal_entries_ordered_by_date(user_id)
+    
+#     # Get user's journal search input
+#     search_input = request.form.get("journal-search").lower()
+    
+#     # Get journal entries in ascending chronological order that match user's input
+#     search_results = crud.get_journal_by_search_input(search_input, user_id)
+
+#     # all_datetimes = crud.get_journal_entries_ordered_by_date(user_id)  
+    
+#     # date = crud.get_journal_by_date
+    
+#     # return render_template("search_results_journals.html", search_results=search_results, search_input=search_input, journals=journals)
+#     return jsonify({})
 
 
 # @app.route("/journal-submission")

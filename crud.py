@@ -124,16 +124,21 @@ def get_journal_entries_ordered_by_date(user_id):
     return journal_entries
 
 
-def get_journal_by_search_input(search_input, user_id):
+def get_journal_by_search_input(date_object, user_id):
     """Order chronologically and return all journal entries that match user's search input
     
     User can retrieve entries by searching by date"""
     
-    # search_results = Journal.query.filter(extract('month', Journal.time_stamp).ilike(f"%{search_input}%"), Journal.user_id==user_id).all()
-        
+    search_results = Journal.query.filter(func.date(Journal.time_stamp) == date_object).all()
 
-    search_results = Journal.query.filter(Journal.mnth.ilike(f"%{search_input}%"), Journal.user_id==user_id).all()
     
+    # search_results = Journal.query.filter(Journal.time_stamp.ilike(f"%{date_object}%"), Journal.user_id==user_id).all()
+    
+    # search_results = Journal.query.filter(Journal.mnth.ilike(f"%{search_input}%"), Journal.user_id==user_id).all()
+
+    
+    # search_results = Journal.query.filter(extract('month', Journal.time_stamp).ilike(f"%{search_input}%"), Journal.user_id==user_id).all()
+            
     # search_results = Journal.query.filter(Journal.user_id==user_id, Journal.mnth.ilike(f"%{search_input}%"), Journal.time_stamp.day.ilike(f"%{search_input}%"), Journal.time_stamp.year.ilike(f"%{search_input}%")).order_by(Journal.time_stamp.asc()).all()
     
     # search_results = Journal.query.filter(Journal.mnth.ilike(f"{search_input}%"), Journal.user_id==user_id).all()

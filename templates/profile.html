@@ -31,7 +31,7 @@
     <div class="col-lg-12 mood-chart" id="calendar_basic"></div>
     </div>
  
-    <div class="search-container">
+    <!-- <div class="search-container">
       <h3 class="profile-subheader">Your past reflections</h3>
       <div class="journal-search-container">
         <form action="/journal-search-results" method="POST">
@@ -40,8 +40,22 @@
           <button class="journal-search">View all Journal Entries</button>
         </form>
       </div>
-  </div>
+  </div> -->
 
+    <div class="search-container">
+      <h3 class="profile-subheader">Your past reflections</h3>
+      <div class="journal-search-container">
+        <div class="reminders-time"   id="jrnl-search">
+          <span>
+            Search for Journal Entry by date:
+          </span>
+    
+          <input type="date" id="jrnl-search-by-date" required>
+          <button class="journal-search" id="jrnl-search-submit">Submit</button>
+    
+          <button class="journal-search" id="all-jrnls">View all Journal Entries</button>
+        </div>
+      
 
   <div id="display-entries-container"></div>
 </div>
@@ -51,6 +65,7 @@
 
 {% block script %}
 <script src="/static/js/journal.js"></script>
+<script src="/static/js/journal_search.js"></script>
 {% endblock %}
 
 
