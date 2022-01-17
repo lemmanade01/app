@@ -31,7 +31,7 @@ for (const heartBtn of heartBtns) {
         const heartBtnClasses = heartBtnClicked.classList;
         let url = '/favorite.json';
 
-        // The element ithe event came from
+        // The element the event came from
         // const button = evt.target;
      
         // When a button has been clicked, check to see if its class value is 'btn-light'
@@ -63,9 +63,22 @@ for (const heartBtn of heartBtns) {
                         heartBtnClasses.remove('btn-dark');
                         heartBtnClasses.add('btn-light');
                         url = '/remove-favorite.json';
+
+                        heartBtn.parentElement.parentElement.remove();
+
+                        fetch('/remove-favorite.json', {
+                            method: 'POST',
+                            body: JSON.stringify(favMeditation),
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            // Return the promised response in JSON
+                        }).then(response => response.json())
+                            .then(responseJson => {
+                                console.log(responseJson);
+                            });
                     }
 
-                    console.log(responseJson);
                 });
     });
 }

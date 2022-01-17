@@ -1320,6 +1320,10 @@ body .favorites-container {
   border: none;
   text-decoration: none;
 }
+.bi-heart {
+  /* ensure svg will never be the target of mouse event */
+  pointer-events: none;
+}
 .fav-num {
   font-family: 'Cormorant Garamond', serif;
   font-size: 50px;
