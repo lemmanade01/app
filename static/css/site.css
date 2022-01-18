@@ -85,12 +85,16 @@ body .account-container {
   background-color: #fffeec;
   background-size: cover;
   background-repeat: repeat;
-  text-align: center;
+  /* text-align: center; */
   height: 100vh;
 }
 .account-container {
   text-align: center;
   padding-top: 30px;
+}
+.row.account {
+  display: inline-flex;
+  justify-content: center;
 }
 #account-title {
   font-family: 'Trirong', serif;
@@ -104,8 +108,8 @@ body .account-container {
   margin-bottom: 20px;
 }
 .inputs-container {
-  justify-content: center;
-  display: inline-block;
+  /* justify-content: center;
+  display: inline-block; */
   padding-bottom: 40px;
   /* This needs to be fixed -- it needs to be scaleable and centered */
 }
@@ -150,6 +154,7 @@ input[type=password]:valid {
   text-align: center;
   margin: 4px 2px;
   border-radius: 50px 50px;
+  justify-content: center;
 }
 #account-btn:hover {
   background: -webkit-linear-gradient(rgb(255, 160, 250), rgba(235, 82, 21, 0.803));
@@ -247,7 +252,7 @@ input:-webkit-autofill {
 
 /* Quotes page */
 body .container {
-  background: url('/static/img/faded-sphere.jpg') no-repeat center center;
+  background: url('/static/img/faded-sphere copy.jpg') no-repeat center center;
   background-size: cover;
   width: 100%;
   /* height: 100%; */
@@ -836,10 +841,14 @@ body .profile-container {
   text-align: center;
 }
 .profile-subheader {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Krona One', sans-serif;
+  font-size: 45px;
+  padding-top: 20px;
+  color: black;
+  /* font-family: 'Cormorant Garamond', serif;
   font-size: 60px;
-  padding-top: 30px;
-  padding-bottom: 50px;  
+  /* padding-top: 30px;  */
+  padding-bottom: 40px;
   /* text-decoration: underline; */
 }
 .profile-text {
@@ -853,6 +862,9 @@ body .profile-container {
   color: rgb(0,143,104);
   /* color: #f36044; */
 }
+.col-lg-12.mood-chart {
+  padding-left: 350px;
+}
 .profile-link:hover {
   color: rgb(255, 0, 225);
 }
@@ -862,6 +874,25 @@ body .profile-container {
 #journal-search-field {
   width: 600px;
   height: 50px
+}
+.jrnl-search {
+  font-family: 'Lexend Exa', sans-serif;
+  font-size: 23px;
+  padding-bottom: 20px;
+}
+#jrnl-search-by-date {
+  font-family: 'Spartan', sans-serif;
+  background-color: transparent;
+  outline: .3px solid black;
+  color: black;
+  padding: 10px 15px;
+  text-align: center;
+  margin: 4px 2px 4px 2px;
+  border-radius: 50px 50px;
+}
+#all-jrnl-search {
+  font-family: 'Lexend Exa', sans-serif;
+  font-size: 20px;
 }
 .journal-search {
   font-family: 'Spartan', sans-serif;
@@ -1170,17 +1201,25 @@ body .profile-container {
 
 
 /* Journal Success Page */
-body .success-container {
-  background: url('/static/img/sphere.jpg') no-repeat center center;
+body .container.success {
+  background: url('/static/img/sphere copy.jpg') no-repeat center center;
   background-size: cover;
   width: 100%;
   max-width: none;
+  height: 100vh;
 }
+/* body .success-container {
+  background: -webkit-linear-gradient(rgba(233, 237, 174, 0.981), rgba(160, 197, 252, 0.803));
+  background-size: cover;
+  width: 100%;
+  height: 100vh;
+  max-width: none; 
+} */
 .success-header {
   font-family: 'Krona One', sans-serif;
   font-size: 65px;
   text-align: center;
-  padding-top: 300px;
+  padding-top: 350px;
   padding-right: 60px;
   padding-left: 60px;
 }
@@ -1225,11 +1264,12 @@ body .jrnl-search-no-entries {
 .row.jrnl-search-results {
   justify-content: center;
 }
-.col-12 {
+.col-12.jrnl-search-container {
   flex: 0 0 auto;
   height: 450px;
   width: 1000px;
-  background-color:  #ffedce;
+  background-color: rgb(33, 53, 87);
+  /* color: #ffedce; */
   border-radius: 100px;
   display: inline-block;
   margin-top: 40px;
@@ -1241,16 +1281,19 @@ body .jrnl-search-no-entries {
   font-family: 'Cormorant Garamond', serif;
   font-size: 45px;
   text-decoration: underline;
+  color: #fffeec;
 }
 .jrnl-search-mood, .jrnl-search-gratitude-list {
   font-family: 'Montserrat', sans-serif;
-  color: black;
+  color: #fffeec;
+  /* color: black; */
   font-size: 20px;
   text-align: center;
   margin-top: 30px;
 }
-.list, .jrnl-search-notes {
+.list, .jrnl-search-notes, .jrnl-search-notes-header {
   font-family: 'Spartan', sans-serif;
+  color: #fffeec;
 }
 
 

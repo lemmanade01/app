@@ -39,7 +39,7 @@
     </p>
     {% endfor %}
     <div class="account-container">
-    <section>
+  
         <form class="account-form" action="/handle-create-account" method="POST">
             <div id="account-title">Create an Account:</div>
 
@@ -47,19 +47,19 @@
 
             <div id="required-fields"><small><em>*Please fill in the required fields</em></small></div><br>
             <div class="inputs-container">
-            <div class="row">
+            <div class="row account">
                 <div class="col-lg-6 col-md-1 create-accnt">
                     <input class="create" id="group1" type="text" name="fname" placeholder="First Name*" required>
                     <input class="create" id="group2" type="text" name="lname" placeholder="Last Name*" required>
                 </div>
             </div>
-            <div class="row">
+            <div class="row account">
                 <div class="col-lg-6 col-md-1">
                     <input class="create" type="email" name="email" placeholder="Email Address" id="email*" size="50" required>
                     <input class="create" type="tel" name="phone-num" placeholder="Phone Number*" pattern="[0-9]{10}" required>
                 </div>
             </div>
-            <div class="row">
+            <div class="row account">
                 <div class="col-lg-6 col-md-1">
                     <input class="create" type="password" name="password" placeholder="Password* (8+ characters)" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
                     <input class="create" id="personal-quote" name="quote" placeholder="Enter your favorite mantra (optional)">
@@ -67,9 +67,12 @@
             </div>
         </div>
 
+        <div class="row account">
+          <div class="col-12 accnt">
             <button id="account-btn" type="submit"><strong>Create Account</strong></button>
-        </form>
-      </section>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 </body>

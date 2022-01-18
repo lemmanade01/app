@@ -88,6 +88,7 @@ app.jinja_env.undefined = StrictUndefined
 #     authorize_url='https://accounts.spotify.com/authorize'
 # )
 
+
 @app.route("/")
 def show_homepage():
     """Return homepage."""
@@ -125,6 +126,9 @@ def process_create_account():
     # elif not re.match("/\d{3}\-\d{3}\-\d{4}/", phone_num):
     #     flash("Please enter a 10 digit phone number, including your area code")
     #     return redirect("/create-account")
+    
+    # twilio regex, but will also match numbers that are not a valid phone number
+    # ^\+[1-9]\d{1,14}$
   
     # phone_num = phone_num.split("-")
     # phone_num = f"{phone_num[0]}{phone_num[1]}{phone_num[2]}"

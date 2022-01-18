@@ -43,19 +43,32 @@
   </div> -->
 
     <div class="search-container">
-      <h3 class="profile-subheader">Your past reflections</h3>
+      <h3 class="profile-subheader">Your Past Reflections</h3>
       <div class="journal-search-container">
-        <div class="reminders-time"   id="jrnl-search">
-          <span>
-            Search for Journal Entry by date:
-          </span>
-    
-          <input type="date" id="jrnl-search-by-date" required>
-          <button class="journal-search" id="jrnl-search-submit">Submit</button>
-    
-          <button class="journal-search" id="all-jrnls">View all Journal Entries</button>
+        <div class="row">
+          <div class="col-lg-2"></div>
+          <div class="col-lg-4 col-sm-12 reminders-time" id="jrnl-search">
+            <div class="jrnl-search">
+              Search for Journal Entry by date:
+            </div>
+              <div>
+                <input type="date" id="jrnl-search-by-date" required>
+                <button class="journal-search" id="jrnl-search-submit">Submit</button>
+              </div>
+            </div>
+
+          <div class="col-lg-4 col-sm-12 all-jrnls">
+            <div class="jrnl-search">
+              View all Journal Entries:
+            </div>
+            <div id="all-jrnl-search">
+              <div><button class="journal-search" id="all-jrnls">View All</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-2"></div>
         </div>
-      
 
   <div id="display-entries-container"></div>
 </div>

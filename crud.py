@@ -7,6 +7,14 @@ from datetime import datetime
 from sqlalchemy import delete, update, extract
 
 
+def get_all_user_ids():
+    """Get and reutrn all user ids"""
+    
+    user_ids = User.query(User.user_id).all()
+    
+    return user_ids
+
+    
 def get_user_by_email(email):
     """Get and return user's email."""
 
@@ -167,7 +175,7 @@ def create_meditations(user_id):
     # access function from spotiy.py to retrieve the data from my spotify playlist
     # pass through username and playlist_id
     results = spotify.get_playlist_tracks(spotify_username, spotify_playlist)
-    print(results)
+    # print(results)
     
     # each result is a track_key
     for result in results:
