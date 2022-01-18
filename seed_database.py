@@ -17,21 +17,22 @@ model.connect_to_db(server.app)
 model.db.create_all()
 
 # Create a mock user
-fname = "Emma"
-lname = "Lyddon"
-email = "elyddon@gmail.com"
-phone_num = "4803858041"
+fname = "Ava"
+lname = "Williams"
+email = "ava34@gmail.com"
+phone_num = "3105556710"
 password = "Monkay1391"
 quote = " "
 
 user = crud.create_user(fname, lname, email, phone_num, password, quote)
+crud.create_meditations(1)
 
 
 # Create user's favorites
-meditation_id = 29
-user_id = 1
+# meditation_id = 29
+# user_id = 1
 
-fav = crud.create_favorite(meditation_id, user_id)
+# fav = crud.create_favorite(meditation_id, user_id)
 
 # Create user's journal entries
 with open("data/mock_journal_entries.json") as f:
@@ -103,49 +104,17 @@ with open("data/wellness_tips.json") as f:
         db_wellness_tip = crud.create_wellness_tip(tip_id, wellness_tip, source)
         wellness_tips_in_db.append(db_wellness_tip)
         
-        
-        
-        
-
-# Create 10 users
-# for n in range(10):
-#     email = f"user{n}@test.com"
-#     password = "test"
-
-#     user = crud.create_user("Bob"+ str(n) ,  "Obo" + str(n) , email, "",password, "Hi")
-
-
-
-
-# create mock meditations with .json file
-# with open("data/meditations.json") as f:
-#     meditation_data = json.loads(f.read())
-
-#     meditations_in_db = []
-#     for meditation in meditation_data:
-#         track_name, artist_name, image_url, spotify_url, preview_link, user_id = (
-#             meditation["track_name"],
-#             meditation["artist_name"],
-#             meditation["image_url"],
-#             meditation["spotify_url"],
-#             meditation["preview_link"],
-#             meditation["user_id"],
-#         )   
-
-#     db_meditation = crud.create_meditations(track_name, artist_name, image_url, spotify_url, preview_link, 1)
-#     meditations_in_db.append(db_meditation)
     
     
-    
-# Store Spotify track data into database
+# # Store Spotify track data into database
 # username = os.environ["SPOTIFY_USERNAME"]
 # playlist_id = os.environ["SPOTIFY_PLAYLIST_ID"]
 
 # playlist_tracks = spotify.get_playlist_tracks(username, playlist_id)
 
-# for track_dict in playlist_tracks:
-#     print(track)
-#     print("**************")
+# # for track_dict in playlist_tracks:
+# #     print(track)
+# #     print("**************")
 
 # def get_playlist_tracks(username, playlist_id):
 #     """get and return playlist track data from a specific playlist on my Spotify"""
@@ -175,3 +144,34 @@ with open("data/wellness_tips.json") as f:
    
 #     # return the dictionary
 #     return playlist_tracks
+
+
+
+
+# Create 10 users
+# for n in range(10):
+#     email = f"user{n}@test.com"
+#     password = "test"
+
+#     user = crud.create_user("Bob"+ str(n) ,  "Obo" + str(n) , email, "",password, "Hi")
+
+
+
+# create mock meditations with .json file
+# with open("data/meditations.json") as f:
+#     meditation_data = json.loads(f.read())
+
+#     meditations_in_db = []
+#     for meditation in meditation_data:
+#         track_name, artist_name, image_url, spotify_url, preview_link, user_id = (
+#             meditation["track_name"],
+#             meditation["artist_name"],
+#             meditation["image_url"],
+#             meditation["spotify_url"],
+#             meditation["preview_link"],
+#             meditation["user_id"],
+#         )   
+
+#     db_meditation = crud.create_meditations(track_name, artist_name, image_url, spotify_url, preview_link, 1)
+#     meditations_in_db.append(db_meditation)
+    

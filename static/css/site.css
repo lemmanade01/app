@@ -356,7 +356,6 @@ body .container {
 }
 
 
-
 /* Suggested Meditation Page */
 body .suggested-meditation-container {
   background: -webkit-linear-gradient(rgba(233, 237, 174, 0.981), rgba(160, 197, 252, 0.803));
@@ -1202,11 +1201,17 @@ body .profile-container {
 
 /* Journal Success Page */
 body .container.success {
-  background: url('/static/img/sphere copy.jpg') no-repeat center center;
+  background: -webkit-linear-gradient(rgb(255, 160, 242), rgba(160, 197, 252, 0.803));
   background-size: cover;
   width: 100%;
-  max-width: none;
   height: 100vh;
+  max-width: none; 
+  background-color
+  /* background: url('/static/img/sphere copy.jpg') no-repeat center center;
+  background-size: cover; */
+  /* width: 100%;
+  max-width: none;
+  height: 100vh; */
 }
 /* body .success-container {
   background: -webkit-linear-gradient(rgba(233, 237, 174, 0.981), rgba(160, 197, 252, 0.803));
@@ -1291,9 +1296,25 @@ body .jrnl-search-no-entries {
   text-align: center;
   margin-top: 30px;
 }
-.list, .jrnl-search-notes, .jrnl-search-notes-header {
+.list {
   font-family: 'Spartan', sans-serif;
   color: #fffeec;
+  padding-right: 80px;
+  padding-left: 80px;
+}
+.jrnl-search-notes-header {
+  font-family: 'Spartan', sans-serif;
+  color: #fffeec;
+  padding-right: 80px;
+  padding-left: 80px;
+  text-decoration: underline;
+}
+.jrnl-search-notes {
+  font-family: 'Spartan', sans-serif;
+  color: #fffeec;
+  padding-right: 80px;
+  padding-bottom: 35px;
+  padding-left: 80px;
 }
 
 
@@ -1392,7 +1413,7 @@ body .reminders-container {
   background-repeat: repeat;
   text-align: center;
   height: 100vh;
-  height: 100%;
+  /* height: 100%; */
 }
 #reminders-title {
   font-family: 'Krona One', sans-serif;
