@@ -9,91 +9,66 @@
     <h2 id="reminders-title">Let's make mindfulness a habit!</h2>
   </div>
 
-<!-- <div id="app-calendar"></div> -->
-
-<!-- <div> <iframe src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%23ffffff&ctz=America%2FLos_Angeles&title=Mindful%20Moments%20Reminders&src=ZW4udXNhI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&color=%237986CB" style="border:solid 1px #777" width="800" height="600" frameborder="0" scrolling="no"></iframe>
-</div> -->
-
- <!-- <h4 id="reminders-subheader">Schedule a reminder</h4> -->
-
   <div class="reminders-scheduler-container">
     <form class="reminder" id="reminder">
-      
-      <div class="reminders-description">
-        <!-- <div><label class="txt-label">Your reminder description:</label></div> -->
-        <input class="reminders-input1" type="text" id="reminder-description" placeholder="Your reminder description...">
-      </div><br>
+    <div class="reminders-description">
+      <input class="reminders-input1" type="text" id="reminder-description" placeholder="Your reminder description...">
+    </div><br>
 
-      <div class="reminders-type">
-        <!-- <div><label class="txt-label">Reminder type:</label></div> -->
-        <select name="reminder-type" id="reminder-type" placeholder="Reminder Type">
-          <option name="meditate" value="Meditate">Meditate</option>
-          <option name="journal" value="Journal">Journal</option>
-          <option name="meditate-and-journal" value="Meditate and Journal">Meditate and Journal</option>
-          <option name="inspirational-message" value="Inspirational Message">Inspirational Message</option>
-        </select>
-      </div><br>
+    <div class="reminders-type">
+      <select name="reminder-type" id="reminder-type" placeholder="Reminder Type">
+        <option name="meditate" value="Meditate">Meditate</option>
+        <option name="journal" value="Journal">Journal</option>
+        <option name="meditate-and-journal" value="Meditate and Journal">Meditate and Journal</option>
+        <option name="inspirational-message" value="Inspirational Message">Inspirational Message</option>
+      </select>
+    </div><br>
 
-      <div class="reminders-time">
-        <input type="datetime-local" id="reminder-time" required>
-        <div><button id="reminders-submit">Submit</button></div>
+    <div class="reminders-time">
+      <input type="datetime-local" id="reminder-time" required>
+        <div><button id="reminders-submit">Submit</button>
+        </div>
         <span class="missing-field"></span>
-      </div>
-      
+    </div>   
     </form>
   </div>
-
 
   <div class="recently-added-reminders"></div>
 
   <!--Reminders appear chronologially with closest date at the top-->
-  {% if reminders|length == 0 %}
-  <h5 class="no-reminders">You have no upcoming reminders</h5>
-  {% endif %}
+    {% if reminders|length == 0 %}
+    <h5 class="no-reminders">You have no upcoming reminders</h5>
+    {% endif %}
 
-  {% if reminders %}
-  <h3 class="reminders-header" id="reminders-header">Your Reminders</h3>
-  {% for reminder in reminders %}
-  <div class="col-lg-4 col-md-6 col-sm-1 display-reminders">
-    <div class="reminder">
-      <div>
-        <div>
-          <div class="reminder-info">{{reminder.date.strftime('%A, %B %-d, %Y')}}</div>
-          <span class="italics">Reminder to:</span><span class="reminder-info"> {{reminder.reminder_type}}</span>
+      {% if reminders %}
+      <h3 class="reminders-header" id="reminders-header">Your Reminders</h3>
+      {% for reminder in reminders %}
+      <div class="col-lg-4 col-md-6 col-sm-1 display-reminders">
+        <div class="reminder">
+          <div>
+            <div>
+              <div class="reminder-info">{{reminder.date.strftime('%A, %B %-d, %Y')}}</div>
+              <span class="italics">Reminder to:</span><span class="reminder-info"> {{reminder.reminder_type}}</span>
+            </div>
+            <div>
+            {% if reminder.description|length > 0 %}
+              <span class="italics">Details:</span><span class="italics"> {{reminder.description}}</span>
+            {% elif reminder.description|length == 0 %}
+              <span class="italics">Details:</span><span class="italics"> None</span>
+            {% endif %}
+              <div><button class="remove-reminder" value="{{reminder.notification_id}}">Delete Reminder</button></div>
+              </div>
+            </div>
           </div>
-        <div>
-        {% if reminder.description|length > 0 %}
-        <span class="italics">Details:</span><span class="italics"> {{reminder.description}}</span>
-        {% elif reminder.description|length == 0 %}
-        <span class="italics">Details:</span><span class="italics"> None</span>
-        {% endif %}
-        <div><button class="remove-reminder" value="{{reminder.notification_id}}">Delete Reminder</button></div>
         </div>
-    </div>
-      <!-- <div>
-          <p class="reminder-info"><p class="italics">Reminder to:</p> {{reminder.reminder_type}} on {{reminder.date}}</p>
-          {% if reminder.description|length > 0 %}
-          <p class="reminder-info"><p class="italics">Details:</p> {{reminder.description}}</p>
-          {% elif reminder.description|length == 0 %}
-          <p>Details: None</p>
-          {% endif %}
-          <button class="remove-reminder" value="{{reminder.notification_id}}">Delete Reminder</button>
-      </div> -->
-  </div>
-  </div>
 
-
-{% endfor %}
-{% endif %}
-<div class="space"></div>
-</div>
-
-
+        {% endfor %}
+        {% endif %}
+        <div class="space"></div>
+      </div>
 
 {% endblock %}
 
 {%block script%}
 <script src="/static/js/reminders.js"></script>
 {%endblock%}
-
-<!--how to slice with jinja >>> {{reminder.reminder_type[:4]}} -->

@@ -7,10 +7,7 @@
 <div class="jrnl-search-results-container">
   <h1 class="jrnl-search-results-header">Journal Search Results</h1>
 
-
 {% for search_result in search_results %}
-
-<!-- {{ search_result.time_stamp.strftime('%B %-d %Y') }} -->
 
   <div class="row jrnl-search-results">
     <div class="col-12 jrnl-search-container entry">
@@ -18,26 +15,23 @@
         <h5 class="jrnl-search-date class">{{ search_result.mnth}} {{ search_result.time_stamp.day}}, {{ search_result.time_stamp.year }}</h5>
         <p class="jrnl-search-mood mood">Today you felt <strong>{{ search_result.mood }}</strong> and selected a <strong>{{search_result.scale}}</strong> on the wellness scale</p>
         <p class="jrnl-search-gratitude-list">Your Gratitude List:</p>
-          <p class="list">1. {{ search_result.gratitude_1 }}</p>
-          <p class="list">2. {{ search_result.gratitude_1 }}</p>
-          <p class="list">3. {{ search_result.gratitude_1 }}</p>
+        <p class="list">1. {{ search_result.gratitude_1 }}</p>
+        <p class="list">2. {{ search_result.gratitude_1 }}</p>
+        <p class="list">3. {{ search_result.gratitude_1 }}</p>
         <h5 class="jrnl-search-notes-header">Observations and Notes:</h5>
         <p class="jrnl-search-notes">{{ search_result.journal_input }}</p>
       </div>
     </div><br>
   </div>
 
-
 {% endfor %}
 
 {% if search_results|length == 0 %}
-<div class="jrnl-search-no-entries">
-  <div class="jrnl-search-no-entries">No journal entries match your input</div>
-</div>
+  <div class="jrnl-search-no-entries">
+    <div class="jrnl-search-no-entries">No journal entries match your input</div>
+  </div>
 {% endif %}
 
 </div>
 
 {% endblock %}
-
-<!--   <div>There are no journal entries on this day</div> -->

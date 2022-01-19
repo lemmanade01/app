@@ -13,34 +13,26 @@ for (const moodBtn of moodBtnsArr) {
     // If a mood button is clicked
     moodBtn.addEventListener('click', (evt) => {
         evt.preventDefault();
-        console.log('The mood button has been clicked')
-        // // Disable all mood buttons when one is selected
-        // if (moodBtn.disabled == false){
+        // console.log('The mood button has been clicked')
+        // Disable all mood buttons when one is selected
         for (const mdBtn of moodBtns) {
             mdBtn.disabled = true;
         }
-      
-        
-        // const timeStamps = new Date();
-        // console.log(timeStamps);
-        // const parsedDateTimes = Date.parse(timeStamps)
-        // console.log(parsedDateTimes);
 
-
-        console.log('The mood buttons have been disabled');
+        // console.log('The mood buttons have been disabled');
 
         // Get the value of that specific mood button
         const moodBtnValue = moodBtn.value;
-        console.log(moodBtnValue);
+        // console.log(moodBtnValue);
         
-        // separate the two values stored in its value
+        // Separate the two values stored in its value
         const moodBtnValuesArr = moodBtnValue.split(' ');
         const moodValue = moodBtnValuesArr[0];
         selectedBtnValues.push(moodValue);
-        console.log('mood: ', moodValue);
+        // console.log('mood: ', moodValue);
         const hexValue = moodBtnValuesArr[1];
         selectedBtnValues.push(hexValue);
-        console.log('hex: ', hexValue);
+        // console.log('hex: ', hexValue);
 
         document.querySelector('.selected-mood').innerHTML = `I am feeling <strong>${moodValue}</strong>.`
     })
@@ -54,7 +46,7 @@ journalSubmission.addEventListener('click', (evt) => {
     fetch('journal-check.json')
         .then(response => response.json())
         .then(responseData => {
-            console.log(responseData);
+            // console.log(responseData);
             const count = responseData['count'];
             // THIS COUNT IS INCORRECT! FIX IN CRUD.PY AND CORRECT ON SERVER SIDE
             if (count >= 1) {
@@ -77,7 +69,7 @@ journalSubmission.addEventListener('click', (evt) => {
                 const gratitude3 = document.querySelector('#gratitude-3').value;
             
                 const journal = document.querySelector('.journal-field').value;
-                console.log('Journal Input:', journal);
+                // console.log('Journal Input:', journal);
             
                 const journalValues = {
                     scale: scale,
@@ -88,20 +80,20 @@ journalSubmission.addEventListener('click', (evt) => {
                     gratitude3: gratitude3,
                     journal: journal
                 };
-                console.log(journalValues);
+                // console.log(journalValues);
             
-                // send a fetch request to the '/journal.json' route so that journal entry can be created on the back-end and stored in the database
+                // Send a fetch request to the '/journal.json' route so that journal entry can be created on the back-end and stored in the database
                 fetch('/journal.json', {
                     method: 'POST',
                     body: JSON.stringify(journalValues),
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    // return the promised response in JSON
+                    // Return the promised response in JSON
                 })
                 .then(response => response.json())
                 .then(responseJson => {
-                        console.log('Success!: ', responseJson);
+                        // console.log('Success!: ', responseJson);
                         // alert('Cheers! You have logged your journal entry. Keep up the self-reflection!');
 
                         // FLASH MESSAGE TELLING USER SUCCESS! THEY'VE SUBMITTED THEIR JOURNAL ENTRY FOR THE DAY

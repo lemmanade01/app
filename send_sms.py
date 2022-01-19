@@ -1,7 +1,4 @@
 """Send an sms using Twilio"""
-# query database
-# figure out what it needs to send
-# have server load and run send_sms
 
 # Download the helper library from https://www.twilio.com/docs/python/install
 import os
@@ -17,21 +14,22 @@ from datetime import datetime
 # and set the environment variables. See http://twil.io/secure
 account_sid = os.environ["TWILIO_ACCOUNT_SID"]
 auth_token = os.environ["TWILIO_AUTH_TOKEN"]
+phone = os.environ["TWILIO_PHONE_NUM"]
 client = Client(account_sid, auth_token)
 
-# is this okay i have global variables???
+# Get all messages
 messages = crud.get_all_messages()
-phone = os.environ["TWILIO_PHONE_NUM"]
 
 # Twilio Text Test
 message = client.messages \
                     .create(
                         body=f"Thanks for signing up for notifications from Mindful Moments. YOU are always a priority :)",
                         from_=f"{phone}",
-                        to="+14803858041"
+                        to="+1" # Fill in your number
                     )
 
 print(message.sid)
+
 
 # UNCOMMENT BEFORE DEPLOYMENT
 # def scheduled_reminders():
@@ -83,5 +81,3 @@ print(message.sid)
 #                     )
 
     # print(message.sid)
-    # make this the initial message
-    # "Thanks for signing up for notifications from Mindful Moments. YOU are always a priority :)"

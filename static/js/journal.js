@@ -8,15 +8,15 @@ btn.addEventListener('click', (evt) => {
     fetch('/journal-data.json')
     .then(response => response.json())
     .then(responseData => {
-        console.log(responseData);
-        console.log(Object.keys(responseData));
+        // console.log(responseData);
+        // console.log(Object.keys(responseData));
 
         const datesAndScale = [];
         let count = 1;
 
         for (const key of Object.keys(responseData)) {
-           console.log(responseData[key]['scale']);
-           console.log(responseData[key]['time_stamp']);
+        //    console.log(responseData[key]['scale']);
+        //    console.log(responseData[key]['time_stamp']);
            
            // The month in all lowercase letters
            const mnth = responseData[key]['mnth'];
@@ -29,7 +29,7 @@ btn.addEventListener('click', (evt) => {
            
            // Get the timestamp of the journal entry
            const timeStamp = responseData[key]['time_stamp'];
-           console.log(timeStamp);
+        //    console.log(timeStamp);
            // Slice the timestamp to extract the day
            const day = timeStamp.slice(5, 8);
            // Slice the timestamp to extract the year

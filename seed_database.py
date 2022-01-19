@@ -1,4 +1,4 @@
-"""drops, creates and automatically populate the databse with data"""
+"""Drops, creates and automatically populate the databse with data"""
 
 import os
 import json
@@ -21,10 +21,12 @@ fname = "Ava"
 lname = "Williams"
 email = "ava34@gmail.com"
 phone_num = "3105556710"
-password = "Monkay1391"
+password = "Password1"
 quote = " "
 
+# Create user
 user = crud.create_user(fname, lname, email, phone_num, password, quote)
+# Create a meditations catalog for that user with their user id
 crud.create_meditations(1)
 
 
@@ -34,7 +36,8 @@ crud.create_meditations(1)
 
 # fav = crud.create_favorite(meditation_id, user_id)
 
-# Create user's journal entries
+
+# Create user's mock journal entries
 with open("data/mock_journal_entries.json") as f:
     journal_entries = json.loads(f.read())
 
@@ -104,49 +107,7 @@ with open("data/wellness_tips.json") as f:
         db_wellness_tip = crud.create_wellness_tip(tip_id, wellness_tip, source)
         wellness_tips_in_db.append(db_wellness_tip)
         
-    
-    
-# # Store Spotify track data into database
-# username = os.environ["SPOTIFY_USERNAME"]
-# playlist_id = os.environ["SPOTIFY_PLAYLIST_ID"]
-
-# playlist_tracks = spotify.get_playlist_tracks(username, playlist_id)
-
-# # for track_dict in playlist_tracks:
-# #     print(track)
-# #     print("**************")
-
-# def get_playlist_tracks(username, playlist_id):
-#     """get and return playlist track data from a specific playlist on my Spotify"""
-
-#     username = os.environ["SPOTIFY_USERNAME"]
-#     playlist_id = os.environ["SPOTIFY_PLAYLIST_ID"]
-
-#     results = sp.user_playlist_tracks(username, playlist_id)
-    
-#     # create an open dictionary to store retrieved Spotify playlist data
-#     playlist_tracks = {}
-    
-#     for item in results['items']:
-#         track = item['track']
-#         artist_name = track['artists'][0]['name']
-#         track_name = track['name']
-#         image_url = track['album']['images'][0]['url']
-#         spotify_url = track['external_urls']['spotify']
-#         preview_link = track['preview_url']
-        
-#         # the key for the dictionary playlist_tracks
-#         track_key = track_name + artist_name
-#         # assign a list of variables (which are representative of strings) to the key "track_key"
-#         playlist_tracks[track_key] = [track_name,artist_name, image_url, spotify_url, preview_link]
-#         # create a track instance and store it into the database
-#         db_track = crud.create_meditations(track_name, artist_name, image_url, spotify_url, preview_link, user_id)
-   
-#     # return the dictionary
-#     return playlist_tracks
-
-
-
+  
 
 # Create 10 users
 # for n in range(10):
@@ -154,7 +115,6 @@ with open("data/wellness_tips.json") as f:
 #     password = "test"
 
 #     user = crud.create_user("Bob"+ str(n) ,  "Obo" + str(n) , email, "",password, "Hi")
-
 
 
 # create mock meditations with .json file

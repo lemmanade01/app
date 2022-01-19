@@ -4,13 +4,9 @@ from flask import flash
 from sqlalchemy.ext.declarative import declarative_base
 
 db = SQLAlchemy()
-# Base = declarative_base()
 
-# creating relationship from user to users --> their friends
-# doing that with many-to-many relationship (line 35, friend end)
-# association table (line 13)
-# your user id a bunch of times and then other friends ids
-
+# Creating a relationship from user to users (their friends)
+# Using a many-to-many relationship and the association table below
 user_to_user = db.Table("user_to_user", db.metadata,
     db.Column("user_id", db.Integer, db.ForeignKey("users.user_id"), primary_key=True),
     db.Column("friend_id", db.Integer, db.ForeignKey("users.user_id"), primary_key=True)
@@ -32,38 +28,25 @@ class User(db.Model):
     password = db.Column(db.String(25), nullable=False)
     quote = db.Column(db.String(200))
 
-    # decide if i want the user to have a username
-    # username = db.Column(db.String(20), unique=True, nullable=False)
-
     friend = db.relationship("User",
                         secondary="user_to_user",
                         primaryjoin="User.user_id==user_to_user.c.user_id",
                         secondaryjoin="User.user_id==user_to_user.c.friend_id",
                         backref="friends"
                         )
-    # creating two different ends of the same relationship -- friend --> friends
     
-    # we have friends
-    # and we are a friend to many other users
-
-    # a user is a friend of and friends with
+    # Creating two different ends of the same relationship -- friend --> friends
+    # We have friends, and we are a friend to many other users
+    # In other words, a user is a friend of AND friends with
     
     journals = db.relationship("Journal", backref="user")
-    # a user can have many journals, but a journal can't have many users
+    # A user can have many journals, but a journal can't have many users
     meditations = db.relationship("Meditation", backref="user")
-    # a user can have many meditations, but a meditation can't have many users
+    # A user can have many meditations, but a meditation can't have many users
     notifications = db.relationship("Notification", backref="user")
-    # a user can have many notifications, but a notifcation can't have many users
+    # A user can have many notifications, but a notifcation can't have many users
     favorites = db.relationship("Favorite", backref="user")
-    # a user can have many favorites, but a favorite can't have many users
-
-    # friends = db.relationship("Friend", secondary="users_friends", backref="users")
-    # Friend and User have a many-to-many relationship 
-    # friend = db.relationship("User", 
-    #                         secondary=usersfriends,
-    #                         primaryjoin=user_id == usersfriends.c.friend_id,
-    #                         secondaryjoin=user_id == usersfriends.c.user_id,
-    #                         backref="friends") 
+    # A user can have many favorites, but a favorite can't have many users
       
     def __repr__(self):
         return f"<User fname={self.fname} lname={self.lname} email={self.email}>"
@@ -190,7 +173,7 @@ class Message(db.Model):
     reminder_type = db.Column(db.String(25), nullable=False)
 
     notifications = db.relationship("Notification", backref="message")
-    # a message can have many notifications, but a notifcation can't have many messages
+    # A message can have many notifications, but a notifcation can't have many messages
 
     def __repr__(self):
         return f"<Message message_id={self.message_id} txt_message={self.txt_message}>"
@@ -225,7 +208,7 @@ class Tip(db.Model):
 
 
 def connect_to_db(flask_app, db_uri="postgresql:///meditations", echo=True):
-#///<meditations> should be the db_name
+# "postgresql:///<db_name>""
     flask_app.config["SQLALCHEMY_DATABASE_URI"] = db_uri
     flask_app.config["SQLALCHEMY_ECHO"] = echo
     flask_app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False

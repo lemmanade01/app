@@ -3,12 +3,12 @@
 // Select the search-by-date button when clicked
 const dateBtn = document.querySelector('#jrnl-search-submit').addEventListener('click', (evt) => {
     evt.preventDefault();
-    console.log('Ive been clicked');
+    // console.log('Ive been clicked');
 
     // Get the user's selected date
     const date = document.querySelector('#jrnl-search-by-date').value;
 
-    console.log(date);
+    // console.log(date);
 
     const jrnlDate = {
         date: date,
@@ -25,11 +25,11 @@ const dateBtn = document.querySelector('#jrnl-search-submit').addEventListener('
     })
         .then(response => response.json()) 
         .then(responseData => {
-            console.log(responseData);
+            // console.log(responseData);
 
             // For loop over the object
             for (const key of Object.keys(responseData)) {
-                console.log(key);
+                // console.log(key);
 
                 // If the response data is not none, retrieve all the necessary values to display onto the page
                 if (responseData[key] != "none") {
@@ -76,7 +76,7 @@ const dateBtn = document.querySelector('#jrnl-search-submit').addEventListener('
 const allJrnlsBtn = document.querySelector('#all-jrnls')
 allJrnlsBtn.addEventListener('click', evt => {
     evt.preventDefault();
-    console.log('the view all journal entries button has been clicked');
+    // console.log('the view all journal entries button has been clicked');
 
     // Send a fetch request to the server side
     fetch('/journal-data.json')

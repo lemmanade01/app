@@ -15,19 +15,18 @@ const heartBtns = document.querySelectorAll('.heart-btn');
 let last_button = null;
 // Loop through all of the queried meditation heart buttons
 for (const heartBtn of heartBtns) {
-    
     // Add an event listener for each meditation heart button
     heartBtn.addEventListener('click', (evt) => {
 
         if(evt == undefined)return;
 
         evt.preventDefault();
-        console.log('The button has been clicked!');
-        console.log(evt);
+        // console.log('The button has been clicked!');
+        // console.log(evt);
        
         const heartBtnClicked = evt.target;
         const heartBtnValue = heartBtnClicked.value;
-        console.log(heartBtnClicked.value);
+        // console.log(heartBtnClicked.value);
         const heartBtnClasses = heartBtnClicked.classList;
         let url = '/favorite.json';
 
@@ -40,7 +39,7 @@ for (const heartBtn of heartBtns) {
             const favMeditation = {
                 meditation_id: heartBtnValue
             }
-            console.log(favMeditation);
+            // console.log(favMeditation);
             // Send a fetch request to the '/remove-favorite.json' route so that favorite can be removed from the database
             
             fetch(url, {
@@ -75,10 +74,9 @@ for (const heartBtn of heartBtns) {
                             // Return the promised response in JSON
                         }).then(response => response.json())
                             .then(responseJson => {
-                                console.log(responseJson);
+                                // console.log(responseJson);
                             });
                     }
-
                 });
     });
 }

@@ -166,7 +166,6 @@ input[type=password]:valid {
 
   
 
-
 /* Login page */
 body .login-container, .journal-container {
   background-color: #fffeec;
@@ -745,51 +744,17 @@ body .display-container {
   font-size: 70px;
   padding-top: 10px;
   color: #fffeec;
-  /* background: -webkit-linear-gradient(rgb(255, 210, 254), rgba(224, 233, 99, 0.803));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent; */
   font-size: 80px;
   padding-top: 60px;
   margin-left: 40px;
   margin-right: 20px;
   padding-bottom: 40px;
 }
-/* .tip-header-container {
-  background-color: #fffeec;
-  padding-top: 90px;
-  padding-right: 100px;
-  justify-content: center;
-  display: flex;
-  /* padding: 50px 100px; */
-  /* border-radius: 10%;
-}  */
-  
-
-  /* font-family: 'Cormorant Garamond', serif;
-  font-size: 100px;
-  /* padding-top: 30px; */
-  /* padding-bottom: 30px;
-  background: -webkit-linear-gradient(rgb(255, 160, 242), rgba(160, 197, 252, 0.803));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent; */
-
 .wellness-tip {
   font-family: 'Cormorant Garamond', serif;
   font-size: 37px;
   margin-right: 40px;
 }
-/* width: 400px;
-  height: 100px;
-  border-radius: 50% / 100%;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0; */
-/* #ellipse {
-  width: 900px;
-  height: 400px;
-  border-radius: 50%;
-  background-color: transparent;
-  outline: rgb(255, 233, 199) solid;
-} */
 
 
 
@@ -833,10 +798,6 @@ body .profile-container {
   font-size: 70px;
   padding-top: 20px;
   color: black;
-  /* background: -webkit-linear-gradient(rgb(255, 160, 242), rgb(160, 197, 252));
-  /* (rgb(255, 217, 160), rgba(246, 252, 160, 0.803)); */
-  /* -webkit-background-clip: text; */
-  /* -webkit-text-fill-color: transparent; */ 
   text-align: center;
 }
 .profile-subheader {
@@ -1206,20 +1167,7 @@ body .container.success {
   width: 100%;
   height: 100vh;
   max-width: none; 
-  background-color
-  /* background: url('/static/img/sphere copy.jpg') no-repeat center center;
-  background-size: cover; */
-  /* width: 100%;
-  max-width: none;
-  height: 100vh; */
 }
-/* body .success-container {
-  background: -webkit-linear-gradient(rgba(233, 237, 174, 0.981), rgba(160, 197, 252, 0.803));
-  background-size: cover;
-  width: 100%;
-  height: 100vh;
-  max-width: none; 
-} */
 .success-header {
   font-family: 'Krona One', sans-serif;
   font-size: 65px;
@@ -1248,11 +1196,6 @@ body .jrnl-search-no-entries {
   height: 100vh;
 }
 .jrnl-search-results-header {
-  /* font-family: 'Lexend Exa', sans-serif;
-  font-size: 60px;
-  padding-top: 20px;
-  padding-bottom: 22px; */
-
   font-family: 'Krona One', sans-serif;
   font-size: 60px;
   padding-top: 40px;
@@ -1316,8 +1259,6 @@ body .jrnl-search-no-entries {
   padding-bottom: 35px;
   padding-left: 80px;
 }
-
-
 
 
 
@@ -1398,14 +1339,6 @@ body .favorites-container {
 
 
 /* Reminders Page */
-/* body .reminders-container {
-  /* background-color: #f0efe0; */
-  /* background-color: #fffeec;
-  background-size: cover;
-  background-repeat: repeat;
-  height: 100%;
-  height: 100vh; */
-/* } */
 body .reminders-container {
   background: repeat center center;
   background-color: rgb(33, 53, 87);

@@ -7,18 +7,6 @@
 
 <div class="row catalog-container">
   <h1 id="catalog-header">Meditation Catalog</h1>
-  <!-- <div class="dropdown-container">
-    <form id="order-menu" placeholder="Order meditations by">
-      <select name="order" id="order">
-        <option value="a-n-asc">Artist Name (Asc)</option>
-        <option value="a-n-desc">Artist Name (Desc)</option>
-        <option value="t-n-asc">Track Name (Asc)</option>
-        <option value="t-n-asc">Track Name (Desc)</option>
-      </select>
-      <button id="order-btn">order</button>
-    </form>
-  </div> -->
-
   <div class="searchbar-container">
     <form action="/meditation-search-results" method=POST class="d-flex" id="search-bar">
       <input class="search-bar me-2" 
@@ -30,7 +18,6 @@
     </form>
   </div> 
   
-
   {% for meditation in meditations %}
   {% if meditation.meditation_id not in fav_meditations %}
   
@@ -49,8 +36,6 @@
       </div>
         <div class="meditation">
           <span>
-            <!-- <a href="{{ meditation.preview_link }}">
-            </a> -->
             <audio class="audio-preview" src="{{ meditation.preview_link }}"></audio>
           </span>
         <div>  
@@ -82,12 +67,10 @@
       </div>
         <div class="meditation">
           <span>
-            <!-- <a href="{{ meditation.preview_link }}">
-            </a> -->
             <audio class="audio-preview" src="{{ meditation.preview_link }}"></audio>
           </span>
-            <form action="/meditation/{{ meditation.meditation_id }}" class="meditation-detail">
-              <button>Explore</button>
+          <form action="/meditation/{{ meditation.meditation_id }}" class="meditation-detail">
+            <button>Explore</button>
           </form>
         </div>
   </div>

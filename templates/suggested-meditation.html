@@ -5,46 +5,32 @@
 
 {% block body %}
 
-  
 <div class="suggested-meditation-container">
-
   <div>
     <h1 id="suggested-meditation">SUGGESTED MEDITATION</h1>
     <p id="line">__________________________________</p>
   </div>
-
   <div>
-      <h4 id="random-title">{{ random_meditation.track_name }}</h4>
-      <p id="random-artist"><em>{{ random_meditation.artist_name }}</em></p>
-      <a href="/meditation/{{ random_meditation.meditation_id }}">
-        <img class="track-img" id="random-img" src="{{ random_meditation.image_url }}">
-      </a>
-      <span>
-        <audio 
-          <source class="audio-preview" id="random-audio-preview" src="{{ random_meditation.preview_link }}"></source>
-        </audio>
-      </span>
-    </div>    
-
-    <div class="track-btns">
-        <a class="suggested-link" href="{{ random_meditation.spotify_url }}" target="_blank">
-          <button id="random-track-btn">Explore this track</button>
-        </a> 
-        <a href="/profile">
-          <button id="next"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
-          </svg></button>
-    </div>
-
-    <!-- <div>
-        <form action="/profile/{{user_id}}">
-            <button>My Profile</button>
-        </form>
-    </div> -->
+    <h4 id="random-title">{{ random_meditation.track_name }}</h4>
+    <p id="random-artist"><em>{{ random_meditation.artist_name }}</em></p>
+    <a href="/meditation/{{ random_meditation.meditation_id }}">
+      <img class="track-img" id="random-img" src="{{ random_meditation.image_url }}">
+    </a>
+    <span>
+      <audio 
+        <source class="audio-preview" id="random-audio-preview" src="{{ random_meditation.preview_link }}"></source>
+      </audio>
+    </span>
+  </div>    
+  <div class="track-btns">
+    <a class="suggested-link" href="{{ random_meditation.spotify_url }}" target="_blank">
+      <button id="random-track-btn">Explore this track</button>
+    </a> 
+    <a href="/profile">
+      <button id="next"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+      </svg></button>
   </div>
-
-  </div>
-  
 </div>
 
 {% endblock %}

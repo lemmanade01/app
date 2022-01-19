@@ -2,21 +2,16 @@
 {% block title %} {% endblock %}
 
 {% block head %} 
-
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript" src="/static/js/mood_graph.js"></script>
-
-
 {% endblock %}
 
 {% block body %}
 
 <h1>Connect with Yourself</h1><br>
-
 <form action="/journal-prompt">
-    <button>Make a Journal Entry</button>
+  <button>Make a Journal Entry</button>
 </form><br>
-
 <h3><Your past reflections></h3>
 
 {% if journal_count == 1 %}
@@ -31,21 +26,15 @@
 {% endif %}
 
 <div id="calendar_basic" style="width: 1000px; height: 350px;"></div>
-
 <div>
-    <form action="/journal-search-results" method="POST">
-        <input type="text" name="journal-search" placeholder="Search for journal entry by month">
-        <button id="journal-search">Search</button>
-    </form>
+  <form action="/journal-search-results" method="POST">
+    <input type="text" name="journal-search" placeholder="Search for journal entry by month">
+    <button id="journal-search">Search</button>
+  </form>
 </div><br>
-
 <div>
-
   <button id="show-journal-entries">View all Journal Entries</button>
-
 </div>
-
-
 <div id="display-entries-container"></div>
 
 {% endblock %}
@@ -53,33 +42,3 @@
 {% block script %}
 <script src="/static/js/journal.js"></script>
 {% endblock %}
-
-  <!-- <div class="row">
-      <div class="box one col-lg-1">1</div>
-      <div class="box two col-lg-1">2</div>
-      <div class="box three col-lg-1">3</div>
-      <div class="box four col-lg-1">4</div>
-      <div class="box five col-lg-1">5</div>
-      <div class="box six col-lg-1">6</div>
-      <div class="box seven col-lg-1">7</div>
-      <div class="box eight col-lg-1">8</div>
-      <div class="box nine col-lg-1">9</div>
-      <div class="box ten col-lg-1">10</div>
-      <div class="box eleven col-lg-1">11</div>
-      <div class="box twelve col-lg-1">12</div>
-    </div>
-
-    <div class="row">
-        <div class="mood one col-lg-1"></div>
-        <div class="mood two col-lg-1"></div>
-        <div class="mood three col-lg-1"></div>
-        <div class="mood four col-lg-1"></div>
-        <div class="mood five col-lg-1"></div>
-        <div class="mood six col-lg-1"></div>
-        <div class="mood seven col-lg-1"></div>
-        <div class="mood eight col-lg-1"></div>
-        <div class="mood nine col-lg-1"></div>
-        <div class="mood ten col-lg-1"></div>
-        <div class="mood eleven col-lg-1"></div>
-        <div class="mood twelve col-lg-1"></div>
-      </div> -->

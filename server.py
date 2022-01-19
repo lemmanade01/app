@@ -1,64 +1,26 @@
 """Server for mindfulness app."""
 
 from flask import Flask, render_template, request, flash, session, redirect, jsonify, url_for
-# from flask_apscheduler import APScheduler
 from model import connect_to_db
 from datetime import datetime
-# from flask_oauthlib.client import OAuth, OAuthException
+from playsound import playsound
+from jinja2 import StrictUndefined
 
-# from authlib.integrations.flask_client import OAuth
+import spotipy
+import spotipy.util as util
 
 import random
 import crud
 import json
 import requests
 import re
-import uuid
+# import uuid
 import time
-
-# import sys
-# import subprocess
-from playsound import playsound
-# import pygame
-# import vlc
-
-# import calendar_oauth
-# import google.oauth2.credentials
-# import google_auth_oauthlib.flow
-# import googleapiclient.discovery
-# import vlc
-# import time
-
 import os
-# from twilio.rest import Client
-
-import spotipy
-from spotipy import oauth2 
-# from spotipy.oauth2 import SpotifyClientCredentials
-# SpotifyClientCredentials, SpotifyOAuth
-import spotipy.util as util
-
-from jinja2 import StrictUndefined
-
-
 
 PORT_NUMBER = 5000
 SPOTIPY_CLIENT_ID = os.environ["SPOTIPY_CLIENT_ID"]
 SPOTIPY_CLIENT_SECRET = os.environ["SPOTIPY_CLIENT_SECRET"]
-SPOTIPY_REDIRECT_URI = 'http://localhost:5000/callback'
-SCOPE = 'user-library-read'
-CACHE = '.spotipyoauthcache'
-# This variable specifies the name of a file that contains the OAuth 2.0
-# information for this application, including its client_id and client_secret.
-CLIENT_SECRETS_FILE = "data/client_secret.json"
-
-
-# This OAuth 2.0 access scope allows for full read/write access to the
-# authenticated user's account and requires requests to use an SSL connection.
-# SCOPES = ['https://www.googleapis.com/auth/drive.metadata.events']
-SCOPES = ['https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.events']
-API_SERVICE_NAME = 'drive'
-API_VERSION = 'v2'
 
 app = Flask(__name__)
 # Required to use Flask sessions
@@ -67,26 +29,7 @@ app.secret_key = os.environ['SECRET_KEY']
 # Jinja silently ignores this. This makes debugging difficult, so we'll
 # set an attribute of the Jinja environment that says to make this an
 # error.
-# scheduler = APScheduler()
 app.jinja_env.undefined = StrictUndefined
-
-
-
-# oauth = OAuth(app)
-
-# spotify = oauth.remote_app(
-#     'spotify',
-#     consumer_key=os.environ["SPOTIPY_CLIENT_ID"],
-#     consumer_secret=os.environ["SPOTIPY_CLIENT_SECRET"],
-#     # Change the scope to match whatever it us you need
-#     # list of scopes can be found in the url below
-#     # https://developer.spotify.com/web-api/using-scopes/
-#     request_token_params={'scope': 'user-read-email'},
-#     base_url='https://accounts.spotify.com',
-#     request_token_url=None,
-#     access_token_url='/api/token',
-#     authorize_url='https://accounts.spotify.com/authorize'
-# )
 
 
 @app.route("/")
@@ -111,12 +54,11 @@ def process_create_account():
     lname = request.form.get("lname").capitalize()
     email = request.form.get("email").lower()
     phone_num = request.form.get("phone-num")
-    # username = request.form.get("username")
     password = request.form.get("password")
     quote = request.form.get("quote")
     
+    # Get that user's id
     user = crud.get_user_by_email(email)
-    # user_username = crud.get_user_by_username(username)
 
     if user:
         flash("A user already exists with that email.")
@@ -132,15 +74,15 @@ def process_create_account():
   
     # phone_num = phone_num.split("-")
     # phone_num = f"{phone_num[0]}{phone_num[1]}{phone_num[2]}"
-    crud.create_user(fname, lname, email, phone_num, password, quote)
     
-    user = crud.get_user_by_email(email)
     user_id = user.user_id
     
+    # Create a user
+    crud.create_user(fname, lname, email, phone_num, password, quote)
+    
+    # Populate the database with meditations when a user creates an account
     crud.create_meditations(user_id)
-    
-    # crud.create_meditations(track_name, artist_name, image_url, spotify_url, preview_link, user_id)
-    
+        
     flash(f"Welcome, {fname.capitalize()}! Please login.")
     return render_template("login.html")
 
@@ -159,12 +101,13 @@ def process_login():
     Find the user's login credentials located in the 'request.form'
     dictionary, look up the user, and store them in the session.
     """
-    
+    # Get the user's email and lowercase all letters
     email = request.form.get("email").lower()
     password = request.form.get("password")
 
     user = crud.get_user_by_email(email)
     
+    # Check to see if the email and password match
     if not user or user.password != password:
         flash("Email and Password do not match. Please enter a valid combination.")
         return redirect("/login")
@@ -174,8 +117,6 @@ def process_login():
         session["user_email"] = user.email
         user_in_session = session["user_email"]
         
-        # Check if they have spotify and gmail account
-
         return redirect("/quote")
     
     
@@ -184,23 +125,10 @@ def display_quote():
     """Display entry quote upon login"""
     
     # playsound("/static/mp3/sea-waves-loop.mp3")
-    # print("Playing sound using playsound")
-    
-    # with open("/static/mp3/sea-waves-loop.mp3") as f:
-    # playsound("C:/Users/emmalyddon/hb-dev/src/app/static/mp3/sea-waves-loop.mp3")
-    
-    # p = vlc.MediaPlayer("/static/mp3/sea-waves-loop.mp3")
-    # p.play()
-    
-    # pygame.mixer.init()
-    # pygame.mixer.music.load("/static/mp3/sea-waves-loop.mp3")
-    # pygame.mixer.music.load("C:/Users/emmalyddon/Music/Music/Media/Music/Unknown Artist/Unknown Album/sea-waves-loop.mp3")
-    # pygame.mixer.music.play()
      
     # Get a random quote from database
     quotes = crud.get_all_quotes()
     random_quote = random.choice(quotes)
-    
     
     return render_template("quote.html", random_quote=random_quote)
 
@@ -239,7 +167,6 @@ def show_profile(user_id):
     """Show profile page with user information"""
     
     # This route is also available when selected from the navigation bar
-     
     # Get user in session
     user_email = session.get("user_email")
     user = crud.get_user_by_email(user_email)
@@ -257,7 +184,7 @@ def logout():
 
     session.clear()
     flash("You are logged out.")
-    return redirect("/login")    
+    return redirect("/login")
 
 
 @app.route("/meditation-catalog")
@@ -279,36 +206,60 @@ def list_meditations():
     return render_template("all_meditations.html", meditations=meditations, fav_meditations=fav_meditations)
     
 
-@app.route("/order-meditations.json", methods=["POST"])
-def show_meditations_in_order():
-    """Order meditations by user's selection"""
-    
-    # order = request.json.get("order")
-    # an_desc = request.form.get("anDesc")
-    # tn_asc = request.form.get("anDesc")
-    # tn_desc = request.json.get("tnDesc")
-    
+@app.route("/meditation-search-results", methods=["POST"])
+def meditation_search_results():
+    """Return meditation results from user's submitted keywords"""
+
+    # Get the user id of user in session
     user_email = session.get("user_email")
     user = crud.get_user_by_email(user_email)
     user_id = user.user_id
     
-    order = request.json.get("order")
+    # Get user's search input
+    search_input = request.form.get("search-input")
+
+    # Get track names and artist names that match the user's input string
+    search_results = crud.get_meditation_by_search_input(search_input)
     
-    if order == "a-n-asc":
-        display_order = crud.get_all_meditations_an_asc(user_id)
-        return jsonify({"Ooder": display_order})
+    # Get all of user's favorite meditations
+    fav_meditations = crud.get_fav_meditations_by_user_id(user_id)
+    if not fav_meditations:
+        fav_meditations = []
+
+    return render_template("search_results_meditations.html", search_results=search_results, fav_meditations=fav_meditations)
+
+
+# @app.route("/order-meditations.json", methods=["POST"])
+# def show_meditations_in_order():
+#     """Order meditations by user's selection"""
+    
+#     # order = request.json.get("order")
+#     # an_desc = request.form.get("anDesc")
+#     # tn_asc = request.form.get("anDesc")
+#     # tn_desc = request.json.get("tnDesc")
+    
+#     # Get user in session
+#     user_email = session.get("user_email")
+#     user = crud.get_user_by_email(user_email)
+#     user_id = user.user_id
+    
+#     order = request.json.get("order")
+    
+#     if order == "a-n-asc":
+#         display_order = crud.get_all_meditations_an_asc(user_id)
+#         return jsonify({"Ooder": display_order})
         
-    elif order == "a-n-desc":
-        display_order = crud.get_all_meditations_an_desc(user_id)
-        return jsonify({"order": display_order})
+#     elif order == "a-n-desc":
+#         display_order = crud.get_all_meditations_an_desc(user_id)
+#         return jsonify({"order": display_order})
     
-    elif order == "t-n-asc":
-        display_order = crud.get_all_meditations_tn_asc(user_id)
-        return jsonify({"order": display_order})
+#     elif order == "t-n-asc":
+#         display_order = crud.get_all_meditations_tn_asc(user_id)
+#         return jsonify({"order": display_order})
     
-    elif order == "t-n-desc":
-        display_order = crud.get_all_meditations_tn_desc(user_id)
-        return jsonify({"order": display_order})
+#     elif order == "t-n-desc":
+#         display_order = crud.get_all_meditations_tn_desc(user_id)
+#         return jsonify({"order": display_order})
 
 
 @app.route("/meditation/<meditation_id>")
@@ -329,19 +280,97 @@ def show_meditation(meditation_id):
     return render_template("meditation_details.html",display_meditation=meditation, exists=exists, random_tip=random_tip)
 
 
-# @app.route("/journal")
-# def show_journal_homepage():
-#     """Show page with journaling options"""
+@app.route("/favorite.json", methods=["POST"])
+def get_favorite():
+    """Handle front-end request to return information about favorite meditation as JSON
     
-#     # Get user in session
-#     user_email = session.get("user_email")
-#     user = crud.get_user_by_email(user_email)
-#     user_id = user.user_id
-    
-#     # Get total count of journal entries by user id
-#     journal_count = crud.get_journal_count(user_id)
+    Create and store user's favorite in database.
+    """
 
-#     return render_template("journal.html", journal_count=journal_count)
+    # Get the user id of user in session
+    user_email = session.get("user_email")
+    user = crud.get_user_by_email(user_email)
+    user_id = user.user_id
+
+    # Get the medtation id from the front-end
+    meditation_id = request.json.get("meditation_id")
+    print(meditation_id)
+
+    # Check to see if this specific meditation exists within the favorites table
+    exists = crud.does_fav_meditation_exist(meditation_id)
+    
+    if exists == False:
+        # Create and store the user's new favorite into the database
+        crud.create_favorite(meditation_id, user_id)
+    
+        # Set liked meditations in session equal to an empty list
+        session["liked_meditations"] = []
+        # The liked meditations list variable is now equal to the session's liked meditations empty list
+        liked_meditations_lst = session["liked_meditations"]
+        # Append liked meditation_id to the empty list
+        liked_meditations_lst.append(meditation_id)
+        # The liked meditation(s) in session is now equal to the appended list
+        session["liked_meditations"] = liked_meditations_lst
+        # flash("You have successfully added this meditation to your favorites!")
+
+        return jsonify({"success": True, "status": "Your favorite has been stored", "list": session["liked_meditations"], "exist value": exists})
+    
+    return jsonify({"message": "This favorite already exists in the database"})
+
+
+@app.route("/remove-favorite.json", methods=["POST"])
+def remove_favorite():
+    """Handle front-end request to return information about removed favorite meditation as JSON
+    
+    Remove user's favorite from database
+    
+    Return success message that favorite meditation has been removed
+    """
+
+    # Get the user id of user in session
+    user_email = session.get("user_email")
+    user = crud.get_user_by_email(user_email)
+    user_id = user.user_id
+
+    # Get the medtation id from the front-end
+    meditation_id = request.json.get("meditation_id")
+    
+    # Check to see if this specific meditation exists within the favorites table
+    exists = crud.does_fav_meditation_exist(meditation_id)
+    
+    if exists == True:
+        # Remove the user's favorite from the database
+        crud.remove_favorite(meditation_id, user_id)
+
+        # Get the liked meditations in session
+        liked_meditations_lst = session.get("liked_meditations")
+    
+        # Check to see if the unhearted meditation id exists in the session's liked meditations list
+        if meditation_id in liked_meditations_lst:
+            # If yes, remove that specific meditation from the list
+            liked_meditations_lst.remove(meditation_id)
+
+        return jsonify({"success": True, "status": "This meditation has been removed from your favorites", "list": liked_meditations_lst})
+    
+    return jsonify({"message": "This favorite has already been removed from the database"})
+    
+    
+@app.route("/favorites")
+def show_favorite_meditations():
+    """Show a user's favorite meditations"""
+    
+    # Get the user id of user in session
+    user_email = session.get("user_email")
+    user = crud.get_user_by_email(user_email)
+    user_id = user.user_id
+    
+    # Get logged in user's favorite meditations
+    favs = crud.get_fav_meditations_by_user_id(user_id)
+   
+    # Cross check favorites table with meditations table
+    fav_meditations = crud.get_fav_meditation_details()
+    
+    return render_template("favorites.html", fav_meditations=fav_meditations, favs=favs)
 
 
 @app.route("/journal")
@@ -372,12 +401,12 @@ def check_entry_count():
 def get_journal_input():
     """Get and return user's journal input and create a journal entry in the database"""
     
-    # get the user id of user in session
+    # Get the user id of user in session
     user_email = session.get("user_email")
     user = crud.get_user_by_email(user_email)
     user_id = user.user_id
     
-    # get the journal input values from the front-end
+    # Get the journal input values from the front-end
     scale = request.json.get("scale")
     mood = request.json.get("mood")
     color = request.json.get("color")
@@ -429,7 +458,7 @@ def get_journal_input():
     elif mth == "12":
         mnth = "December"
     
-    # create journal entry for user in session
+    # Create journal entry for user in session
     crud.create_journal_entry(scale=scale,
                               mood=mood,
                               color=color,
@@ -517,13 +546,6 @@ def display_journal_date_results():
     user_id = user.user_id
     
     jrnl_input_date = request.json.get("date")
-    # print(jrnl_date)
-    # date_object = datetime.strptime(jrnl_date, "%Y-%m-%d")
-    # print(date_object)
-    
-    # date_object = request.json.get("date")
-    
-    # jrnl_results = crud.get_journal_by_search_input(date_object, user_id)
     
     # Get all journal entries
     jrnl_results = crud.get_all_journal_entries(user_id)
@@ -534,8 +556,7 @@ def display_journal_date_results():
         for journal_entry in jrnl_results:
             jrnl_date = journal_entry.time_stamp
             date = jrnl_date.strftime("%Y-%m-%d")
-            # jrnl_date = journal_entry.time_stamp.split(" ")
-            # date = jrnl_date[0]
+    
             if date == jrnl_input_date:
                  
                 # Get each journal's journal id
@@ -561,78 +582,6 @@ def display_journal_date_results():
                     
     else:
         return jsonify({"results": "none"})
-    
-    
-    
-    # print(date_str)
-    # print("******************")
-    # # convert date string to a different date and time order
-    # date = date_str.strftime("%m/%d/%Y, %H:%M:%S")
-    # print(date)
-    
-    
-    # return jsonify({})
-
-    
-# @app.route("/journal-search-results.json", methods=["POST"])
-# def display_journal_search_results():
-#     """Get and return journal entries that match dates user searches by"""
-    
-#     # Get user in session
-#     user_email = session.get("user_email")
-#     user = crud.get_user_by_email(user_email)
-#     user_id = user.user_id
-#     # Get all user's journals
-#     journals = crud.get_journal_entries_ordered_by_date(user_id)
-    
-#     # Get user's journal search input
-#     search_input = request.form.get("journal-search").lower()
-    
-#     # Get journal entries in ascending chronological order that match user's input
-#     search_results = crud.get_journal_by_search_input(search_input, user_id)
-
-#     # all_datetimes = crud.get_journal_entries_ordered_by_date(user_id)  
-    
-#     # date = crud.get_journal_by_date
-    
-#     # return render_template("search_results_journals.html", search_results=search_results, search_input=search_input, journals=journals)
-#     return jsonify({})
-
-
-# @app.route("/journal-submission")
-# def handle_journal_submission():
-#     """Show user they have successfully submitted their journal entry"""
-   
-#     # Get user by user email, then pass in the user id
-#     user_email = session.get("user_email")
-#     user = crud.get_user_by_email(user_email)
-#     user_id = user.user_id
-
-#     journal_count = crud.get_journal_count(user_id)
-        
-#     if journal_count == 1:
-#         flash("Congrats on your first journal entry! Every small motion makes a difference.")
-#     else:
-#         # flash("Cheers to you! You have logged another journal entry. Keep up the self-reflection!")
-#         flash("Cheers to you! You have logged {journal_count} journal entries. Keep up the self-reflection!")
-
-#     return redirect("/profile/{user_id}")
-
-
-@app.route("/friends")
-def show_friends():
-    """Show user's current friends
-    
-    when user searches for friends redirect to the search results page"""
-    # returns page (friends.html)
-    # shows user a list of their current friends
-        # can engage with user by sending them a text
-        # option to unfollow a friend from their list
-    # user can invite friends
-        # an invite form on friends.html page
-    # user can search users by username and add them as a friend
-
-    return render_template("friends.html")
 
 
 @app.route("/reminders")
@@ -666,17 +615,9 @@ def scheudle_reminder():
     
     # Get user's reminder input
     date = request.json.get("date")
-    # print(date_str)
-    # print("******************")
-    # # convert date string to a different date and time order
-    # date = date_str.strftime("%m/%d/%Y, %H:%M:%S")
-    # print(date)
+ 
     reminder_type = request.json.get("type")
     description = request.json.get("description")
-    print(description)
-    
-    # retrieve the date from the notification table when sending an automated text and put a line before the retrieved random message
-    # reminder_time = f"Your scheduled check-in is at {date}"
     
     # Get messages related to user's selected reminder type
     # Choose one random message from those messages
@@ -701,7 +642,7 @@ def scheudle_reminder():
         random_message = random.choice(message)
         message_id = random_message.message_id
     
-    # create reminder for user in session
+    # Create reminder for user in session
     crud.create_reminder(date=date,
                          reminder_type=reminder_type,
                          description=description,
@@ -723,7 +664,7 @@ def remove_reminder():
     user = crud.get_user_by_email(user_email)
     user_id = user.user_id
     
-    # Get reminder by reminder id
+    # Get reminder from frontend
     notification_id = request.json.get("reminder_id")
     
     # Get reminder by reminder id
@@ -735,182 +676,51 @@ def remove_reminder():
     return jsonify({"Success!": "Your reminder has been deleted"})
 
 
-# @app.route("/search-meditations")
-# def search():
-#     """Show search bar to find specific meditations"""
-    
-#     # user can search for meditation by title or artist name
-
-#     user_email = session.get("user_email")
-#     user = crud.get_user_by_email(user_email)
-#     user_id = user.user_id
-    
-#     # get all meditations
-#     meditations = crud.get_all_meditations_by_user_id(user_id)
-
-#     return render_template("search_by_meditations.html", meditations=meditations)
-
-
-@app.route("/meditation-search-results", methods=["POST"])
-def meditation_search_results():
-    """Return meditation results from user's submitted keywords"""
-
-    # get the user id of user in session
-    user_email = session.get("user_email")
-    user = crud.get_user_by_email(user_email)
-    user_id = user.user_id
-    
-    # get user's search input
-    search_input = request.form.get("search-input")
-
-    # get track names and artist names that match the user's input string
-    search_results = crud.get_meditation_by_search_input(search_input)
-    
-    # Get all of user's favorite meditations
-    fav_meditations = crud.get_fav_meditations_by_user_id(user_id)
-    if not fav_meditations:
-        fav_meditations = []
-
-    return render_template("search_results_meditations.html", search_results=search_results, fav_meditations=fav_meditations)
-
-
-@app.route("/search-friends")
-def search_friends():
-    """Show search bar to find friends"""
-
-    # user can search for users by first and/or last name
-    # user can search through their friend list
-    # get all friends
-    friends = crud.get_all_friends()
-
-    return render_template("search_by_friends.html", friends=friends)
-
-
-@app.route("/friend-search-results", methods=["POST"])
-def user_and_friend_search_results():
-    """Return user and friend results from user's submitted keywords"""
-
-    # get user's search input
-    search_input = request.form.get("search-input")
-
-    # get users's first and/or last names that match the user's input string
-    user_search_results = crud.get_users_by_search_input(search_input)
-
-    friend_search_results = crud.get_friends_by_search_input(search_input)
-
-    return render_template("search_results_friends.html", user_search_results=user_search_results, friend_search_results=friend_search_results)
-
-
-@app.route("/favorite.json", methods=["POST"])
-def get_favorite():
-    """Handle front-end request to return information about favorite meditation as JSON
-    
-    Create and store user's favorite in database.
-    """
-
-    # get the user id of user in session
-    user_email = session.get("user_email")
-    user = crud.get_user_by_email(user_email)
-    user_id = user.user_id
-
-    # get the medtation id from the front-end
-    meditation_id = request.json.get("meditation_id")
-    print(meditation_id)
-
-    # check to see if this specific meditation exists within the favorites table
-    exists = crud.does_fav_meditation_exist(meditation_id)
-    
-    if exists == False:
-        # create and store the user's new favorite into the database
-        crud.create_favorite(meditation_id, user_id)
-    
-        # set liked meditations in session equal to an empty list
-        session["liked_meditations"] = []
-        # the liked meditations list variable is now equal to the session's liked meditations empty list
-        liked_meditations_lst = session["liked_meditations"]
-        # append liked meditation_id to the empty list
-        liked_meditations_lst.append(meditation_id)
-        # the liked meditation(s) in session is now equal to the appended list
-        session["liked_meditations"] = liked_meditations_lst
-        # flash("You have successfully added this meditation to your favorites!")
-
-        return jsonify({"success": True, "status": "Your favorite has been stored", "list": session["liked_meditations"], "exist value": exists})
-    
-    return jsonify({"message": "This favorite already exists in the database"})
-
-
-@app.route("/remove-favorite.json", methods=["POST"])
-def remove_favorite():
-    """Handle front-end request to return information about removed favorite meditation as JSON
-    
-    Handle front-end request. Return success message that favorite meditation has been removed
-    
-    Remove user's favorite from database.
-    """
-
-    # Get the user id of user in session
-    user_email = session.get("user_email")
-    user = crud.get_user_by_email(user_email)
-    user_id = user.user_id
-
-    # Get the medtation id from the front-end
-    meditation_id = request.json.get("meditation_id")
-    
-    # Check to see if this specific meditation exists within the favorites table
-    exists = crud.does_fav_meditation_exist(meditation_id)
-    
-    if exists == True:
-        # Remove the user's favorite from the database
-        crud.remove_favorite(meditation_id, user_id)
-
-        # Get the liked meditations in session
-        liked_meditations_lst = session.get("liked_meditations")
-    
-        # Check to see if the unhearted meditation id exists in the session's liked meditations list
-        if meditation_id in liked_meditations_lst:
-            # If yes, remove that specific meditation from the list
-            liked_meditations_lst.remove(meditation_id)
-
-        # Return the updated session's liked meditations list
-        # Return liked_meditations_lst
-        return jsonify({"success": True, "status": "This meditation has been removed from your favorites", "list": liked_meditations_lst})
-    
-    return jsonify({"message": "This favorite has already been removed from the database"})
-    
-    
-@app.route("/favorites")
-def show_favorite_meditations():
-    """Show a user's favorite meditations"""
-    
-    # get the user id of user in session
-    user_email = session.get("user_email")
-    user = crud.get_user_by_email(user_email)
-    user_id = user.user_id
-    
-    favs = crud.get_fav_meditations_by_user_id(user_id)
-   
-    fav_meditations = crud.get_fav_meditation_details()
-    
-    return render_template("favorites.html", fav_meditations=fav_meditations, favs=favs)
-
-
-
-
 if __name__ == "__main__":
-    # When running locally, disable OAuthlib's HTTPs verification.
-    # ACTION ITEM for developers:
-    #     When running in production *do not* leave this option enabled.
-    # os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
-    # DebugToolbarExtension(app)
-    # scheduler.add_job(id = "Scheduled Quote and Meditation Suggestion", func=schedule_task, trigger="interval", seconds=15)
-    # 86400
-    # scheduler.start()
     connect_to_db(app)
     app.run(host="localhost", debug=True)
     
     
+
+# A friends feature to implemnt in phase 2.0
+# @app.route("/friends")
+# def show_friends():
+#     """Show user's current friends
     
-    
-    
-    
-# app.run(threaded=True, port=int(os.environ.get("PORT", os.environ.get("SPOTIPY_REDIRECT_URI", 8080).split(":")[-1])))
+#     when user searches for friends redirect to the search results page"""
+#     # returns page (friends.html)
+#     # shows user a list of their current friends
+#         # can engage with user by sending them a text
+#         # option to unfollow a friend from their list
+#     # user can invite friends
+#         # an invite form on friends.html page
+#     # user can search users by username and add them as a friend
+
+#     return render_template("friends.html")
+
+
+# @app.route("/search-friends")
+# def search_friends():
+#     """Show search bar to find friends"""
+
+#     # user can search for users by first and/or last name
+#     # user can search through their friend list
+#     # get all friends
+#     friends = crud.get_all_friends()
+
+#     return render_template("search_by_friends.html", friends=friends)
+
+
+# @app.route("/friend-search-results", methods=["POST"])
+# def user_and_friend_search_results():
+#     """Return user and friend results from user's submitted keywords"""
+
+#     # get user's search input
+#     search_input = request.form.get("search-input")
+
+#     # get users's first and/or last names that match the user's input string
+#     user_search_results = crud.get_users_by_search_input(search_input)
+
+#     friend_search_results = crud.get_friends_by_search_input(search_input)
+
+#     return render_template("search_results_friends.html", user_search_results=user_search_results, friend_search_results=friend_search_results)

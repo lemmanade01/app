@@ -1,26 +1,13 @@
-
-
-// Check to see if the <p> tag with id #no-entries exists 
-// This shows that no journal entries exist yet
-// Retrieve that element's value
-// const div = document.querySelector('#no-entries').value;
-
-// if (div == "no-entries") {
-//   console.log(div);
-//   // Remove remove the div where the calendar exists
-//   document.querySelector('#calendar_basic').remove(); 
-// } else {
-  // If a journal entry does exist, show the mood graph
-  // Make an AJAX call to server side to get all of user's journal data 
-  // to display their journal mood chart
+// If a journal entry does exist, show the mood graph
+// Make an AJAX call to server side to get all of user's journal data 
+// To display their journal mood chart
 fetch('/journal-data.json')
 .then(response => response.json())
 .then(responseData => {
-      console.log(responseData);
-      
-      console.log(responseData['Response']);
+      // console.log(responseData);
+      // console.log(responseData['Response']);
       // const number = 3;
-      console.log(Object.keys(responseData));
+      // console.log(Object.keys(responseData));
 
       // Display user's mood chart based on their journal entries
       google.charts.load("current", {packages:["calendar"]});
@@ -34,33 +21,33 @@ fetch('/journal-data.json')
         let rows = [];
         
         for (const key of Object.keys(responseData)) {
-          console.log(responseData[key]['scale']);
-          console.log(responseData[key]['time_stamp']);
+          // console.log(responseData[key]['scale']);
+          // console.log(responseData[key]['time_stamp']);
 
           const scale = responseData[key]['scale'];
           const scaleInt = parseInt(scale);
-          console.log('Integer: ', scaleInt);
+          // console.log('Integer: ', scaleInt);
           // const scaleNum = Number(scale);
           // console.log('Number: ', scaleNum);
 
           const timeStamp = responseData[key]['time_stamp'];
           const mnth = timeStamp.slice(8, 11);
-          console.log('mnth: ', mnth);
+          // console.log('mnth: ', mnth);
       
           const day = timeStamp.slice(5, 7);
           // console.log(day);
 
           const dayInt = parseInt(day);
-          console.log('dayInt: ', dayInt);
+          // console.log('dayInt: ', dayInt);
 
           const year = timeStamp.slice(12, 16);
           // console.log(year);
           const yearInt = parseInt(year);
-          console.log('yearInt: ', yearInt);
+          // console.log('yearInt: ', yearInt);
 
           let monthInt = 0;
 
-          // new Date method starts the calendar year (January) with 0
+          // New Date method starts the calendar year (January) with 0
           if (mnth == 'Jan') {
             monthInt = 0;
           } else if (mnth == 'Feb') {
@@ -86,8 +73,8 @@ fetch('/journal-data.json')
           } else if (mnth == 'Dec') {
             monthInt = 11;
           } 
-          console.log('monthInt: ', monthInt);
-          console.log('*************');
+          // console.log('monthInt: ', monthInt);
+          // console.log('*************');
           // let a = `Test: [(${yearInt}, ${monthInt}, ${dayInt}), ${scaleInt} ]` 
           // let a = `${yearInt}` + `${monthInt}` + `${dayInt}` + `${scaleInt}` 
           // console.log(a);
@@ -95,11 +82,11 @@ fetch('/journal-data.json')
           let scaleForRow = scaleInt;
 
           let row = [ dateForRow, scaleForRow ]
-          console.log('Row: ', row);
+          // console.log('Row: ', row);
           rows.push(row);
         }
 
-        console.log('All rows: ', rows);
+        // console.log('All rows: ', rows);
         
         dataTable.addRows(rows);
 
@@ -167,4 +154,3 @@ fetch('/journal-data.json')
         chart.draw(dataTable, options);
       }
     })
-// }
