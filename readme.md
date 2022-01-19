@@ -1,11 +1,11 @@
-DESCRIPTION
+DESCRIPTION:
 Mindful Moments is a meditation and mood-tracking app that helps users increase their mindfulness and prioritize self-care by maintaining accountability and increasing self-reflection. Once registered, users have access to a curated meditation catalog and personal journal to record daily mood check-ins and observations on their meditation sessions. User data input is displayed in the form of a mood graph for a yearly overview of their well-being. The dates displayed in the chart can be used as guidance to search and explore previously logged reflections enhancing self-connection. Text reminders can be scheduled to maintain consistency and reinforce positive habit building while meditations can be favorited for convenience and accessibility.
 
-TECH STACK
+TECH STACK:
 Python, Flask, SQLAlchemy, PostgreSQL, RegEx, Jinja, Javascript, AJAX, JSON, Bootstrap, HTML, CSS
 APIs: Spotify Web API, Twilio
 
-FEATURES
+FEATURES:
 Users can create an account where they can log in and out
 Random inspirational quote and suggested meditation are received after login
 The curated meditation catalog includes track images (which can be hovered over for a 30 second track preview), and a link to the track url to play audio
