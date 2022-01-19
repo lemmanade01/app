@@ -11,7 +11,7 @@ APIs: Spotify Web API, Twilio
 
 - Users can create an account where they can log in and out
 - A random inspirational quote and suggested meditation are received after login
-- The curated meditation catalog includes track images (which can be hovered over for a 30 second track preview), and a link to the track url to play audio
+- The curated meditation catalog includes track name, track artist, track images (which can be hovered over for a 30 second track preview), and a link to the track url to play audio
 - Meditation tracks can be added to favorites or removed for easy accessibility
 - Meditations can be searched by track name and artist name
 - Randomized mindfulness tips display on meditation details page when the "Explore" button is clicked
