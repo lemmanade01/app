@@ -14,7 +14,7 @@ APIs: Spotify Web API, Twilio
 - The curated meditation catalog includes track name, track artist, track images (which can be hovered over for a 30 second track preview), and a link to the track url to play audio
 - Meditation tracks can be added to favorites or removed for easy accessibility
 - Meditations can be searched by track name and artist name
-- Randomized mindfulness tips display on meditation details page when the "Explore" button is clicked
+- Random mindfulness tips display on meditation details page when the "Explore" button is clicked
 - Journal entries can be submitted to the database
 - A mood chart displays a yearly overview of a user's journal submission
 - Journal entries are searchable by date (The mood chart can be used as a reference)
