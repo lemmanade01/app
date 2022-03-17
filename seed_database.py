@@ -16,6 +16,7 @@ os.system("createdb meditations")
 model.connect_to_db(server.app)
 model.db.create_all()
 
+
 # Create a mock user
 fname = "Ava"
 lname = "Williams"
@@ -38,26 +39,26 @@ crud.create_meditations(1)
 
 
 # Create user's mock journal entries
-with open("data/mock_journal_entries.json") as f:
-    journal_entries = json.loads(f.read())
+# with open("data/mock_journal_entries.json") as f:
+#     journal_entries = json.loads(f.read())
 
-    entries_in_db = []
-    for entry in journal_entries:
-        scale, mood, color, gratitude_1, gratitude_2, gratitude_3, journal_input, time_stamp, mnth, user_id = (
-            entry["scale"],
-            entry["mood"],
-            entry["color"],
-            entry["gratitude_1"],
-            entry["gratitude_2"],
-            entry["gratitude_3"],
-            entry["journal_input"],
-            entry["time_stamp"],
-            entry["mnth"],
-            entry["user_id"]
-        )   
+#     entries_in_db = []
+#     for entry in journal_entries:
+#         scale, mood, color, gratitude_1, gratitude_2, gratitude_3, journal_input, time_stamp, mnth, user_id = (
+#             entry["scale"],
+#             entry["mood"],
+#             entry["color"],
+#             entry["gratitude_1"],
+#             entry["gratitude_2"],
+#             entry["gratitude_3"],
+#             entry["journal_input"],
+#             entry["time_stamp"],
+#             entry["mnth"],
+#             entry["user_id"]
+#         )   
 
-        db_entry = crud.create_journal_entry(scale, mood, color, gratitude_1, gratitude_2, gratitude_3, journal_input, time_stamp, mnth, user_id)
-        entries_in_db.append(db_entry)
+#         db_entry = crud.create_journal_entry(scale, mood, color, gratitude_1, gratitude_2, gratitude_3, journal_input, time_stamp, mnth, user_id)
+#         entries_in_db.append(db_entry)
 
     
 # Create quotes with .json file
@@ -107,6 +108,7 @@ with open("data/wellness_tips.json") as f:
         db_wellness_tip = crud.create_wellness_tip(tip_id, wellness_tip, source)
         wellness_tips_in_db.append(db_wellness_tip)
         
+print("Database has been seeded!")
   
 
 # Create 10 users

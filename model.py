@@ -2,6 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask import flash
 from sqlalchemy.ext.declarative import declarative_base
+import config
 
 db = SQLAlchemy()
 
@@ -207,7 +208,7 @@ class Tip(db.Model):
         return f"<Tip tip_id={self.tip_id} wellness_tip={self.wellness_tip}>"
 
 
-def connect_to_db(flask_app, db_uri="postgresql:///meditations", echo=True):
+def connect_to_db(flask_app, db_uri=config.DATABASE_CONNECTION_URI, echo=True):
 # "postgresql:///<db_name>""
     flask_app.config["SQLALCHEMY_DATABASE_URI"] = db_uri
     flask_app.config["SQLALCHEMY_ECHO"] = echo

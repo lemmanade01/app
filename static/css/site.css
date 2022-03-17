@@ -251,7 +251,7 @@ input:-webkit-autofill {
 
 /* Quotes page */
 body .container {
-  background: url('/static/img/faded-sphere copy.jpg') no-repeat center center;
+  background: url('/static/img/ocean.png') no-repeat center center;
   background-size: cover;
   width: 100%;
   /* height: 100%; */
@@ -266,6 +266,10 @@ body .container {
   font-family: 'Spartan', sans-serif;
   font-size: 30px;
   padding-top: 60px;
+  color: #ffedce;
+}
+#line, #enter {
+  color: #ffedce;
 }
 #random-inspo-quote {
   font-family: 'Krona One', sans-serif;
@@ -273,21 +277,24 @@ body .container {
   padding-top: 80px;
   padding-right: 60px;
   padding-left: 60px;
+  color: #ffedce;
 }
 #quote-author {
   font-family: 'Trirong', serif;
   font-size:60px;
   padding-top: 30px;
   padding-bottom: 25px;
+  color: #ffedce;
 }
 #enter-button-container {
   font-family: 'Kite One', sans-serif;
   font-size: 30px;
+  color: #ffedce;
 }
 #enter {
   background: transparent; 
   border-radius: 130px;
-  border-color:rgba(0, 0, 0, .5);
+  border-color: #ffedce;
   height: 130px;
   width: 130px;
 }

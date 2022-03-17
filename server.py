@@ -1,10 +1,10 @@
 """Server for mindfulness app."""
 
 from flask import Flask, render_template, request, flash, session, redirect, jsonify, url_for
-from model import connect_to_db
+from model import connect_to_db, db
 from datetime import datetime
-from playsound import playsound
 from jinja2 import StrictUndefined
+from dotenv import load_dotenv
 
 import spotipy
 import spotipy.util as util
@@ -17,14 +17,18 @@ import re
 # import uuid
 import time
 import os
+import config
 
-PORT_NUMBER = 5000
+load_dotenv()
+PORT_NUMBER = 8000
 SPOTIPY_CLIENT_ID = os.environ["SPOTIPY_CLIENT_ID"]
 SPOTIPY_CLIENT_SECRET = os.environ["SPOTIPY_CLIENT_SECRET"]
 
 app = Flask(__name__)
 # Required to use Flask sessions
 app.secret_key = os.environ['SECRET_KEY']
+# app.config["SQLALCHEMY_DATABASE_URI"] = config.DATABASE_CONNECTION_URI
+# db.init_app(app)
 # Normally, if you refer to an undefined variable in a Jinja template,
 # Jinja silently ignores this. This makes debugging difficult, so we'll
 # set an attribute of the Jinja environment that says to make this an
@@ -75,10 +79,13 @@ def process_create_account():
     # phone_num = phone_num.split("-")
     # phone_num = f"{phone_num[0]}{phone_num[1]}{phone_num[2]}"
     
-    user_id = user.user_id
+   
     
     # Create a user
     crud.create_user(fname, lname, email, phone_num, password, quote)
+
+    new_user = crud.get_user_by_email(email)
+    user_id = new_user.user_id
     
     # Populate the database with meditations when a user creates an account
     crud.create_meditations(user_id)
@@ -678,7 +685,7 @@ def remove_reminder():
 
 if __name__ == "__main__":
     connect_to_db(app)
-    app.run(host="localhost", debug=True)
+    app.run(host="0.0.0.0", port=8000, debug=True)
     
     
 
