@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mindful-moments-service
+spec:
+  selector:
+    app: mindful-moments
+  type: NodePort 
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
+      nodePort: 8000
