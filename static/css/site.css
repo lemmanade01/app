@@ -691,7 +691,7 @@ body .display-container {
   background-repeat: repeat;
   text-align: center;
   height: 100%;
-  height: 100vh;
+  /* height: 100vh; */
 }
 .results-header {
   font-family: 'Cormorant Garamond', serif;
@@ -736,11 +736,11 @@ body .display-container {
 }
 .col-lg-7.display {
   background-color: #213556;
-  padding-top: 90px;
-  padding-right: 100px;
+  padding-top: 50px;
+  padding-right: 50px;
   justify-content: center;
   display: flex;
-  padding: 50px 200px 70px 200px;
+  padding: 50px 400px 70px 400px;
   border-radius: 10%;
 }
 .wellness-tip {
@@ -775,7 +775,7 @@ body .profile-container {
   max-width: none;
   padding-left: 30px;
   text-align: center;
-  height: 100vh;
+  /* height: 100vh; */
   height: 100%;
 }
 .calendar-basic {
@@ -1276,7 +1276,7 @@ body .favorites-container {
   background-size: cover;
   background-repeat: repeat;
   text-align: center;
-  height: 100%;
+  height: 100vh;
 }
 .fav-profile-header {
   color: rgb(13, 50, 70);
@@ -1352,8 +1352,11 @@ body .reminders-container {
   background-size: cover;
   background-repeat: repeat;
   text-align: center;
-  height: 100vh;
   /* height: 100%; */
+  height: 100vh;
+}
+.reminders-scheduler-container {
+  background-color: rgb(33, 53, 87);
 }
 #reminders-title {
   font-family: 'Krona One', sans-serif;
@@ -1440,6 +1443,7 @@ body .reminders-container {
   padding-right: 20px;
   padding-bottom: 30px;
   padding-left: 20px;
+  margin-top: 30px;
 }
 .reminder {
   padding-top: 30px;

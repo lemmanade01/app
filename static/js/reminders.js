@@ -4,7 +4,7 @@
 const removeReminder = () => {
     const btns = document.querySelectorAll('.remove-reminder');
 
-    for (const btn of btns) {
+    btns.forEach((btn) => {
         btn.addEventListener('click', (evt) => {
             // console.log('Ive been clicked');
             const reminderId = document.querySelector('.remove-reminder').value;
@@ -24,15 +24,15 @@ const removeReminder = () => {
             })
                 .then(response2 => response2.json())
                 .then(responseData2 => {
-                    // console.log('This reminder has been removed from the db');
+                    console.log('This reminder has been removed from the db');
 
                     // Remove the entire container for the reminder
                     btn.parentElement.parentElement.parentElement.parentElement.parentElement.remove();
-                    // console.log('Reminder removed');
+                    console.log('Reminder removed');
 
                     // Does a reminder from the database exist
                     const exist = !!document.querySelector('.reminder');
-                    // console.log('does this element exist?  ', exist);
+                    console.log('does this element exist?  ', exist);
 
                     // If no, remove the header that states "Your Reminders:"
                     if (exist == false) {
@@ -40,8 +40,8 @@ const removeReminder = () => {
                     }
                 });
     });
-    }
-   
+    })
+
 }
 
 // Schedule reminders

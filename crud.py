@@ -229,6 +229,14 @@ def get_meditation_by_id(meditation_id):
     return single_meditation
 
 
+def get_all_favorite_meditations(user_id):
+    """Get and return a user's favorite meditations."""
+    
+    all_meditations_with_favorites = Meditation.query.filter(Meditation.user_id == Favorite.user_id).all()
+    
+    return all_meditations_with_favorites
+
+    
 def does_fav_meditation_exist(meditation_id):
     """Check to see if a meditation id currently exists in favorites."""
     
@@ -256,7 +264,7 @@ def get_fav_meditation_details():
 def get_fav_meditations_by_user_id(user_id):
     """Get and return all favorite meditations."""
     
-    fav_meditations = Favorite.query.all()
+    fav_meditations = Favorite.query.filter(Favorite.user_id==user_id).all()
     
     return fav_meditations
 

@@ -1,13 +1,10 @@
-"""Drops, creates and automatically populate the databse with data"""
+"""Drops, creates and automatically populates the database with data"""
 
 import os
 import json
-from random import choice, randint
-from datetime import datetime
 
 import crud
 import model
-import spotify
 import server
 
 os.system("dropdb meditations")
@@ -21,7 +18,7 @@ model.db.create_all()
 fname = "Ava"
 lname = "Williams"
 email = "ava34@gmail.com"
-phone_num = "3105556710"
+phone_num = "3105550000"
 password = "Password1"
 quote = " "
 
@@ -29,14 +26,6 @@ quote = " "
 user = crud.create_user(fname, lname, email, phone_num, password, quote)
 # Create a meditations catalog for that user with their user id
 crud.create_meditations(1)
-
-
-# Create user's favorites
-# meditation_id = 29
-# user_id = 1
-
-# fav = crud.create_favorite(meditation_id, user_id)
-
 
 # Create user's mock journal entries
 # with open("data/mock_journal_entries.json") as f:
@@ -107,33 +96,3 @@ with open("data/wellness_tips.json") as f:
 
         db_wellness_tip = crud.create_wellness_tip(tip_id, wellness_tip, source)
         wellness_tips_in_db.append(db_wellness_tip)
-        
-print("Database has been seeded!")
-  
-
-# Create 10 users
-# for n in range(10):
-#     email = f"user{n}@test.com"
-#     password = "test"
-
-#     user = crud.create_user("Bob"+ str(n) ,  "Obo" + str(n) , email, "",password, "Hi")
-
-
-# create mock meditations with .json file
-# with open("data/meditations.json") as f:
-#     meditation_data = json.loads(f.read())
-
-#     meditations_in_db = []
-#     for meditation in meditation_data:
-#         track_name, artist_name, image_url, spotify_url, preview_link, user_id = (
-#             meditation["track_name"],
-#             meditation["artist_name"],
-#             meditation["image_url"],
-#             meditation["spotify_url"],
-#             meditation["preview_link"],
-#             meditation["user_id"],
-#         )   
-
-#     db_meditation = crud.create_meditations(track_name, artist_name, image_url, spotify_url, preview_link, 1)
-#     meditations_in_db.append(db_meditation)
-    
